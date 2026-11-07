@@ -83,7 +83,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   #printArea .signatures { margin-top: 65px !important; }
 }
 
-/* ই-রিটার্ন স্টাইলের স্প্লিট লগইন গেটওয়ে (বাম পাশে ব্র্যান্ডিং, ডান পাশে ফর্ম) */
+/* ই-রিটার্ন স্টাইলের স্প্লিট লগইন গেটওয়ে */
 #authGate{
   position:fixed; inset:0; z-index:99999; background:#ffffff;
   display:flex; flex-direction:row; overflow:hidden;
@@ -237,7 +237,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   <div><label>ব্যাংকের নাম</label><input id="bankname" placeholder="ব্যাংকের নাম"></div><div><label>শাখা</label><input id="branch" placeholder="শাখার নাম"></div>
   <div><label>জমার তারিখ</label><input id="bankdate" type="date"></div><div><label>ডিপোজিট/ট্রানজেকশন নম্বর</label><input id="bankref" placeholder="স্লিপ/ট্রানজেকশন নম্বর"></div></div>
   <div class="summary" style="margin-top:14px"><div class="metric"><small>সমন্বয়ের পর প্রদেয়</small><strong id="showNet">৳০.০০</strong></div>
-  <div class="metric"><small>নগদ + ব্যাংকে গ্রহণ</small><strong id="showPaid">৳০.০০</strong></div><div class="metric"><small>বাকি / অতিরিক্ত</small><strong id="showDue">৳০.০০</strong></div></div><div class="status" id="status"></div></div>
+  <div class="metric"><small>নগদ + ব্যাংকে গ্রহণ</small><strong id="showPaid">৳০.০০</strong></div><div class="metric"><small>আদায়কৃত ভাড়া</small><strong id="showDue">৳০.০০</strong></div></div><div class="status" id="status"></div></div>
 
   <div class="actions">
     <button onclick="updateAll()">হিসাব আপডেট করুন</button>
@@ -430,7 +430,7 @@ function calc(){const key=monthLedgerKey(),saved=key?monthlyLedger[key]:null;let
 if(saved){rent=saved.rent;opening=saved.opening;original=saved.original;adj=saved.adj;closing=saved.closing;net=saved.net;}
 const cash=num('cash'),bank=num('bank'),paid=cash+bank,due=net-paid;
 el('adjustment').value=money(adj);el('closing').value=money(closing);el('net').value=money(net);el('showNet').textContent=money(net);el('showPaid').textContent=money(paid);el('showDue').textContent=money(Math.abs(due))+(due<0?' অতিরিক্ত':'');
-el('status').textContent=due>0?'বাকি রয়েছে: '+money(due):due<0?'অতিরিক্ত গ্রহণ: '+money(-due):'সম্পূর্ণ ভাড়া পরিশোধ হয়েছে।';return{rent,opening,original,adj,closing,net,paid,due,cash,bank};}
+el('status').textContent=due>0?'আদায়কৃত ভাড়া: '+money(due):due<0?'অতিরিক্ত গ্রহণ: '+money(-due):'সম্পূর্ণ ভাড়া পরিশোধ হয়েছে।';return{rent,opening,original,adj,closing,net,paid,due,cash,bank};}
 function commitMonthlyAdjustment(){const key=monthLedgerKey();if(!key){alert('আগে ভাড়াটিয়া নির্বাচন করুন।');return false;}if(!monthlyLedger[key]){const c=calc();monthlyLedger[key]={rent:c.rent,opening:c.opening,original:c.original,adj:c.adj,closing:c.closing,net:c.net,receiptNo:val('receiptno'),createdAt:new Date().toISOString()};const i=Number(el('tenantSelect').value);if(tenants[i])tenants[i].balance=c.closing;localStorage.setItem('mirMarketMonthlyLedger',JSON.stringify(monthlyLedger));localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));autoSaveLocal();}return true;}
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
@@ -453,7 +453,7 @@ function commonTable(c){return `<table style="width:100%;border-collapse:collaps
 <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">নগদে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.cash)}</td></tr>
 <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">ব্যাংকে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.bank)}</td></tr>
 <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">মোট গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.paid)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">বাকি / অতিরিক্ত</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(Math.abs(c.due))}${c.due<0?' (অতিরিক্ত গ্রহণ)':''}</td></tr></table>`;}
+<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">আদায়কৃত ভাড়া</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(Math.abs(c.due))}${c.due<0?' (অতিরিক্ত গ্রহণ)':''}</td></tr></table>`;}
 
 function ownerInfo(){return `<div class="land" style="font-size:15px;line-height:1.6;background:#f8fafc;padding:10px 14px;border-radius:6px;border-left:4px solid #0284c7;margin-bottom:12px;color:#334155;"><b>মালিক ১:</b> ${esc(val('owner1'))} — মোবাইল: ${esc(val('owner1mobile'))} — ঠিকানা: ${esc(val('owner1address'))}<br><b>মালিক ২:</b> ${esc(val('owner2'))} — মোবাইল: ${esc(val('owner2mobile'))} — ঠিকানা: ${esc(val('owner2address'))}</div>`;}
 
