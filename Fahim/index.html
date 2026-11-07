@@ -1,1 +1,1372 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAHIM Daily Income and Expense Sheet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
 
+        * {
+            box-sizing: border-box;
+            transition: all 0.2s ease-in-out;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-dark);
+        }
+
+        .auth-container, .modal-box {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 40px 35px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .qr-badge-corner {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ffffff;
+            padding: 6px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .qr-badge-corner img {
+            width: 42px;
+            height: 42px;
+            display: block;
+        }
+
+        .qr-badge-corner span {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 2px;
+        }
+
+        .auth-container h2, .modal-box h2 {
+            color: var(--text-dark);
+            margin: 0 0 8px 0;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .auth-subtitle {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            background-color: #f8fafc;
+            color: var(--text-dark);
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .switch-link {
+            margin-top: 15px;
+            display: inline-block;
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .auth-footer {
+            margin-top: 30px;
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1050px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-bar h2 {
+            margin: 0;
+            color: var(--text-dark);
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #ffffff;
+            min-width: 250px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+            border-radius: 14px;
+            z-index: 9999;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-content button {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            color: #334155;
+            padding: 12px 18px;
+            border: none;
+            border-bottom: 1px solid #f1f5f9;
+            border-radius: 0;
+            margin: 0;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .dropdown-content button:hover {
+            background-color: #f1f5f9;
+            color: var(--primary-dark);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .archive-bar-wrapper {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 12px 18px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .archive-bar-wrapper span {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e40af;
+        }
+
+        .archive-controls select {
+            width: auto;
+            padding: 8px 12px;
+            font-size: 13px;
+            border-radius: 8px;
+            border: 1px solid #93c5fd;
+        }
+
+        .action-bar-wrapper {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px 16px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .action-btn {
+            background-color: var(--accent-green);
+            padding: 10px 16px;
+            border-radius: 10px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .action-btn.export { background-color: #0284c7; }
+
+        .table-responsive {
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+            background: #ffffff;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px 10px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        th { 
+            background-color: #f8fafc; 
+            color: #475569; 
+            font-weight: 700; 
+            border-bottom: 1px solid #e2e8f0;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        td {
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .input-row input, .input-row select {
+            width: 95%;
+            padding: 9px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .edit-btn {
+            background-color: #f59e0b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+            margin-right: 4px;
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .summary-box {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 20px 15px;
+            border-radius: 16px;
+            width: calc(33.33% - 10px);
+            text-align: center;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+        }
+
+        .card h3 { 
+            margin: 0; 
+            font-size: 12px; 
+            color: var(--text-muted); 
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .card p { 
+            font-size: 22px; 
+            font-weight: 800; 
+            margin: 8px 0 0 0; 
+        }
+        
+        .income-card { border-bottom: 4px solid var(--accent-green); }
+        .income-card p { color: var(--accent-green); }
+
+        .expense-card { border-bottom: 4px solid var(--accent-red); }
+        .expense-card p { color: var(--accent-red); }
+
+        .balance-card { border-bottom: 4px solid var(--accent-blue); }
+        .balance-card p { color: var(--accent-blue); }
+
+        .prev-income-card { border-bottom: 4px solid #10b981; }
+        .prev-income-card p { color: #059669; }
+
+        .prev-expense-card { border-bottom: 4px solid #f97316; }
+        .prev-expense-card p { color: #ea580c; }
+
+        .loan-card { border-bottom: 4px solid #f59e0b; }
+        .loan-card p { color: #d97706; }
+
+        .ucbl-card { border-bottom: 4px solid #8b5cf6; }
+        .ucbl-card p { color: #7c3aed; }
+
+        .mdbl-card { border-bottom: 4px solid #ec4899; }
+        .mdbl-card p { color: #db2777; }
+
+        .person-card { border-bottom: 4px solid #06b6d4; }
+        .person-card p { color: #0891b2; }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .print-only-container {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .summary-box { flex-direction: column; }
+            .card { width: 100%; }
+        }
+
+        /* ZERO MARGIN FULL PAGE PRINT STYLING */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 0mm !important;
+            }
+            html, body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                color: black !important;
+                font-family: Arial, sans-serif !important;
+            }
+            .action-bar-wrapper, .archive-bar-wrapper, .header-btns, .qr-badge-corner, .footer, .modal-overlay, .table-responsive, .summary-box, .header-bar, .input-row, #authSection {
+                display: none !important;
+            }
+            .container {
+                display: block !important;
+                box-shadow: none !important;
+                padding: 2mm !important;
+                border: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                background: transparent !important;
+                margin: 0 !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+            }
+            .print-only-container {
+                display: block !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .print-main-header {
+                background-color: #d1c4e9 !important;
+                color: #000000 !important;
+                text-align: center !important;
+                font-weight: 800 !important;
+                font-size: 15px !important;
+                padding: 6px 0 !important;
+                border: 1px solid #7e57c2 !important;
+                width: 100% !important;
+                margin-top: 0 !important;
+            }
+            .print-sub-header {
+                text-align: center !important;
+                font-weight: 800 !important;
+                font-size: 13px !important;
+                padding: 4px 0 !important;
+                background: white !important;
+                color: #000 !important;
+                margin-bottom: 2px !important;
+                width: 100% !important;
+            }
+            .print-table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                table-layout: fixed !important;
+            }
+            .print-table th, .print-table td {
+                border: 1px solid #b0bec5 !important;
+                padding: 4px 6px !important;
+                font-size: 11px !important;
+                line-height: 1.15 !important;
+                overflow: hidden !important;
+                word-wrap: break-word !important;
+            }
+            .print-table th {
+                background-color: #2b5490 !important;
+                color: #ffffff !important;
+                font-weight: 700 !important;
+                text-align: center !important;
+            }
+            .print-table td.col-date {
+                text-align: center !important;
+                font-weight: 700 !important;
+                width: 15% !important;
+            }
+            .print-table td.col-desc {
+                text-align: left !important;
+                font-weight: 700 !important;
+                width: 32% !important;
+            }
+            .print-table td.col-income {
+                text-align: right !important;
+                font-weight: 700 !important;
+                width: 13% !important;
+            }
+            .print-table td.col-exp-desc {
+                text-align: left !important;
+                font-weight: 700 !important;
+                width: 25% !important;
+            }
+            .print-table td.col-exp-amount {
+                text-align: right !important;
+                font-weight: 700 !important;
+                width: 15% !important;
+            }
+            .print-table tfoot td {
+                background-color: #2b5490 !important;
+                color: #ffffff !important;
+                font-weight: 800 !important;
+                font-size: 11px !important;
+                border: 1px solid #1a365d !important;
+                padding: 5px 6px !important;
+            }
+            .txt-red { color: #d32f2f !important; }
+            .txt-blue { color: #0288d1 !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="authSection" class="auth-container">
+        <div class="qr-badge-corner" title="Scan to open on mobile">
+            <img id="mobileQrCode" src="" alt="QR Code">
+            <span>SCAN ME</span>
+        </div>
+
+        <h2 id="authTitle">FAHIM INCOME & EXPENSE</h2>
+        <div class="auth-subtitle" id="authSubtitle">Apnar hisab shurokhito rakhte sign in korun</div>
+        
+        <div id="loginForm">
+            <div class="input-group">
+                <input type="text" id="loginEmail" value="Fahim" readonly style="background-color: #e2e8f0; font-weight: 700; cursor: not-allowed;" placeholder="📧 Email / Username">
+            </div>
+            <div class="input-group">
+                <input type="password" id="loginPassword" placeholder="🔒 Password" required>
+            </div>
+            <button type="button" onclick="handleLogin()">Sign In</button>
+            <div style="margin-top: 18px; display: flex; justify-content: space-between; font-size: 13px;">
+                <span class="switch-link" onclick="showSignup()">Create Account</span>
+                <span class="switch-link" onclick="showForgotPassword()">Forgot Password?</span>
+            </div>
+        </div>
+
+        <div id="signupForm" style="display: none;">
+            <div class="input-group">
+                <input type="text" id="signupName" placeholder="👤 Full Name" required>
+            </div>
+            <div class="input-group">
+                <input type="text" id="signupEmail" placeholder="📧 Email / Username" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signupPassword" placeholder="🔒 Create Password" required>
+            </div>
+            <button type="button" onclick="handleSignup()">Sign Up</button>
+            <span class="switch-link" onclick="showLogin()">Already have an account? Sign In</span>
+        </div>
+
+        <div id="forgotForm" style="display: none;">
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Registered email din:</p>
+            <div class="input-group">
+                <input type="text" id="resetEmail" value="Fahim" readonly style="background-color: #e2e8f0; font-weight: 700;">
+            </div>
+            <button type="button" onclick="handleResetPassword()">Recover Password</button>
+            <span class="switch-link" onclick="showLogin()">Back to Sign In</span>
+        </div>
+
+        <div class="auth-footer">POWERED BY FAHIM</div>
+    </div>
+
+    <div class="container" id="appSection" style="display: none;">
+        <div class="header-bar">
+            <h2 id="sheetTitle">FAHIM MONTHLY INCOME & EXPENSE</h2>
+            
+            <div class="header-btns">
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="toggleMenu(event)">⚙️ Menu ▾</button>
+                    <div class="dropdown-content" id="myDropdown">
+                        <button onclick="triggerAction(openSetLiabilitiesModal)">💳 Set Loan & Cards Due</button>
+                        <button onclick="triggerAction(openPrevBothModal)">💸 Previous Income & Expense</button>
+                        <button onclick="triggerAction(openPersonManagerModal)">👥 Manage Persons (Paonadar)</button>
+                        <button onclick="triggerAction(saveCurrentMonthToArchive)">💾 Save Month to Archive</button>
+                        <button onclick="triggerAction(function(){ document.getElementById('importFile').click(); })">📥 Import Data</button>
+                        <button onclick="triggerAction(openGoogleDrive)">☁️ Google Drive Backup</button>
+                        <button onclick="triggerAction(downloadPDF)">📥 Download PDF</button>
+                        <button onclick="triggerAction(openChangePasswordModal)">🔑 Change Password</button>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <input type="file" id="importFile" style="display: none;" accept=".json" onchange="importData(event)">
+
+        <div class="archive-bar-wrapper">
+            <span>📂 Previous Month (Archive History):</span>
+            <div class="archive-controls">
+                <select id="archiveMonthSelect" onchange="switchMonthView()">
+                </select>
+            </div>
+        </div>
+
+        <div class="action-bar-wrapper">
+            <div class="action-bar">
+                <button class="action-btn export" onclick="exportData()">📤 Export Data (JSON)</button>
+                <button class="action-btn" onclick="window.print()">🖨️ Print Sheet</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date (DD-MM-YYYY)</th>
+                        <th>Income Source</th>
+                        <th>Income Amount</th>
+                        <th>Expense Category</th>
+                        <th>Expense Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="input-row" id="inputRow">
+                        <td><input type="date" id="date"></td>
+                        <td>
+                            <select id="incomeCategory" onchange="checkNewIncomeCategory(this)">
+                                <option value="">-- Select Income Source --</option>
+                                <option value="Income Source Fixed">Income Source Fixed</option>
+                                <option value="Application">Application</option>
+                                <option value="Cancel Application">Cancel Application</option>
+                                <option value="Angikar Nama">Angikar Nama</option>
+                                <option value="N I D">N I D</option>
+                                <option value="CD F">CD F</option>
+                                <option value="Fahim">Fahim</option>
+                                <option value="Kaka F">Kaka F</option>
+                                <option value="Raju F">Raju F</option>
+                                <option value="B R C">B R C</option>
+                                <option value="NID Verify">NID Verify</option>
+                                <option value="A Challan">A Challan</option>
+                                <option value="Salary">Salary (Beton)</option>
+                                <option value="Business">Business (Byabosa)</option>
+                                <option value="Bank Loan Received">🏦 Bank Loan (Loan Grohon)</option>
+                                <option value="Pocket Money">Pocket Money</option>
+                                <option value="Freelancing">Freelancing</option>
+                                <option value="Others">Others (Onnanno)</option>
+                                <option value="add_new">➕ Add New Category...</option>
+                            </select>
+                        </td>
+                        <td><input type="number" id="income" value="0" step="any"></td>
+                        <td>
+                            <select id="expenseCategory">
+                                <option value="">-- Select Expense Category --</option>
+                            </select>
+                        </td>
+                        <td><input type="number" id="amount" value="0" step="any"></td>
+                        <td><button class="add-btn" id="actionBtn" onclick="addTransaction()">Add</button></td>
+                    </tr>
+                </tbody>
+                <tbody id="transactionTable">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="summary-box" id="summaryBoxContainer">
+            <div class="card income-card">
+                <h3>Total Income (Current)</h3>
+                <p id="totalIncome">0.00</p>
+            </div>
+            <div class="card prev-income-card">
+                <h3>Previous Income</h3>
+                <p id="prevTotalIncome">0.00</p>
+            </div>
+            <div class="card prev-expense-card">
+                <h3>Previous Expense</h3>
+                <p id="prevTotalExpense">0.00</p>
+            </div>
+            <div class="card expense-card">
+                <h3>Total Expense (Live)</h3>
+                <p id="totalExpense">0.00</p>
+            </div>
+            <div class="card balance-card">
+                <h3>Net Balance</h3>
+                <p id="netBalance">0.00</p>
+            </div>
+            <div class="card loan-card">
+                <h3>Bank Loan Due</h3>
+                <p id="loanDue">0.00</p>
+            </div>
+            <div class="card ucbl-card">
+                <h3>UCBL Card Due</h3>
+                <p id="ucblDue">0.00</p>
+            </div>
+            <div class="card mdbl-card">
+                <h3>MDBL Card Due</h3>
+                <p id="mdblDue">0.00</p>
+            </div>
+        </div>
+
+        <!-- Printable Layout Structure starting from Top -->
+        <div class="print-only-container">
+            <div class="print-main-header">FAHIM Daily Income and Expense Sheet</div>
+            <div class="print-sub-header" id="printSubHeaderLabel">MIR TRADERS Month of November 2026</div>
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Date</th>
+                        <th style="width: 32%;">Description</th>
+                        <th style="width: 13%;">Income</th>
+                        <th style="width: 25%;">Expense Details</th>
+                        <th style="width: 15%;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="printTableBody">
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">TOTAL:</td>
+                        <td id="printTotalIncomeVal" style="text-align: right; color: #a7f3d0 !important;">0.00</td>
+                        <td style="text-align: right;">TOTAL EXPENSE:</td>
+                        <td id="printTotalExpenseVal" style="text-align: right; color: #fca5a5 !important;">0.00</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: right;">NET BALANCE:</td>
+                        <td id="printNetBalanceVal" style="text-align: right; color: #93c5fd !important;">0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="footer">
+            POWERED BY FAHIM
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="prevBothModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <h2>Previous Income & Expense</h2>
+            <div class="input-group">
+                <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Previous Income Amount</label>
+                <input type="number" id="manualPrevIncome" placeholder="Previous Income" step="any">
+            </div>
+            <div class="input-group">
+                <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Previous Expense Amount</label>
+                <input type="number" id="manualPrevExpense" placeholder="Previous Expense" step="any">
+            </div>
+            <button type="button" onclick="saveManualPrevBoth()">Save Adjustments</button>
+            <span class="switch-link" onclick="closePrevBothModal()">Cancel</span>
+        </div>
+    </div>
+
+    <div id="personManagerModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box" style="max-width: 480px;">
+            <h2>Manage Persons (Taka pabe jara)</h2>
+            <div class="input-group">
+                <input type="text" id="newPersonName" placeholder="👤 Person Name" required>
+            </div>
+            <div class="input-group">
+                <input type="number" id="newPersonDue" placeholder="💰 Initial Due Amount" step="any" required>
+            </div>
+            <button type="button" onclick="addNewPerson()">Add Person Due</button>
+            <div id="personListContainer" style="margin-top: 20px; max-height: 150px; overflow-y: auto; text-align: left; font-size: 13px;"></div>
+            <span class="switch-link" style="margin-top: 15px;" onclick="closePersonManagerModal()">Done / Close</span>
+        </div>
+    </div>
+
+    <div id="setLiabilitiesModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <h2>Set Loan & Cards Due</h2>
+            <div class="input-group">
+                <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Bank Loan Initial Due</label>
+                <input type="number" id="initLoanDue" placeholder="Bank Loan Due" step="any">
+            </div>
+            <div class="input-group">
+                <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">UCBL Credit Card Initial Due</label>
+                <input type="number" id="initUcblDue" placeholder="UCBL Due" step="any">
+            </div>
+            <div class="input-group">
+                <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">MDBL Credit Card Initial Due</label>
+                <input type="number" id="initMdblDue" placeholder="MDBL Due" step="any">
+            </div>
+            <button type="button" onclick="saveInitialLiabilities()">Save Due Amounts</button>
+            <span class="switch-link" onclick="closeSetLiabilitiesModal()">Cancel</span>
+        </div>
+    </div>
+
+    <div id="changePasswordModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <h2>Change Password</h2>
+            <div class="input-group">
+                <input type="password" id="oldPassword" placeholder="🔓 Current Password" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="newPassword" placeholder="🔒 New Password" required>
+            </div>
+            <button type="button" onclick="handlePasswordChange()">Update Password</button>
+            <span class="switch-link" onclick="closeChangePasswordModal()">Cancel</span>
+        </div>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+    let currentUser = localStorage.getItem('fahim_logged_user');
+    let transactions = [];
+    let editingIndex = null;
+    let selectedMonthKey = "";
+
+    let defaultIncomeCategories = [
+        'Income Source Fixed', 'Application', 'Cancel Application', 'Angikar Nama', 
+        'N I D', 'CD F', 'Fahim', 'Kaka F', 'Raju F', 'B R C', 'NID Verify', 'A Challan',
+        'Salary', 'Business', 'Bank Loan Received', 'Pocket Money', 'Freelancing', 'Others'
+    ];
+
+    let baseExpenseCategories = [
+        'Miter Home', 'Miter Office', 'Farnaz MILK', 'Nazifa MILK', 'Medicine', 
+        'Net Bill Office', 'Net Bill Home', 'S M', 'Office Paper', 'Office Print Toner', 
+        'Printer Service', 'Nazifa D/P', 'Rifat', 'Pervez', 'MDBL Loan Repayment', 
+        'U B Payment', 'M D Payment', 'B K L Payment', 'Mobile Payment', 'Tea MILK'
+    ];
+
+    function toggleMenu(e) {
+        e.stopPropagation();
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    function triggerAction(actionFn) {
+        document.getElementById("myDropdown").classList.remove("show");
+        if (typeof actionFn === 'function') actionFn();
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                dropdowns[i].classList.remove('show');
+            }
+        }
+    }
+
+    function generateQrCode() {
+        const currentUrl = window.location.href;
+        const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(currentUrl)}`;
+        const qrImg = document.getElementById('mobileQrCode');
+        if (qrImg) qrImg.src = qrApiUrl;
+    }
+
+    function checkAuthState() {
+        generateQrCode();
+        if (currentUser && currentUser !== "null" && currentUser !== "") {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('appSection').style.display = 'block';
+            initArchiveDropdown();
+            setAutomaticMonthHeader();
+            loadCategories();
+            loadUserTransactions();
+            const dateInput = document.getElementById('date');
+            if(dateInput && !dateInput.value) dateInput.valueAsDate = new Date();
+        } else {
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('appSection').style.display = 'none';
+            showLogin();
+        }
+    }
+
+    function getCurrentMonthKey() {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    function initArchiveDropdown() {
+        const select = document.getElementById('archiveMonthSelect');
+        select.innerHTML = '';
+        let archives = JSON.parse(localStorage.getItem('fahim_archives_' + currentUser)) || {};
+        const currentKey = getCurrentMonthKey();
+        if(!archives[currentKey]) archives[currentKey] = "Current Month";
+        const keys = Object.keys(archives).sort().reverse();
+        keys.forEach(key => {
+            const dateParts = key.split('-');
+            const dateObj = new Date(dateParts[0], dateParts[1] - 1);
+            const label = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            const isCurrent = key === currentKey;
+            select.innerHTML += `<option value="${key}">${label} ${isCurrent ? '(Current)' : '(Previous Month)'}</option>`;
+        });
+        selectedMonthKey = currentKey;
+        select.value = currentKey;
+    }
+
+    function switchMonthView() {
+        selectedMonthKey = document.getElementById('archiveMonthSelect').value;
+        const currentKey = getCurrentMonthKey();
+        document.getElementById('inputRow').style.display = (selectedMonthKey !== currentKey) ? 'none' : 'table-row';
+        const dateParts = selectedMonthKey.split('-');
+        const dateObj = new Date(dateParts[0], dateParts[1] - 1);
+        const label = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        document.getElementById('sheetTitle').innerText = `FAHIM MONTHLY INCOME & EXPENSE (${label})`;
+        document.getElementById('printSubHeaderLabel').innerText = `MIR TRADERS Month of ${label}`;
+        loadUserTransactions();
+    }
+
+    function saveCurrentMonthToArchive() {
+        let archives = JSON.parse(localStorage.getItem('fahim_archives_' + currentUser)) || {};
+        archives[getCurrentMonthKey()] = true;
+        localStorage.setItem('fahim_archives_' + currentUser, JSON.stringify(archives));
+        saveUserTransactions();
+        initArchiveDropdown();
+        alert('Bortoman maser data safolvabe archive songrokkhito hoise!');
+    }
+
+    function setAutomaticMonthHeader() {
+        const now = new Date();
+        const currentMonthYear = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        document.getElementById('sheetTitle').innerText = `FAHIM MONTHLY INCOME & EXPENSE (${currentMonthYear})`;
+        document.getElementById('printSubHeaderLabel').innerText = `MIR TRADERS Month of ${currentMonthYear}`;
+    }
+
+    function loadCategories() {
+        let savedInc = JSON.parse(localStorage.getItem('fahim_inc_cats_' + currentUser)) || defaultIncomeCategories;
+        let incSelect = document.getElementById('incomeCategory');
+        let expSelect = document.getElementById('expenseCategory');
+        
+        incSelect.innerHTML = '<option value="">-- Select Income Source --</option>';
+        savedInc.forEach(cat => incSelect.innerHTML += `<option value="${cat}">${cat}</option>`);
+        incSelect.innerHTML += '<option value="add_new">➕ Add New Category...</option>';
+
+        expSelect.innerHTML = '<option value="">-- Select Expense Category --</option>';
+        baseExpenseCategories.forEach(cat => expSelect.innerHTML += `<option value="${cat}">${cat}</option>`);
+
+        let persons = JSON.parse(localStorage.getItem('fahim_persons_' + currentUser)) || {};
+        Object.keys(persons).forEach(pName => {
+            let catName = "Payment to: " + pName;
+            expSelect.innerHTML += `<option value="${catName}">👤 ${catName}</option>`;
+        });
+    }
+
+    function openPersonManagerModal() {
+        renderPersonList();
+        document.getElementById('personManagerModal').style.display = 'flex';
+    }
+
+    function closePersonManagerModal() {
+        document.getElementById('personManagerModal').style.display = 'none';
+        loadCategories();
+        updateTable();
+    }
+
+    function openPrevBothModal() {
+        document.getElementById('manualPrevIncome').value = parseFloat(localStorage.getItem('fahim_manual_prev_inc_' + currentUser)) || 0;
+        document.getElementById('manualPrevExpense').value = parseFloat(localStorage.getItem('fahim_manual_prev_exp_' + currentUser)) || 0;
+        document.getElementById('prevBothModal').style.display = 'flex';
+    }
+
+    function closePrevBothModal() { document.getElementById('prevBothModal').style.display = 'none'; }
+
+    function saveManualPrevBoth() {
+        localStorage.setItem('fahim_manual_prev_inc_' + currentUser, parseFloat(document.getElementById('manualPrevIncome').value) || 0);
+        localStorage.setItem('fahim_manual_prev_exp_' + currentUser, parseFloat(document.getElementById('manualPrevExpense').value) || 0);
+        closePrevBothModal();
+        updateTable();
+        alert('Previous Income & Expense adjustments safolvabe live update hoise!');
+    }
+
+    function addNewPerson() {
+        const name = document.getElementById('newPersonName').value.trim();
+        const due = parseFloat(document.getElementById('newPersonDue').value) || 0;
+        if(!name) { alert('Byaktir nam likhun!'); return; }
+        let persons = JSON.parse(localStorage.getItem('fahim_persons_' + currentUser)) || {};
+        persons[name] = due;
+        localStorage.setItem('fahim_persons_' + currentUser, JSON.stringify(persons));
+        document.getElementById('newPersonName').value = '';
+        document.getElementById('newPersonDue').value = '';
+        renderPersonList();
+        loadCategories();
+        updateTable();
+    }
+
+    function deletePerson(name) {
+        let persons = JSON.parse(localStorage.getItem('fahim_persons_' + currentUser)) || {};
+        delete persons[name];
+        localStorage.setItem('fahim_persons_' + currentUser, JSON.stringify(persons));
+        renderPersonList();
+        loadCategories();
+        updateTable();
+    }
+
+    function renderPersonList() {
+        let persons = JSON.parse(localStorage.getItem('fahim_persons_' + currentUser)) || {};
+        let container = document.getElementById('personListContainer');
+        container.innerHTML = '<b>Existing Persons:</b><br>';
+        const keys = Object.keys(persons);
+        if(keys.length === 0) { container.innerHTML += '<span style="color:var(--text-muted); font-size:12px;">Kono paonadar jukto kora hoyni.</span>'; return; }
+        keys.forEach(pName => {
+            container.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px; background:#f8fafc; padding:6px 10px; border-radius:8px;">
+                <span><b>${pName}</b> (Init Due: ${persons[pName]})</span>
+                <button type="button" onclick="deletePerson('${pName}')" style="width:auto; padding:3px 8px; font-size:10px; background:#ef4444; margin:0;">Delete</button>
+            </div>`;
+        });
+    }
+
+    function checkNewIncomeCategory(selectObj) {
+        if (selectObj.value === 'add_new') {
+            let newCat = prompt('Notun Income khater nam likhun:');
+            if (newCat && newCat.trim() !== '') {
+                newCat = newCat.trim();
+                let savedInc = JSON.parse(localStorage.getItem('fahim_inc_cats_' + currentUser)) || defaultIncomeCategories;
+                if (!savedInc.includes(newCat)) {
+                    savedInc.push(newCat);
+                    localStorage.setItem('fahim_inc_cats_' + currentUser, JSON.stringify(savedInc));
+                    loadCategories();
+                    selectObj.value = newCat;
+                } else { alert('Ei khata already talikay ache!'); selectObj.value = ''; }
+            } else { selectObj.value = ''; }
+        }
+    }
+
+    function showLogin() {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('signupForm').style.display = 'none';
+        document.getElementById('forgotForm').style.display = 'none';
+        document.getElementById('authTitle').innerText = 'FAHIM INCOME & EXPENSE';
+    }
+
+    function showSignup() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('signupForm').style.display = 'block';
+        document.getElementById('forgotForm').style.display = 'none';
+        document.getElementById('authTitle').innerText = 'Create Account';
+    }
+
+    function showForgotPassword() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('signupForm').style.display = 'none';
+        document.getElementById('forgotForm').style.display = 'block';
+        document.getElementById('authTitle').innerText = 'Reset Password';
+    }
+
+    function handleSignup() {
+        const name = document.getElementById('signupName').value.trim();
+        const email = document.getElementById('signupEmail').value.trim();
+        const pass = document.getElementById('signupPassword').value.trim();
+        if (!name || !email || !pass) { alert('Shob tottho thikmoto puron korun!'); return; }
+        if (localStorage.getItem('fahim_pass_' + email)) { alert('Ei email diye already account khola ache!'); showLogin(); return; }
+        localStorage.setItem('fahim_pass_' + email, pass);
+        localStorage.setItem('fahim_logged_user', email);
+        currentUser = email;
+        alert('Account safolvabe toiri hoise!');
+        checkAuthState();
+    }
+
+    function handleLogin() {
+        const email = "Fahim";
+        const pass = document.getElementById('loginPassword').value.trim();
+        if (!pass) { alert('Password din!'); return; }
+        
+        if (!localStorage.getItem('fahim_pass_' + email)) {
+            localStorage.setItem('fahim_pass_' + email, pass);
+        }
+
+        if (localStorage.getItem('fahim_pass_' + email) !== pass) {
+            alert('Password vul hoise!');
+            return;
+        }
+
+        localStorage.setItem('fahim_logged_user', email);
+        currentUser = email;
+        checkAuthState();
+    }
+
+    function handleLogout() {
+        localStorage.removeItem('fahim_logged_user');
+        currentUser = null;
+        document.getElementById('loginPassword').value = '';
+        checkAuthState();
+    }
+
+    function handleResetPassword() {
+        const email = "Fahim";
+        const savedPass = localStorage.getItem('fahim_pass_' + email);
+        if (!savedPass) { alert('Password set kora nei!'); return; }
+        alert('Apnar password holo: ' + savedPass);
+        showLogin();
+    }
+
+    function openChangePasswordModal() { document.getElementById('changePasswordModal').style.display = 'flex'; }
+    function closeChangePasswordModal() { document.getElementById('changePasswordModal').style.display = 'none'; }
+
+    function openSetLiabilitiesModal() {
+        let initData = JSON.parse(localStorage.getItem('fahim_liabilities_init_' + currentUser)) || {loan: 0, ucbl: 0, mdbl: 0};
+        document.getElementById('initLoanDue').value = initData.loan;
+        document.getElementById('initUcblDue').value = initData.ucbl;
+        document.getElementById('initMdblDue').value = initData.mdbl;
+        document.getElementById('setLiabilitiesModal').style.display = 'flex';
+    }
+
+    function closeSetLiabilitiesModal() { document.getElementById('setLiabilitiesModal').style.display = 'none'; }
+
+    function saveInitialLiabilities() {
+        const initData = {
+            loan: parseFloat(document.getElementById('initLoanDue').value) || 0,
+            ucbl: parseFloat(document.getElementById('initUcblDue').value) || 0,
+            mdbl: parseFloat(document.getElementById('initMdblDue').value) || 0
+        };
+        localStorage.setItem('fahim_liabilities_init_' + currentUser, JSON.stringify(initData));
+        closeSetLiabilitiesModal();
+        updateTable();
+        alert('Loan ebong credit card due songrokkhito hoise!');
+    }
+
+    function handlePasswordChange() {
+        const oldPass = document.getElementById('oldPassword').value.trim();
+        const newPass = document.getElementById('newPassword').value.trim();
+        if (oldPass !== localStorage.getItem('fahim_pass_' + currentUser)) { alert('Bortoman password sothik noy!'); return; }
+        localStorage.setItem('fahim_pass_' + currentUser, newPass);
+        alert('Password safolvabe change hoise!');
+        closeChangePasswordModal();
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return '—';
+        const parts = dateString.split('-');
+        return parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : dateString;
+    }
+
+    function loadUserTransactions() {
+        transactions = JSON.parse(localStorage.getItem('fahim_transactions_' + currentUser + '_' + selectedMonthKey)) || [];
+        updateTable();
+    }
+
+    function saveUserTransactions() {
+        localStorage.setItem('fahim_transactions_' + currentUser + '_' + selectedMonthKey, JSON.stringify(transactions));
+    }
+
+    function updateTable() {
+        const tableBody = document.getElementById('transactionTable');
+        const printTableBody = document.getElementById('printTableBody');
+        if(!tableBody) return;
+        tableBody.innerHTML = '';
+        if(printTableBody) printTableBody.innerHTML = '';
+        
+        let totalInc = 0, totalExp = 0;
+        const isCurrent = selectedMonthKey === getCurrentMonthKey();
+        let lastPrintedDate = "";
+
+        transactions.forEach((item, index) => {
+            const incAmt = parseFloat(item.income) || 0;
+            const expAmt = parseFloat(item.amount) || 0;
+            totalInc += incAmt;
+            totalExp += expAmt;
+
+            const formattedDate = formatDate(item.date);
+
+            tableBody.innerHTML += `<tr>
+                <td>${formattedDate}</td>
+                <td><b>${item.incomeCategory || '—'}</b></td>
+                <td style="color: var(--accent-green); font-weight: 700;">${incAmt > 0 ? incAmt : '—'}</td>
+                <td><b>${item.expenseCategory || '—'}</b></td>
+                <td style="color: var(--accent-red); font-weight: 700;">${expAmt > 0 ? expAmt.toFixed(2) : '—'}</td>
+                <td>
+                    ${isCurrent ? `<button class="edit-btn" onclick="editTransaction(${index})">Edit</button>
+                    <button class="delete-btn" onclick="deleteTransaction(${index})">Delete</button>` : '🔒 Read Only'}
+                </td>
+            </tr>`;
+
+            if (printTableBody) {
+                let expClass = "";
+                let expText = item.expenseCategory || "";
+                if (expText.includes("Miter") || expText.includes("Off Day")) expClass = "txt-red";
+                else if (expText.includes("Milk") || expText.includes("MILK")) expClass = "txt-blue";
+
+                let displayDate = (formattedDate !== lastPrintedDate) ? formattedDate : "";
+                if(displayDate) lastPrintedDate = formattedDate;
+
+                let dateColorClass = (item.incomeCategory === "Off Day" || expText === "Off Day") ? "txt-red" : "";
+
+                printTableBody.innerHTML += `<tr>
+                    <td class="col-date ${dateColorClass}">${displayDate}</td>
+                    <td class="col-desc ${dateColorClass}">${item.incomeCategory || ''}</td>
+                    <td class="col-income">${incAmt > 0 ? incAmt : ''}</td>
+                    <td class="col-exp-desc ${expClass}">${expText}</td>
+                    <td class="col-exp-amount ${expClass}">${expAmt > 0 ? expAmt.toFixed(2) : ''}</td>
+                </tr>`;
+            }
+        });
+
+        let manualPrevInc = parseFloat(localStorage.getItem('fahim_manual_prev_inc_' + currentUser)) || 0;
+        let manualPrevExp = parseFloat(localStorage.getItem('fahim_manual_prev_exp_' + currentUser)) || 0;
+        let autoArchivePrevInc = 0, autoArchivePrevExp = 0;
+        let archives = JSON.parse(localStorage.getItem('fahim_archives_' + currentUser)) || {};
+        
+        Object.keys(archives).forEach(mKey => {
+            if (mKey !== selectedMonthKey && mKey < selectedMonthKey) {
+                let mTrans = JSON.parse(localStorage.getItem('fahim_transactions_' + currentUser + '_' + mKey)) || [];
+                mTrans.forEach(t => {
+                    autoArchivePrevInc += parseFloat(t.income) || 0;
+                    autoArchivePrevExp += parseFloat(t.amount) || 0;
+                });
+            }
+        });
+
+        let prevTotalInc = manualPrevInc !== 0 ? manualPrevInc : autoArchivePrevInc;
+        let prevTotalExp = manualPrevExp !== 0 ? manualPrevExp : autoArchivePrevExp;
+        const net = (totalInc + prevTotalInc) - totalExp;
+
+        document.getElementById('totalIncome').innerText = totalInc.toFixed(2);
+        document.getElementById('prevTotalIncome').innerText = prevTotalInc.toFixed(2);
+        document.getElementById('prevTotalExpense').innerText = prevTotalExp.toFixed(2);
+        document.getElementById('totalExpense').innerText = totalExp.toFixed(2);
+        document.getElementById('netBalance').innerText = net.toFixed(2);
+
+        if (document.getElementById('printTotalIncomeVal')) {
+            document.getElementById('printTotalIncomeVal').innerText = (totalInc + prevTotalInc).toFixed(2);
+            document.getElementById('printTotalExpenseVal').innerText = totalExp.toFixed(2);
+            document.getElementById('printNetBalanceVal').innerText = net.toFixed(2);
+        }
+
+        saveUserTransactions();
+    }
+
+    function addTransaction() {
+        const incCat = document.getElementById('incomeCategory').value;
+        const inc = document.getElementById('income').value;
+        const expCat = document.getElementById('expenseCategory').value;
+        const expAmt = document.getElementById('amount').value;
+        if(!incCat && !expCat && inc == 0 && expAmt == 0) { alert('Kono income ba expense tottho din!'); return; }
+
+        const newItem = {
+            date: document.getElementById('date').value,
+            incomeCategory: incCat || '',
+            income: inc || 0,
+            expenseCategory: expCat || '',
+            amount: expAmt || 0
+        };
+
+        if (editingIndex !== null) {
+            transactions[editingIndex] = newItem;
+            editingIndex = null;
+            document.getElementById('actionBtn').innerText = 'Add';
+        } else { transactions.push(newItem); }
+
+        updateTable();
+        document.getElementById('incomeCategory').value = '';
+        document.getElementById('income').value = '0';
+        document.getElementById('expenseCategory').value = '';
+        document.getElementById('amount').value = '0';
+        document.getElementById('date').valueAsDate = new Date();
+    }
+
+    function editTransaction(index) {
+        const item = transactions[index];
+        document.getElementById('date').value = item.date;
+        document.getElementById('incomeCategory').value = item.incomeCategory || '';
+        document.getElementById('income').value = item.income;
+        document.getElementById('expenseCategory').value = item.expenseCategory || '';
+        document.getElementById('amount').value = item.amount;
+        editingIndex = index;
+        document.getElementById('actionBtn').innerText = 'Update';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteTransaction(index) {
+        transactions.splice(index, 1);
+        updateTable();
+    }
+
+    function exportData() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(transactions));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "Fahim_Sheet_Backup_" + currentUser + "_" + selectedMonthKey + ".json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    }
+
+    function openGoogleDrive() { exportData(); window.open('https://drive.google.com/drive/u/0/my-drive', '_blank'); }
+
+    function importData(event) {
+        const fileReader = new FileReader();
+        if (event.target.files[0]) {
+            fileReader.readAsText(event.target.files[0], "UTF-8");
+            fileReader.onload = function(e) {
+                try {
+                    transactions = JSON.parse(e.target.result);
+                    updateTable();
+                    alert('Data safolvabe restore hoise!');
+                } catch (error) { alert('File porte shomossha hoise!'); }
+            };
+        }
+    }
+
+    function downloadPDF() {
+        html2pdf().from(document.getElementById('appSection')).set({
+            margin: 2,
+            filename: `Fahim_Monthly_Sheet_${selectedMonthKey}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).save();
+    }
+
+    checkAuthState();
+</script>
+
+</body>
+</html>
