@@ -23,22 +23,23 @@ input,textarea,select{width:100%;padding:10px;border:1px solid #bac6d4;border-ra
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}button{border:0;border-radius:8px;padding:11px 16px;background:var(--blue);color:white;font:inherit;font-weight:700;cursor:pointer}
 button.secondary{background:#475569}button.green{background:#18734b}button.danger{background:#b42318}.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .metric{background:#eef5fb;border-radius:8px;padding:12px}.metric small{display:block;color:#475569}.metric strong{font-size:20px}
-.note{font-size:13px;color:#475569;line-height:1.6}
+.note{font-size:13.5px;line-height:1.6;color:#174a78;font-weight:bold;margin:0 0 20px;text-align:left;}
 
 /* রসিদ স্টাইল (ওয়েব ডিসপ্লে) */
-.receipt{background:white;border:2px solid #1e3a8a;border-radius:12px;padding:28px;margin:18px 0;display:none}
-.receipt h2{text-align:center;color:#1e3a8a;font-size:26px;margin:0 0 2px;font-weight:800}
-.receipt .market-address{text-align:center;font-weight:600;color:#475569;margin-bottom:12px;font-size:15px}
-.receipt .land{font-size:15px;line-height:1.6;background:#f8fafc;padding:10px 14px;border-radius:6px;border-left:4px solid #0284c7;margin-bottom:12px;color:#334155}
-.receipt .kind{text-align:center;font-weight:bold;margin:10px 0 14px;color:#047857;font-size:17px;background:#ecfdf5;padding:8px;border-radius:6px;border:1px dashed #34d399}
+.receipt{background:white;border:2px solid #1e3a8a;border-radius:12px;padding:20px;margin:18px 0;display:none;position:relative;}
+.receipt h2{text-align:center;color:#1e3a8a;font-size:24px;margin:0 0 2px;font-weight:800}
+.receipt .market-address{text-align:center;font-weight:600;color:#475569;margin-bottom:8px;font-size:14px}
+.receipt .land{font-size:13.5px;line-height:1.5;background:#f8fafc;padding:8px 12px;border-radius:6px;border-left:4px solid #0284c7;margin-bottom:8px;color:#334155}
+.receipt .kind{text-align:center;font-weight:bold;margin:6px 0 8px;color:#047857;font-size:15px;background:#ecfdf5;padding:6px;border-radius:6px;border:1px dashed #34d399}
 
-.receipt table{width:100%;border-collapse:collapse;margin:10px 0}
-.receipt td,.receipt th{border:1.5px solid #1e3a8a !important;padding:10px 14px;text-align:left;font-size:15.5px}
+.receipt table{width:100%;border-collapse:collapse;margin:6px 0}
+.receipt td,.receipt th{border:1.5px solid #1e3a8a !important;padding:8px 12px;text-align:left;font-size:14px}
 .receipt th{background:#e0f2fe !important;color:#0369a1 !important;font-weight:700}
 
-.receipt .signatures{display:flex;justify-space-between;gap:40px;margin-top:75px}
-.receipt .signatures div{border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:10px;font-weight:700;color:#1e293b;font-size:15px}
-.print-timestamp{text-align:right;font-size:13px;color:#475569;margin-bottom:8px;font-weight:600}
+.receipt .signatures{display:flex;justify-content:space-between;gap:40px;margin-top:55px;margin-bottom:12px;}
+.receipt .signatures div{border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;color:#1e293b;font-size:14px}
+.receipt .terms-note{text-align:center;font-size:12px;color:#334155;font-weight:600;border-top:1px dashed #cbd5e1;padding-top:8px;padding-bottom:2px;}
+.print-timestamp{text-align:right;font-size:12px;color:#475569;margin-bottom:4px;font-weight:600}
 
 .status{font-weight:bold;margin-top:8px}
 table.data-table{width:100%;border-collapse:collapse;margin-top:10px}
@@ -47,9 +48,9 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 
 @media(max-width:700px){.grid,.summary{grid-template-columns:1fr}.wrap{padding:10px}.receipt{padding:14px}}
 
-/* সিঙ্গেল পেজ প্রিন্ট ফিক্স ও বড় ফন্ট */
+/* সম্পূর্ণ A4 পেজ নিখুঁত ফিটিং (ফাঁকা সাদা পেজ সমস্যা সমাধান) */
 @media print {
-  @page { size: A4 portrait; margin: 8mm; }
+  @page { size: A4 portrait; margin: 6mm; }
   html, body { 
     background: #fff !important; 
     margin: 0 !important; 
@@ -61,26 +62,72 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   }
   body * { visibility: hidden !important; }
   #printArea, #printArea * { visibility: visible !important; }
-  #printArea { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; }
+  #printArea { 
+    position: absolute !important; 
+    left: 0 !important; 
+    top: 0 !important; 
+    width: 100% !important; 
+    display: block !important;
+  }
+
+  .print-page-wrap {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 285mm !important;
+    max-height: 285mm !important;
+    overflow: hidden !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+  .print-page-wrap:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
 
   .receipt { 
     border: 2px solid #1e3a8a !important; 
-    padding: 16px !important; 
-    display: block !important; 
+    padding: 12px 18px !important; 
     box-shadow: none !important;
-    page-break-inside: avoid !important;
-    page-break-after: avoid !important;
-    break-inside: avoid !important;
-    break-after: avoid !important;
-    max-height: 98vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
   }
 
-  #printArea table { width: 100% !important; border-collapse: collapse !important; border: 1.5px solid #1e3a8a !important; margin: 5px 0 !important; }
-  #printArea th { background-color: #e0f2fe !important; color: #0369a1 !important; border: 1.5px solid #1e3a8a !important; padding: 7px 10px !important; font-weight: bold !important; font-size: 14.5px !important; }
-  #printArea td { border: 1.5px solid #1e3a8a !important; padding: 7px 10px !important; background-color: #ffffff !important; font-size: 14.5px !important; }
-  #printArea .land { background-color: #f8fafc !important; border-left: 4px solid #0284c7 !important; padding: 8px 10px !important; margin-bottom: 6px !important; font-size: 14.5px !important; }
-  #printArea .kind { background-color: #ecfdf5 !important; border: 1px dashed #34d399 !important; padding: 6px !important; margin: 5px 0 !important; font-size: 16px !important; }
-  #printArea .signatures { margin-top: 65px !important; }
+  #printArea table { width: 100% !important; border-collapse: collapse !important; border: 1.5px solid #1e3a8a !important; margin: 4px 0 !important; }
+  #printArea th { background-color: #e0f2fe !important; color: #0369a1 !important; border: 1.5px solid #1e3a8a !important; padding: 7.5px 10px !important; font-weight: bold !important; font-size: 14px !important; }
+  #printArea td { border: 1.5px solid #1e3a8a !important; padding: 7.5px 10px !important; background-color: #ffffff !important; font-size: 14px !important; }
+  #printArea .land { background-color: #f8fafc !important; border-left: 4px solid #0284c7 !important; padding: 7px 10px !important; margin-bottom: 6px !important; font-size: 14px !important; line-height: 1.45 !important; }
+  #printArea .kind { background-color: #ecfdf5 !important; border: 1px dashed #34d399 !important; padding: 6px !important; margin: 4px 0 !important; font-size: 15px !important; }
+  
+  #printArea .signatures { 
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 40px !important;
+    margin-top: 35px !important; 
+    margin-bottom: 12px !important; 
+  }
+  #printArea .signatures div {
+    border-top: 1.5px solid #1e3a8a !important;
+    width: 42% !important;
+    text-align: center !important;
+    padding-top: 6px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+  }
+  #printArea .terms-note { 
+    font-size: 11.5px !important; 
+    border-top: 1px dashed #cbd5e1 !important; 
+    padding-top: 8px !important; 
+    text-align: center !important; 
+  }
 }
 
 /* ই-রিটার্ন স্টাইলের স্প্লিট লগইন গেটওয়ে */
@@ -93,7 +140,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   display: flex; flex-direction: column; justify-content: space-between; padding: 50px; color: #fff; position: relative;
 }
 .auth-left-banner h1{ font-size: 38px; font-weight: 800; margin: 0 0 10px; }
-.auth-left-banner p{ font-size: 16px; color: #e3f4ff; margin: 0; }
+.auth-left-banner p{ font-size: 19px; font-weight: 700; color: #e3f4ff; margin: 0; line-height: 1.5; }
 .auth-left-banner svg{ max-width: 100%; height: auto; opacity: 0.85; margin-top: 20px; }
 
 .auth-right-panel{
@@ -102,7 +149,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 #authCard{ width: 100%; max-width: 380px; }
 #authCard h2{ font-size: 28px; color: #163f66; margin: 0 0 5px; text-align: left; }
 #authCard .market-address{ color: #0d9488; font-size: 14px; font-weight: 700; margin-bottom: 24px; text-align: left; }
-#authCard .note{ font-size: 13.5px; line-height: 1.6; color: #64748b; margin: 0 0 20px; text-align: left; }
 #authCard label{ margin-top: 14px!important; color: #334155; font-size: 13.5px; display: block; font-weight: 600; }
 #authCard input{ background: #f8fbfe; border-color: #cbd5e1; padding: 12px 14px; border-radius: 8px; width: 100%; font-size: 15px; margin-top: 5px; }
 #authCard button{ width: 100%; margin-top: 16px; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 700; border: 0; cursor: pointer; color: #fff; background: #174a78; }
@@ -135,7 +181,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   <div class="auth-left-banner">
     <div>
       <h1>মীর মার্কেট এবং ল্যান্ড</h1>
-      <p>পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ তৈরি সিস্টেম।</p>
+      <p><b>পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ তৈরি সিস্টেম।</b></p>
     </div>
     <div>
       <svg viewBox="0 0 600 220" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -152,7 +198,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
     <div id="authCard">
       <h2>Welcome!</h2>
       <p class="market-address">Sign in to your account</p>
-      <p id="authIntro" class="note">আপনার ইউজারনেম ও পাসওয়ার্ড দিয়ে সাইন ইন করুন। নতুন অ্যাকাউন্ট খুলতে নিচের সাইন আপ অপশন ব্যবহার করুন।</p>
+      <p id="authIntro" class="note">মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ তৈরি সিস্টেম।</p>
       
       <div id="setupFields" style="display:none">
        <label>ইউজারনেম</label><input id="authUser" placeholder="ইউজারনেম লিখুন">
@@ -170,7 +216,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
        <button type="button" class="secondary" onclick="forgotOfflinePassword()">পাসওয়ার্ড ভুলে গেছেন? (Forgot password?)</button>
       </div>
 
-      <p style="text-align:left;margin:20px 0 0;color:#64748b;font-weight:600;font-size:12px">Powered by FAHIM</p>
+      <p style="text-align:left;margin:20px 0 0;color:#64748b;font-weight:600;font-size:12px">Powered by FAHIM<br><span id="dynamicCopyright">Copy Right © MIR MARKET & LAND OWNER 2026</span></p>
       <p id="authError" style="color:#b42318;font-weight:700"></p>
     </div>
   </div>
@@ -275,7 +321,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
       <div style="margin-top:15px;font-weight:bold;font-size:16px;text-align:right;color:#174a78;" id="totalIncomeDisplay">মোট আয়: ৳০.০০</div>
     </div>
     <div style="margin-top:15px;">
-      <button class="green" onclick="printReport('incomePrintArea', 'আয় হিসাব রিপোর্ট')">🖨️ আয় হিসাব প্রিন্ট / PDF (Auto Date)</button>
+      <button class="green" onclick="printReport('incomePrintArea', 'আয় হিসাব রিপোর্ট')">🖨️ আয় হিসাব রিপোর্ট প্রিন্ট / PDF (Auto Date)</button>
     </div>
   </div>
 </div>
@@ -309,7 +355,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
       <div style="margin-top:15px;font-weight:bold;font-size:16px;text-align:right;color:#b42318;" id="totalExpenseDisplay">মোট খরচ: ৳০.০০</div>
     </div>
     <div style="margin-top:15px;">
-      <button class="green" onclick="printReport('expensePrintArea', 'খরচ হিসাব রিপোর্ট')">🖨️ খরচ হিসাব প্রিন্ট / PDF (Auto Date)</button>
+      <button class="green" onclick="printReport('expensePrintArea', 'খরচ হিসাব রিপোর্ট')">🖨️ খরচ হিসাব রিপোর্ট প্রিন্ট / PDF (Auto Date)</button>
     </div>
   </div>
 </div>
@@ -434,49 +480,58 @@ el('status').textContent=due>0?'আদায়কৃত ভাড়া: '+mone
 function commitMonthlyAdjustment(){const key=monthLedgerKey();if(!key){alert('আগে ভাড়াটিয়া নির্বাচন করুন।');return false;}if(!monthlyLedger[key]){const c=calc();monthlyLedger[key]={rent:c.rent,opening:c.opening,original:c.original,adj:c.adj,closing:c.closing,net:c.net,receiptNo:val('receiptno'),createdAt:new Date().toISOString()};const i=Number(el('tenantSelect').value);if(tenants[i])tenants[i].balance=c.closing;localStorage.setItem('mirMarketMonthlyLedger',JSON.stringify(monthlyLedger));localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));autoSaveLocal();}return true;}
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
-function commonTable(c){return `<table style="width:100%;border-collapse:collapse;border:1.5px solid #1e3a8a;margin:10px 0;">
-<tr style="background-color:#e0f2fe;"><th style="border:1.5px solid #1e3a8a;padding:10px 14px;text-align:left;color:#0369a1;font-weight:bold;font-size:15.5px;">বিবরণ</th><th style="border:1.5px solid #1e3a8a;padding:10px 14px;text-align:left;color:#0369a1;font-weight:bold;font-size:15.5px;">তথ্য</th></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('rentmonth'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">রসিদ নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('receiptno'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">ভাড়াটিয়ার নাম</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('tenant'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">ঠিকানা</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('tenantaddress'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">মোবাইল</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('tenantmobile'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">জমির পরিমাণ</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">২০৭ শতংশ</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">দাগ / খতিয়ান</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('dag'))} / ${esc(val('khatian'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">জমাখারিজ খতিয়ান</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('mutation'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">মোট মাসিক ভাড়া</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.rent)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">মূল মোট জামানত</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.original)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">জামানত (মাসের শুরুতে)</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.opening)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">জামানত থেকে সমন্বয় (১৫%)</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.adj)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">সমন্বয়ের পর জামানত</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.closing)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;"><b>সমন্বয়ের পর প্রদেয় ভাড়া</b></td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;"><b>${money(c.net)}</b></td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">নগদে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.cash)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">ব্যাংকে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.bank)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">মোট গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(c.paid)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">আদায়কৃত ভাড়া</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${money(Math.abs(c.due))}${c.due<0?' (অতিরিক্ত গ্রহণ)':''}</td></tr></table>`;}
+function commonTable(c){return `<table style="width:100%;border-collapse:collapse;border:1.5px solid #1e3a8a;margin:6px 0;">
+<tr style="background-color:#e0f2fe;"><th style="border:1.5px solid #1e3a8a;padding:8px 12px;text-align:left;color:#0369a1;font-weight:bold;font-size:14px;">বিবরণ</th><th style="border:1.5px solid #1e3a8a;padding:8px 12px;text-align:left;color:#0369a1;font-weight:bold;font-size:14px;">তথ্য</th></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('rentmonth'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">রসিদ নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('receiptno'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ভাড়াটিয়ার নাম</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('tenant'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ঠিকানা</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('tenantaddress'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">মোবাইল</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('tenantmobile'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">জমির পরিমাণ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">২০৭ শতংশ</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">দাগ / খতিয়ান</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('dag'))} / ${esc(val('khatian'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">জমাখারিজ খতিয়ান</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('mutation'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">মোট মাসিক ভাড়া</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.rent)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">মূল মোট জামানত</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.original)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">জামানত (মাসের শুরুতে)</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.opening)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">জামানত থেকে সমন্বয় (১৫%)</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.adj)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">সমন্বয়ের পর জামানত</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.closing)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;"><b>সমন্বয়ের পর প্রদেয় ভাড়া</b></td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;"><b>${money(c.net)}</b></td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">নগদে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.cash)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ব্যাংকে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.bank)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">মোট গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.paid)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">আদায়কৃত ভাড়া</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(Math.abs(c.due))}${c.due<0?' (অতিরিক্ত গ্রহণ)':''}</td></tr></table>`;}
 
-function ownerInfo(){return `<div class="land" style="font-size:15px;line-height:1.6;background:#f8fafc;padding:10px 14px;border-radius:6px;border-left:4px solid #0284c7;margin-bottom:12px;color:#334155;"><b>মালিক ১:</b> ${esc(val('owner1'))} — মোবাইল: ${esc(val('owner1mobile'))} — ঠিকানা: ${esc(val('owner1address'))}<br><b>মালিক ২:</b> ${esc(val('owner2'))} — মোবাইল: ${esc(val('owner2mobile'))} — ঠিকানা: ${esc(val('owner2address'))}</div>`;}
+function ownerInfo(){
+  return `<div class="land" style="font-size:13.5px;line-height:1.5;background:#f8fafc;padding:8px 12px;border-radius:6px;border-left:4px solid #0284c7;margin-bottom:8px;color:#334155;">
+    <b>মালিক ১:</b> ${esc(val('owner1'))}<br><b>মোবাইল:</b> ${esc(val('owner1mobile'))} — ঠিকানা: ${esc(val('owner1address'))}<br>
+    <b>মালিক ২:</b> ${esc(val('owner2'))}<br><b>মোবাইল:</b> ${esc(val('owner2mobile'))} — ঠিকানা: ${esc(val('owner2address'))}
+  </div>`;
+}
+
+const termsNoteHtml = `<div class="terms-note">সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ সিস্টেম থেকে তৈরি, যাহার সকল শর্ত মীর মার্কেট এবং ল্যান্ড মালিক।</div>`;
 
 function buildReceipts(){
   const c=calc();
   const today = new Date();
   const autoDateStr = today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-  const timestampHtml = `<div class="print-timestamp" style="text-align:right;font-size:13px;color:#475569;margin-bottom:8px;font-weight:600;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>`;
-  const head = timestampHtml + `<h2 style="text-align:center;color:#1e3a8a;font-size:26px;margin:0 0 2px;font-weight:800;">মীর মার্কেট এবং ল্যান্ড</h2><div class="market-address" style="text-align:center;font-weight:600;color:#475569;margin-bottom:12px;font-size:15px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>${ownerInfo()}`;
+  const timestampHtml = `<div class="print-timestamp" style="text-align:right;font-size:12px;color:#475569;margin-bottom:4px;font-weight:600;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>`;
+  const head = timestampHtml + `<h2 style="text-align:center;color:#1e3a8a;font-size:24px;margin:0 0 2px;font-weight:800;">মীর মার্কেট এবং ল্যান্ড</h2><div class="market-address" style="text-align:center;font-weight:600;color:#475569;margin-bottom:8px;font-size:14px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>${ownerInfo()}`;
 
-  el('ownerReceipt').innerHTML=head+`<div class="kind" style="text-align:center;font-weight:bold;margin:10px 0 14px;color:#047857;font-size:17px;background:#ecfdf5;padding:8px;border-radius:6px;border:1px dashed #34d399;">মালিকের কপি — মাসিক ভাড়া আদায়ের হিসাব</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-space-between;gap:40px;margin-top:75px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:10px;font-weight:700;font-size:15px;">ভাড়া গ্রহণকারীর স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:10px;font-weight:700;font-size:15px;">হিসাব প্রস্তুতকারীর স্বাক্ষর</div></div>`;
-  el('tenantReceipt').innerHTML=head+`<div class="kind" style="text-align:center;font-weight:bold;margin:10px 0 14px;color:#047857;font-size:17px;background:#ecfdf5;padding:8px;border-radius:6px;border:1px dashed #34d399;">ভাড়াটিয়ার কপি — মাসিক ভাড়া রসিদ</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-space-between;gap:40px;margin-top:75px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:10px;font-weight:700;font-size:15px;">ভাড়াটিয়ার স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:10px;font-weight:700;font-size:15px;">মালিক/প্রতিনিধির স্বাক্ষর</div></div>`;
-  el('bankReceipt').innerHTML=head+`<div class="kind" style="text-align:center;font-weight:bold;margin:10px 0 14px;color:#047857;font-size:17px;background:#ecfdf5;padding:8px;border-radius:6px;border:1px dashed #34d399;">ব্যাংক জমার রসিদ</div>
-  <table style="width:100%;border-collapse:collapse;border:1.5px solid #1e3a8a;margin:10px 0;">
-  <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('rentmonth'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">রসিদ নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;"><b>${esc(val('receiptno'))}</b></td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">ভাড়াটিয়ার নাম</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('tenant'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">ব্যাংকের নাম</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('bankname'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">শাখা</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('branch'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">জমার তারিখ</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('bankdate'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">ডিপোজিট/ট্রানজেকশন নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;">${esc(val('bankref'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;"><b>ব্যাংকে জমার পরিমাণ</b></td><td style="border:1.5px solid #1e3a8a;padding:10px 14px;font-size:15px;"><b>${money(c.bank)}</b></td></tr></table>
-  <p style="font-size:15px;margin:12px 0;">জমির বিবরণ: ২০৭ শতংশ; দাগ: ${esc(val('dag'))}; খতিয়ান: ${esc(val('khatian'))}; জমাখারিজ খতিয়ান: ${esc(val('mutation'))}</p><div class="signatures" style="display:flex;justify-space-between;gap:40px;margin-top:75px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:10px;font-weight:700;font-size:15px;">জমাদানকারীর স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:10px;font-weight:700;font-size:15px;">ব্যাংক Authorities সিল ও স্বাক্ষর</div></div>`;
+  el('ownerReceipt').innerHTML=head+`<div class="kind" style="text-align:center;font-weight:bold;margin:6px 0 8px;color:#047857;font-size:15px;background:#ecfdf5;padding:6px;border-radius:6px;border:1px dashed #34d399;">মালিকের কপি — মাসিক ভাড়া আদায়ের হিসাব</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:55px;margin-bottom:12px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">ভাড়া গ্রহণকারীর স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">হিসাব প্রস্তুতকারীর স্বাক্ষর</div></div>`+termsNoteHtml;
+
+  el('tenantReceipt').innerHTML=head+`<div class="kind" style="text-align:center;font-weight:bold;margin:6px 0 8px;color:#047857;font-size:15px;background:#ecfdf5;padding:6px;border-radius:6px;border:1px dashed #34d399;">ভাড়াটিয়ার কপি — মাসিক ভাড়া রসিদ</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:55px;margin-bottom:12px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">ভাড়াটিয়ার স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">মালিক/প্রতিনিধির স্বাক্ষর</div></div>`+termsNoteHtml;
+
+  el('bankReceipt').innerHTML=head+`<div class="kind" style="text-align:center;font-weight:bold;margin:6px 0 8px;color:#047857;font-size:15px;background:#ecfdf5;padding:6px;border-radius:6px;border:1px dashed #34d399;">ব্যাংক জমার রসিদ</div>
+  <table style="width:100%;border-collapse:collapse;border:1.5px solid #1e3a8a;margin:6px 0;">
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('rentmonth'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">রসিদ নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;"><b>${esc(val('receiptno'))}</b></td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ভাড়াটিয়ার নাম</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('tenant'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ব্যাংকের নাম</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('bankname'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">শাখা</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('branch'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">জমার তারিখ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('bankdate'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ডিপোজিট/ট্রানজেকশন নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('bankref'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;"><b>ব্যাংকে জমার পরিমাণ</b></td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;"><b>${money(c.bank)}</b></td></tr></table>
+  <p style="font-size:14px;margin:6px 0;">জমির বিবরণ: ২০৭ শতংশ; দাগ: ${esc(val('dag'))}; খতিয়ান: ${esc(val('khatian'))}; জমাখারিজ খতিয়ান: ${esc(val('mutation'))}</p><div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:55px;margin-bottom:12px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">জমাদানকারীর স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">ব্যাংক Authorities সিল ও স্বাক্ষর</div></div>`+termsNoteHtml;
 }
 
 function autoSaveLocal(){
@@ -494,7 +549,7 @@ function printCopy(type){
   const map={owner:'ownerReceipt',tenant:'tenantReceipt',bank:'bankReceipt'};
   const printDiv = document.getElementById('printArea');
   printDiv.style.display = 'block';
-  printDiv.innerHTML = document.getElementById(map[type]).innerHTML;
+  printDiv.innerHTML = `<div class="print-page-wrap">${document.getElementById(map[type]).innerHTML}</div>`;
   window.print();
   printDiv.style.display = 'none';
 }
@@ -505,9 +560,9 @@ function printAllReceipts(){
   const printDiv = document.getElementById('printArea');
   printDiv.style.display = 'block';
   printDiv.innerHTML = `
-    <div style="page-break-after:always; break-after:page; height:100vh; display:flex; flex-direction:column; justify-content:center;">${document.getElementById('ownerReceipt').innerHTML}</div>
-    <div style="page-break-after:always; break-after:page; height:100vh; display:flex; flex-direction:column; justify-content:center;">${document.getElementById('tenantReceipt').innerHTML}</div>
-    <div style="height:100vh; display:flex; flex-direction:column; justify-content:center;">${document.getElementById('bankReceipt').innerHTML}</div>
+    <div class="print-page-wrap">${document.getElementById('ownerReceipt').innerHTML}</div>
+    <div class="print-page-wrap">${document.getElementById('tenantReceipt').innerHTML}</div>
+    <div class="print-page-wrap">${document.getElementById('bankReceipt').innerHTML}</div>
   `;
   window.print();
   printDiv.style.display = 'none';
@@ -539,7 +594,19 @@ function refreshTenantList(){const sel=el('tenantSelect'),current=sel.value;sel.
 function selectTenant(index){if(index===''){['tenant','tenantmobile','tenantaddress','originaldeposit','opening'].forEach(id=>el(id).value='');updateAll();return;}const t=tenants[Number(index)];if(!t)return;el('tenant').value=t.name;el('tenantmobile').value=t.mobile;el('tenantaddress').value=t.address;el('originaldeposit').value=t.deposit;el('opening').value=(t.balance!==undefined?t.balance:t.deposit);updateAll();}
 function addTenant(){const name=el('newTenantName').value.trim(),mobile=el('newTenantMobile').value.trim(),address=el('newTenantAddress').value.trim(),deposit=Math.max(0,Number(el('newTenantDeposit').value)||0);if(!name){alert('নাম লিখুন।');return;}tenants.push({name,mobile,address,deposit,balance:deposit});localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));refreshTenantList();el('tenantSelect').value=String(tenants.length-1);selectTenant(String(tenants.length-1));['newTenantName','newTenantMobile','newTenantAddress','newTenantDeposit'].forEach(id=>el(id).value='');alert('সংরক্ষিত হয়েছে।');}
 function deleteTenant(){const index=el('tenantSelect').value;if(index===''){alert('ভাড়াটিয়া নির্বাচন করুন।');return;}if(!confirm('বাতিল করতে চান?'))return;tenants.splice(Number(index),1);localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));refreshTenantList();updateAll();}
-function initDefaults(){const now=new Date();if(!val('rentmonth'))el('rentmonth').value=new Intl.DateTimeFormat('bn-BD',{month:'long',year:'numeric'}).format(now);if(!val('receiptno'))el('receiptno').value='MIR-'+Math.floor(1000+Math.random()*9000);document.getElementById('incDate').value=new Date().toISOString().slice(0,10);document.getElementById('expDate').value=new Date().toISOString().slice(0,10);}
+function initDefaults(){
+  const now=new Date();
+  if(!val('rentmonth'))el('rentmonth').value=new Intl.DateTimeFormat('bn-BD',{month:'long',year:'numeric'}).format(now);
+  if(!val('receiptno'))el('receiptno').value='MIR-'+Math.floor(1000+Math.random()*9000);
+  document.getElementById('incDate').value=new Date().toISOString().slice(0,10);
+  document.getElementById('expDate').value=new Date().toISOString().slice(0,10);
+  
+  const currentYear = now.getFullYear();
+  const copyEl = document.getElementById('dynamicCopyright');
+  if(copyEl){
+    copyEl.textContent = `Copy Right © MIR MARKET & LAND OWNER ${currentYear}`;
+  }
+}
 refreshTenantList();initDefaults();renderIncomeExpense();ids.forEach(id=>el(id).addEventListener('input',updateAll));updateAll();
 
 /* লগইন ও অথেন্টিকেশন লজিক */
@@ -571,7 +638,7 @@ async function loginOffline(){
  unlockOffline();
 }
 function showSignup(){ el('loginFields').style.display='none'; el('setupFields').style.display='block'; el('authIntro').textContent='নতুন ব্যবহারকারীর জন্য ইউজারনেম ও পাসওয়ার্ড তৈরি করুন।'; el('authError').textContent=''; }
-function cancelSignup(){ el('setupFields').style.display='none'; el('loginFields').style.display='block'; el('authIntro').textContent='আপনার ইউজারনেম ও পাসওয়ার্ড দিয়ে সাইন ইন করুন।'; }
+function cancelSignup(){ el('setupFields').style.display='none'; el('loginFields').style.display='block'; el('authIntro').textContent='মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ তৈরি সিস্টেম।'; }
 async function forgotOfflinePassword(){
  const users=getLocalUsers();
  const u=prompt('আপনার ইউজারনেম লিখুন:');
