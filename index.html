@@ -245,7 +245,11 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
        <button type="button" class="secondary" onclick="forgotOfflinePassword()">পাসওয়ার্ড ভুলে গেছেন? (Forgot password?)</button>
       </div>
 
-      <p style="text-align:left;margin:20px 0 0;color:#64748b;font-weight:600;font-size:12px">Powered by FAHIM<br><span id="dynamicCopyright">Copy Right © MIR MARKET & LAND OWNER 2026</span></p>
+      <p style="text-align:left;margin:20px 0 0;color:#64748b;font-weight:600;font-size:12px">
+        Powered by FAHIM<br>
+        <span id="dynamicCopyright">Copy Right © MIR MARKET & LAND OWNER 2026</span><br>
+        <span id="dynamicLiveDate" style="color:#0f766e;font-weight:700;"></span>
+      </p>
       <p id="authError" style="color:#b42318;font-weight:700"></p>
     </div>
   </div>
@@ -942,6 +946,12 @@ function initDefaults(){
   const copyEl = document.getElementById('dynamicCopyright');
   if(copyEl){
     copyEl.textContent = `Copy Right © MIR MARKET & LAND OWNER ${currentYear}`;
+  }
+
+  const liveDateEl = document.getElementById('dynamicLiveDate');
+  if(liveDateEl){
+    const formattedLiveDate = now.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' });
+    liveDateEl.textContent = `হালনাগাদ তারিখ: ${formattedLiveDate}`;
   }
 }
 refreshTenantList();initDefaults();renderIncomeExpense();ids.forEach(id=>el(id).addEventListener('input',updateAll));updateAll();
