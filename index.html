@@ -274,37 +274,40 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   <button type="button" class="active" onclick="switchTab('rentTab', this)">🏠 মাসিক ভাড়া ও রসিদ</button>
   <button type="button" onclick="switchTab('incomeTab', this)">📈 ১. আয় হিসাব (Income)</button>
   <button type="button" onclick="switchTab('expenseTab', this)">📉 ২. কোন খাতে খরচ (Expense)</button>
+  <button type="button" onclick="switchTab('monthlySummaryTab', this)">📊 ৩. মাসিক আয়-ব্যয় সংরক্ষণ</button>
+  <button type="button" onclick="switchTab('archiveTab', this)">📁 পূর্বের রসিদ সংরক্ষণ (Archive)</button>
 </div>
 
 <!--- TAB 1 --->
 <div id="rentTab" class="tab-content active">
   <div class="panel"><h2 class="section-title">মালিকের তথ্য</h2><div class="grid">
-  <div><label>মালিক ১</label><input id="owner1" value="মীর সহিদ উদ্দিন" readonly></div><div><label>মালিক ১-এর মোবাইল</label><input id="owner1mobile" value="01791420105" readonly></div>
-  <div class="full"><label>মালিক ১-এর ঠিকানা</label><input id="owner1address" value="মীর বাড়ী, বাঞ্ছানগর, ওয়ার্ড নং ০৪, ভোলা-বরিসাল রোড, লক্ষ্মীপুর" readonly></div>
-  <div><label>মালিক ২</label><input id="owner2" value="মীর মনির উদ্দিন" readonly></div><div><label>মালিক ২-এর মোবাইল</label><input id="owner2mobile" value="01717520882" readonly></div>
-  <div class="full"><label>মালিক ২-এর ঠিকানা</label><input id="owner2address" value="মীর বাড়ী, বাঞ্ছানগর, ওয়ার্ড নং ০৪, ভোলা-বরিসাল রোড, লক্ষ্মীপুর" readonly></div></div></div>
+  <div><label>মালিক ১</label><input id="owner1" value="মীর সহিদ উদ্দিন" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>মালিক ১-এর মোবাইল</label><input id="owner1mobile" value="01791420105" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div class="full"><label>মালিক ১-এর ঠিকানা</label><input id="owner1address" value="মীর বাড়ী, বাঞ্ছানগর, ওয়ার্ড নং ০৪, ভোলা-বরিসাল রোড, লক্ষ্মীপুর" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div><label>মালিক ২</label><input id="owner2" value="মীর মনির উদ্দিন" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>মালিক ২-এর মোবাইল</label><input id="owner2mobile" value="01717520882" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div class="full"><label>মালিক ২-এর ঠিকানা</label><input id="owner2address" value="মীর বাড়ী, বাঞ্ছানগর, ওয়ার্ড নং ০৪, ভোলা-বরিসাল রোড, লক্ষ্মীপুর" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div></div></div>
 
   <div class="panel"><h2 class="section-title">ভাড়াটিয়া ব্যবস্থাপনা ও তথ্য</h2><div class="grid">
   <div class="full"><label>আগে যোগ করা ভাড়াটিয়া নির্বাচন করুন</label><select id="tenantSelect" onchange="selectTenant(this.value)"><option value="">— ভাড়াটিয়া নির্বাচন —</option></select><button type="button" class="danger" style="margin-top:8px" onclick="deleteTenant()">নির্বাচিত ভাড়াটিয়ার তথ্য বাতিল করুন</button></div>
-  <div><label>ভাড়াটিয়ার নাম</label><input id="tenant" placeholder="নাম লিখুন" readonly></div><div><label>মোবাইল নম্বর</label><input id="tenantmobile" placeholder="মোবাইল নম্বর" readonly></div>
-  <div class="full"><label>ভাড়াটিয়ার ঠিকানা</label><textarea id="tenantaddress" placeholder="ঠিকানা" readonly></textarea></div>
-  <div><label>এই ভাড়াটিয়ার নির্ধারিত অগ্রিম জামানত (টাকা)</label><input id="originaldeposit" type="number" min="0" step="0.01" value="0" readonly></div>
-  <div><label>ভাড়ার মাস</label><input id="rentmonth" placeholder="যেমন: নভেম্বর ২০২৬"></div><div><label>রসিদ নম্বর (স্বয়ংক্রিয়)</label><input id="receiptno" readonly></div>
+  <div><label>ভাড়াটিয়ার নাম</label><input id="tenant" placeholder="নাম লিখুন" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>মোবাইল নম্বর</label><input id="tenantmobile" placeholder="মোবাইল নম্বর" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div class="full"><label>ভাড়াটিয়ার ঠিকানা</label><textarea id="tenantaddress" placeholder="ঠিকানা" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></textarea></div>
+  <div><label>এই ভাড়াটিয়ার নির্ধারিত অগ্রিম জামানত (টাকা)</label><input id="originaldeposit" type="number" min="0" step="0.01" value="0" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div><label>ভাড়ার মাস (স্বয়ংক্রিয় পরিবর্তন)</label><input id="rentmonth" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>রসিদ নম্বর (স্বয়ংক্রিয়)</label><input id="receiptno" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
   </div><div class="panel" style="background:#f8fafc;margin-top:14px"><h3 class="section-title">নতুন ভাড়াটিয়া যোগ করুন</h3><div class="grid">
   <div><label>নতুন ভাড়াটিয়ার নাম</label><input id="newTenantName" placeholder="পূর্ণ নাম"></div><div><label>মোবাইল নম্বর</label><input id="newTenantMobile" placeholder="মোবাইল নম্বর"></div>
   <div class="full"><label>ঠিকানা</label><textarea id="newTenantAddress" placeholder="ভাড়াটিয়ার ঠিকানা"></textarea></div>
   <div><label>নির্ধারিত অগ্রিম জামানত (টাকা)</label><input id="newTenantDeposit" type="number" min="0" step="0.01" placeholder="অগ্রিম জামানত"></div>
+  <div><label>মাসিক ভাড়া (টাকা)</label><input id="newTenantRent" type="number" min="0" step="0.01" placeholder="মাসিক ভাড়া"></div>
   <div class="full"><button type="button" onclick="addTenant()">+ নতুন ভাড়াটিয়া সংরক্ষণ করুন</button></div></div></div></div>
 
   <div class="panel"><h2 class="section-title">জমির স্থায়ী তথ্য</h2><div class="grid">
-  <div><label>জমির পরিমাণ</label><input id="landarea" value="২০৭ শতংশ" readonly></div><div><label>দাগ নম্বর</label><input id="dag" value="৮২২১" readonly></div>
-  <div><label>খতিয়ান নম্বর</label><input id="khatian" value="আর এস ৬১৪০, ৪২০০" readonly></div><div><label>জমাখারিজ খতিয়ান নম্বর</label><input id="mutation" value="২৫-১৩৩৮৩" readonly></div></div></div>
+  <div><label>জমির পরিমাণ</label><input id="landarea" value="২০৭ শতংশ" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>দাগ নম্বর</label><input id="dag" value="৮২২১" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div><label>খতিয়ান নম্বর</label><input id="khatian" value="আর এস ৬১৪০, ৪২০০" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>জমাখারিজ খতিয়ান নম্বর</label><input id="mutation" value="২৫-১৩৩৮৩" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div></div></div>
 
   <div class="panel"><h2 class="section-title">মাসিক ভাড়া ও জামানত ড্যাশবোর্ড</h2><div class="grid">
   <div><label>মোট মাসিক ভাড়া (টাকা)</label><input id="rent" type="number" min="0" step="0.01" value="0"></div>
-  <div><label>মাসের শুরুতে অবশিষ্ট জামানত (টাকা)</label><input id="opening" type="number" min="0" step="0.01" value="0" readonly></div>
-  <div><label>জামানত সমন্বয়ের হার</label><input value="১৫%" readonly></div><div><label>জামানত থেকে সমন্বয় (স্বয়ংক্রিয়)</label><input id="adjustment" readonly></div>
-  <div><label>সমন্বয়ের পর অবশিষ্ট জামানত</label><input id="closing" readonly></div><div><label>সমন্বয়ের পর প্রদেয় ভাড়া</label><input id="net" readonly></div></div></div>
+  <div><label>মাসের শুরুতে অবশিষ্ট জামানত (টাকা)</label><input id="opening" type="number" min="0" step="0.01" value="0" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div><label>জামানত সমন্বয়ের হার</label><input value="১৫%" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>জামানত থেকে সমন্বয় (স্বয়ংক্রিয়)</label><input id="adjustment" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div><label>সমন্বয়ের পর অবশিষ্ট জামানত</label><input id="closing" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>সমন্বয়ের পর প্রদেয় ভাড়া</label><input id="net" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div></div></div>
 
   <div class="panel"><h2 class="section-title">ভাড়া আদায় ও ব্যাংক লেনদেন</h2><div class="grid">
   <div><label>নগদে গ্রহণ (টাকা)</label><input id="cash" type="number" min="0" step="0.01" value="0"></div>
@@ -320,6 +323,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
     <button class="green" onclick="printCopy('tenant')">ভাড়াটিয়ার কপি PDF</button>
     <button class="green" onclick="printCopy('bank')">ব্যাংক জমার রসিদ PDF</button>
     <button class="green" onclick="printAllReceipts()" style="background:#0284c7">📄 মালিক, ভাড়াটিয়া ও ব্যাংক কপি একত্রে প্রিন্ট (Print All)</button>
+    <button class="green" onclick="archiveCurrentMonth()" style="background:#047857">📁 বর্তমান মাসের রসিদ আর্কাইভ ও সংরক্ষণ করুন</button>
   </div>
 </div>
 
@@ -389,6 +393,71 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   </div>
 </div>
 
+<!--- TAB 4: মাসিক আয়-ব্যয় সংরক্ষণ (Monthly Summary Archive) --->
+<div id="monthlySummaryTab" class="tab-content">
+  <div class="panel">
+    <h2 class="section-title">📊 ৩. মাসিক আয় ও ব্যয় সংরক্ষণ (Monthly Income & Expense Summary)</h2>
+    <p class="note">এখানে আপনি প্রতি মাসের মোট আয় এবং মোট খরচ আলাদাভাবে সংরক্ষণ করতে পারবেন।</p>
+    
+    <div class="grid" style="margin-top:15px; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid #cbd5e1;">
+      <div><label>মাসের নাম (যেমন: নভেম্বর ২০২৬)</label><input type="text" id="summaryMonth" placeholder="যেমন: নভেম্বর ২০২৬"></div>
+      <div><label>উক্ত মাসের মোট আয় (টাকা)</label><input type="number" id="summaryTotalInc" min="0" step="0.01" placeholder="০.০০"></div>
+      <div><label>উক্ত মাসের মোট খরচ (টাকা)</label><input type="number" id="summaryTotalExp" min="0" step="0.01" placeholder="০.০০"></div>
+      <div><label>নোট / মন্তব্য</label><input type="text" id="summaryNote" placeholder="সারাংশ নোট দিন"></div>
+      <div class="full"><button type="button" class="green" onclick="saveMonthlySummary()">+ এই মাসের আয়-ব্যয় সংরক্ষণ করুন</button></div>
+    </div>
+
+    <div style="margin-top:25px;" id="monthlySummaryPrintArea">
+      সংরক্ষিত মাসিক আয়-ব্যয়ের তালিকা
+      <table class="data-table" style="margin-top:10px;">
+        <thead>
+          <tr>
+            <th>মাস</th>
+            <th>মোট আয়</th>
+            <th>মোট খরচ</th>
+            <th>নিট লাভ/অবশিষ্ট</th>
+            <th>নোট</th>
+            <th>অ্যাকশন</th>
+          </tr>
+        </thead>
+        <tbody id="monthlySummaryTableBody">
+          <tr><td colspan="6" style="text-align:center;color:#64748b">কোনো মাসিক হিসাব সংরক্ষিত নেই</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:15px;">
+      <button class="green" onclick="printReport('monthlySummaryPrintArea', 'মাসিক আয় ও ব্যয় সারাংশ রিপোর্ট')">🖨️ মাসিক সারাংশ রিপোর্ট প্রিন্ট / PDF</button>
+    </div>
+  </div>
+</div>
+
+<!--- TAB 5: পূর্বের রসিদ সংরক্ষণ (Archive) --->
+<div id="archiveTab" class="tab-content">
+  <div class="panel">
+    <h2 class="section-title">📁 পূর্বের রসিদ ও মাসভিত্তিক আর্কাইভ (Saved Receipts Archive)</h2>
+    <p class="note">এখানে আপনার সংরক্ষিত রসিদগুলো মাস এবং ভাড়াটিয়ার নাম অনুযায়ী সংরক্ষিত রয়েছে। যেকোনো রসিদ সরাসরি প্রিন্ট বা দেখতে পারবেন।</p>
+    
+    <div style="margin-top:15px;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ভাড়ার মাস</th>
+            <th>রসিদ নম্বর</th>
+            <th>ভাড়াটিয়ার নাম</th>
+            <th>প্রদেয় ভাড়া</th>
+            <th>জমা পরিমাণ</th>
+            <th>সংরক্ষণ তারিখ</th>
+            <th>অ্যাকশন</th>
+          </tr>
+        </thead>
+        <tbody id="archiveTableBody">
+          <tr><td colspan="7" style="text-align:center;color:#64748b">কোনো আর্কাইভ করা রসিদ নেই</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <div class="actions" style="margin-top:20px;border-top:1px solid #cbd5e1;padding-top:15px;">
 <button class="secondary" onclick="saveData()">কম্পিউটারে সংরক্ষণ</button>
 <button class="green" onclick="downloadBackup()">ডাটা ব্যাকআপ ডাউনলোড</button>
@@ -409,10 +478,14 @@ function switchTab(tabId, btn){
   document.querySelectorAll('.app-menu button').forEach(el=>el.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
   btn.classList.add('active');
+  if(tabId === 'archiveTab') renderArchiveTable();
+  if(tabId === 'monthlySummaryTab') renderMonthlySummaryTable();
 }
 
 let incomes = JSON.parse(localStorage.getItem('mirMarketIncomes')||'[]');
 let expenses = JSON.parse(localStorage.getItem('mirMarketExpenses')||'[]');
+let archives = JSON.parse(localStorage.getItem('mirMarketArchives')||'[]');
+let monthlySummaries = JSON.parse(localStorage.getItem('mirMarketMonthlySummaries')||'[]');
 
 function renderIncomeExpense(){
   const incBody = document.getElementById('incomeTableBody');
@@ -471,6 +544,138 @@ function deleteExpense(idx){
   expenses.splice(idx,1);
   localStorage.setItem('mirMarketExpenses', JSON.stringify(expenses));
   renderIncomeExpense();
+}
+
+function saveMonthlySummary(){
+  const month = document.getElementById('summaryMonth').value.trim();
+  const totalInc = Number(document.getElementById('summaryTotalInc').value) || 0;
+  const totalExp = Number(document.getElementById('summaryTotalExp').value) || 0;
+  const note = document.getElementById('summaryNote').value.trim();
+
+  if(!month){ alert('মাসের নাম লিখুন।'); return; }
+
+  const summaryItem = { month, totalInc, totalExp, netProfit: totalInc - totalExp, note };
+  const existingIdx = monthlySummaries.findIndex(item => item.month === month);
+  if(existingIdx >= 0){
+    monthlySummaries[existingIdx] = summaryItem;
+  } else {
+    monthlySummaries.unshift(summaryItem);
+  }
+
+  localStorage.setItem('mirMarketMonthlySummaries', JSON.stringify(monthlySummaries));
+  document.getElementById('summaryMonth').value='';
+  document.getElementById('summaryTotalInc').value='';
+  document.getElementById('summaryTotalExp').value='';
+  document.getElementById('summaryNote').value='';
+  renderMonthlySummaryTable();
+  alert('মাসিক আয়-ব্যয় সারাংশ সংরক্ষিত হয়েছে!');
+}
+
+function renderMonthlySummaryTable(){
+  const tbody = document.getElementById('monthlySummaryTableBody');
+  if(!monthlySummaries.length){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b">কোনো মাসিক হিসাব সংরক্ষিত নেই</td></tr>';
+    return;
+  }
+  tbody.innerHTML = '';
+  monthlySummaries.forEach((item, idx) => {
+    const profitColor = item.netProfit >= 0 ? '#047857' : '#b42318';
+    tbody.innerHTML += `
+      <tr>
+        <td><b>${item.month}</b></td>
+        <td>৳${Number(item.totalInc).toLocaleString('en-BD',{minimumFractionDigits:2})}</td>
+        <td>৳${Number(item.totalExp).toLocaleString('en-BD',{minimumFractionDigits:2})}</td>
+        <td><b style="color:${profitColor}">৳${Number(item.netProfit).toLocaleString('en-BD',{minimumFractionDigits:2})}</b></td>
+        <td>${item.note || '-'}</td>
+        <td>
+          <button class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteMonthlySummary(${idx})">মুছুন</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function deleteMonthlySummary(idx){
+  if(!confirm('মুছে ফেলতে চান?')) return;
+  monthlySummaries.splice(idx, 1);
+  localStorage.setItem('mirMarketMonthlySummaries', JSON.stringify(monthlySummaries));
+  renderMonthlySummaryTable();
+}
+
+function archiveCurrentMonth(){
+  const tenantName = val('tenant');
+  const month = val('rentmonth');
+  if(!tenantName || !month){ alert('ভাড়াটিয়া এবং ভাড়ার মাস নির্বাচন করুন।'); return; }
+  
+  const c = calc();
+  const archiveData = {
+    id: 'ARC-' + Date.now(),
+    month: month,
+    receiptNo: val('receiptno'),
+    tenantName: tenantName,
+    tenantMobile: val('tenantmobile'),
+    tenantAddress: val('tenantaddress'),
+    netRent: money(c.net),
+    paidAmount: money(c.paid),
+    dateStr: new Date().toLocaleDateString('bn-BD'),
+    htmlContent: {
+      owner: document.getElementById('ownerReceipt').innerHTML,
+      tenant: document.getElementById('tenantReceipt').innerHTML,
+      bank: document.getElementById('bankReceipt').innerHTML
+    }
+  };
+
+  const existingIdx = archives.findIndex(item => item.month === month && item.tenantName === tenantName);
+  if(existingIdx >= 0){
+    archives[existingIdx] = archiveData;
+  } else {
+    archives.unshift(archiveData);
+  }
+
+  localStorage.setItem('mirMarketArchives', JSON.stringify(archives));
+  alert(`"${month}" এর রসিদ সফলভাবে আর্কাইভে সংরক্ষিত হয়েছে!`);
+}
+
+function renderArchiveTable(){
+  const tbody = document.getElementById('archiveTableBody');
+  if(!archives.length){
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#64748b">কোনো আর্কাইভ করা রসিদ নেই</td></tr>';
+    return;
+  }
+  tbody.innerHTML = '';
+  archives.forEach((item, idx) => {
+    tbody.innerHTML += `
+      <tr>
+        <td><b>${item.month}</b></td>
+        <td>${item.receiptNo}</td>
+        <td>${item.tenantName}</td>
+        <td>${item.netRent}</td>
+        <td>${item.paidAmount}</td>
+        <td>${item.dateStr}</td>
+        <td>
+          <button class="green" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="printArchived(${idx}, 'tenant')">ভাড়াটিয়া কপি</button>
+          <button class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteArchive(${idx})">মুছুন</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function printArchived(idx, type){
+  const item = archives[idx];
+  if(!item) return;
+  const printDiv = document.getElementById('printArea');
+  printDiv.style.display = 'block';
+  printDiv.innerHTML = `<div class="print-page-wrap">${item.htmlContent[type] || item.htmlContent.tenant}</div>`;
+  window.print();
+  printDiv.style.display = 'none';
+}
+
+function deleteArchive(idx){
+  if(!confirm('এই আর্কাইভ রসিদটি মুছে ফেলতে চান?')) return;
+  archives.splice(idx, 1);
+  localStorage.setItem('mirMarketArchives', JSON.stringify(archives));
+  renderArchiveTable();
 }
 
 function printReport(areaId, title){
@@ -578,7 +783,6 @@ function buildReceipts(){
   const autoDateStr = today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   const timestampHtml = `<div class="print-timestamp" style="text-align:right;font-size:12px;color:#475569;margin-bottom:4px;font-weight:600;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>`;
   
-  // মালিক ও ভাড়াটিয়া কপির হেডার (সঠিক বামমুখী লোগোসহ)
   const standardReceiptHeader = timestampHtml + `
     <div style="display:flex;align-items:center;gap:15px;margin-bottom:6px;">
       <div>${getReceiptLogoHtml()}</div>
@@ -588,7 +792,6 @@ function buildReceipts(){
       </div>
     </div>` + ownerInfo();
 
-  // ব্যাংক জমার রসিদের হেডার (লোগো সুন্দরভাবে একটু ডানে ব্যালেন্স করা)
   const bankReceiptHeader = timestampHtml + `
     <div style="display:flex;align-items:center;gap:15px;margin-bottom:6px;padding-left:45px;">
       <div>${getReceiptLogoHtml()}</div>
@@ -602,7 +805,6 @@ function buildReceipts(){
 
   el('tenantReceipt').innerHTML=standardReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:6px 0 8px;color:#047857;font-size:15px;background:#ecfdf5;padding:6px;border-radius:6px;border:1px dashed #34d399;">ভাড়াটিয়ার কপি — মাসিক ভাড়া রসিদ</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:40px;margin-bottom:12px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">ভাড়াটিয়ার স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">মালিক/প্রতিনিধির স্বাক্ষর</div></div>`+termsNoteHtml;
 
-  // ব্যাংক জমার রসিদ (জমির বিবরণ টেবিলের ঠিক নিচে কোনো ফাঁকা জায়গা ছাড়াই নিখুঁতভাবে বসানো)
   el('bankReceipt').innerHTML=bankReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:4px 0 6px;color:#047857;font-size:15px;background:#ecfdf5;padding:6px;border-radius:6px;border:1px dashed #34d399;">ব্যাংক জমার রসিদ</div>
   <table style="width:100%;border-collapse:collapse;border:1.5px solid #1e3a8a;margin:4px 0;">
   <tr><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">${esc(val('rentmonth'))}</td></tr>
@@ -634,6 +836,7 @@ function printCopy(type){
   printDiv.innerHTML = `<div class="print-page-wrap">${document.getElementById(map[type]).innerHTML}</div>`;
   window.print();
   printDiv.style.display = 'none';
+  incrementReceiptNumber();
 }
 
 function printAllReceipts(){
@@ -648,12 +851,25 @@ function printAllReceipts(){
   `;
   window.print();
   printDiv.style.display = 'none';
+  incrementReceiptNumber();
+}
+
+function incrementReceiptNumber(){
+  let currentRec = el('receiptno').value;
+  if(currentRec.startsWith('MIR-')){
+    let numPart = parseInt(currentRec.replace('MIR-', ''), 10);
+    if(!isNaN(numPart)){
+      let nextNum = numPart + 1;
+      el('receiptno').value = 'MIR-' + String(nextNum).padStart(4, '0');
+      autoSaveLocal();
+    }
+  }
 }
 
 function saveData(){autoSaveLocal();alert('সংরক্ষিত হয়েছে।');}
 function downloadBackup(){
   const d={};ids.forEach(id=>{if(el(id))d[id]=el(id).value;});
-  const backup={rentData:d, tenants, monthlyLedger, incomes, expenses, auth:localStorage.getItem('mirMarketUsers')};
+  const backup={rentData:d, tenants, monthlyLedger, incomes, expenses, archives, monthlySummaries, auth:localStorage.getItem('mirMarketUsers')};
   const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='Mir_Market_Backup.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
@@ -667,21 +883,60 @@ function restoreBackup(event){
     localStorage.setItem('mirMarketMonthlyLedger',JSON.stringify(b.monthlyLedger||{}));
     localStorage.setItem('mirMarketIncomes',JSON.stringify(b.incomes||[]));
     localStorage.setItem('mirMarketExpenses',JSON.stringify(b.expenses||[]));
+    localStorage.setItem('mirMarketArchives',JSON.stringify(b.archives||[]));
+    localStorage.setItem('mirMarketMonthlySummaries',JSON.stringify(b.monthlySummaries||[]));
     if(b.auth) localStorage.setItem('mirMarketUsers', b.auth);
     location.reload();
   }catch(e){alert('সঠিক ব্যাকআপ ফাইল নয়।');}};reader.readAsText(file);
 }
 
 function refreshTenantList(){const sel=el('tenantSelect'),current=sel.value;sel.innerHTML='<option value="">— ভাড়াটিয়া নির্বাচন —</option>'+tenants.map((t,i)=>`<option value="${i}">${esc(t.name)}${t.mobile?' — '+esc(t.mobile):''}</option>`).join('');if(current!=='' && tenants[Number(current)])sel.value=current;}
-function selectTenant(index){if(index===''){['tenant','tenantmobile','tenantaddress','originaldeposit','opening'].forEach(id=>el(id).value='');updateAll();return;}const t=tenants[Number(index)];if(!t)return;el('tenant').value=t.name;el('tenantmobile').value=t.mobile;el('tenantaddress').value=t.address;el('originaldeposit').value=t.deposit;el('opening').value=(t.balance!==undefined?t.balance:t.deposit);updateAll();}
-function addTenant(){const name=el('newTenantName').value.trim(),mobile=el('newTenantMobile').value.trim(),address=el('newTenantAddress').value.trim(),deposit=Math.max(0,Number(el('newTenantDeposit').value)||0);if(!name){alert('নাম লিখুন।');return;}tenants.push({name,mobile,address,deposit,balance:deposit});localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));refreshTenantList();el('tenantSelect').value=String(tenants.length-1);selectTenant(String(tenants.length-1));['newTenantName','newTenantMobile','newTenantAddress','newTenantDeposit'].forEach(id=>el(id).value='');alert('সংরক্ষিত হয়েছে।');}
+
+function selectTenant(index){
+  if(index===''){['tenant','tenantmobile','tenantaddress','originaldeposit','opening','rent'].forEach(id=>el(id).value='');updateAll();return;}
+  const t=tenants[Number(index)];if(!t)return;
+  el('tenant').value=t.name;
+  el('tenantmobile').value=t.mobile;
+  el('tenantaddress').value=t.address;
+  el('originaldeposit').value=t.deposit;
+  el('opening').value=(t.balance!==undefined?t.balance:t.deposit);
+  if(t.rent !== undefined){
+    el('rent').value = t.rent;
+  }
+  updateAll();
+}
+
+function addTenant(){
+  const name=el('newTenantName').value.trim();
+  const mobile=el('newTenantMobile').value.trim();
+  const address=el('newTenantAddress').value.trim();
+  const deposit=Math.max(0,Number(el('newTenantDeposit').value)||0);
+  const rentVal=Math.max(0,Number(el('newTenantRent').value)||0);
+  if(!name){alert('নাম লিখুন।');return;}
+  
+  tenants.push({name, mobile, address, deposit, rent: rentVal, balance:deposit});
+  localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));
+  refreshTenantList();
+  el('tenantSelect').value=String(tenants.length-1);
+  selectTenant(String(tenants.length-1));
+  ['newTenantName','newTenantMobile','newTenantAddress','newTenantDeposit','newTenantRent'].forEach(id=>el(id).value='');
+  alert('সংরক্ষিত হয়েছে।');
+}
+
 function deleteTenant(){const index=el('tenantSelect').value;if(index===''){alert('ভাড়াটিয়া নির্বাচন করুন।');return;}if(!confirm('বাতিল করতে চান?'))return;tenants.splice(Number(index),1);localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));refreshTenantList();updateAll();}
+
 function initDefaults(){
-  const now=new Date();
-  if(!val('rentmonth'))el('rentmonth').value=new Intl.DateTimeFormat('bn-BD',{month:'long',year:'numeric'}).format(now);
-  if(!val('receiptno'))el('receiptno').value='MIR-'+Math.floor(1000+Math.random()*9000);
-  document.getElementById('incDate').value=new Date().toISOString().slice(0,10);
-  document.getElementById('expDate').value=new Date().toISOString().slice(0,10);
+  const now = new Date();
+  
+  const currentMonthStr = new Intl.DateTimeFormat('bn-BD', { month: 'long', year: 'numeric' }).format(now);
+  el('rentmonth').value = currentMonthStr;
+  
+  if(!val('receiptno')){
+    el('receiptno').value = 'MIR-0001';
+  }
+
+  document.getElementById('incDate').value = now.toISOString().slice(0,10);
+  document.getElementById('expDate').value = now.toISOString().slice(0,10);
   
   const currentYear = now.getFullYear();
   const copyEl = document.getElementById('dynamicCopyright');
