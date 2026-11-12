@@ -237,31 +237,13 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
        <button type="button" class="secondary" onclick="cancelSignup()">লগইনে ফিরে যান</button>
       </div>
 
-      <!-- লগইন ফিল্ড এবং যোগাযোগ বাটন -->
+      <!-- লগইন ফিল্ড -->
       <div id="loginFields">
        <label>User ID / Username</label><input id="loginUser" placeholder="ইউজারনেম লিখুন">
        <label>Password</label><input id="loginPass" type="password" placeholder="পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter')loginOffline()">
        <button type="button" onclick="loginOffline()">Sign in</button>
        <button type="button" class="secondary" onclick="showSignup()">নতুন সাইন আপ (Register)</button>
        <button type="button" class="secondary" onclick="forgotOfflinePassword()">পাসওয়ার্ড ভুলে গেছেন? (Forgot password?)</button>
-       <button type="button" class="secondary" style="background:#0f766e; color:#fff; margin-top:8px;" onclick="showContactModal()">যোগাযোগ</button>
-      </div>
-
-      <!-- যোগাযোগ ফর্ম -->
-      <div id="contactFields" style="display:none;">
-        <h2 style="font-size:22px; color:#0f375c; margin-bottom:10px;">যোগাযোগ</h2>
-        <label>নামঃ *</label>
-        <input id="contactName" placeholder="আপনার নাম লিখুন">
-        
-        <label>বিষয় (Subject)ঃ *</label>
-        <input id="contactSubject" placeholder="বিষয়ের নাম লিখুন">
-        
-        <label>বার্তাঃ *</label>
-        <textarea id="contactMessage" placeholder="আপনার বার্তা এখানে লিখুন..." style="width:100%; padding:10px; border:1px solid #94a3b8; border-radius:8px; background:#fff; font-family:inherit; min-height:80px; margin-top:5px;"></textarea>
-        
-        <button type="button" id="sendEmailBtn" onclick="sendAutoEmail()" style="background:#0f766e; color:#fff; margin-top:10px;">✉️ জিমেইলে বার্তা পাঠান</button>
-        <div id="contactStatus" style="margin-top:8px; font-size:13px; font-weight:700;"></div>
-        <button type="button" class="secondary" onclick="cancelContact()" style="margin-top:8px;">ফিরে যান</button>
       </div>
 
       <p style="text-align:left;margin:20px 0 0;color:#64748b;font-weight:600;font-size:12px">
@@ -1054,56 +1036,12 @@ async function forgotOfflinePassword(){
  const u=prompt('আপনার ইউজারনেম লিখুন:');
  if(!u)return;
  const saved=users.find(x=>x.username.toLowerCase()===u.trim().toLowerCase());
- if(!saved){alert('ইউজারনেম পাওয়া যায়নি। যোগাযোগের মাধ্যমে যোগাযোগ করুন।');return;}
+ if(!saved){alert('ইউজারনেম পাওয়া যায়নি।');return;}
  const p=prompt('নতুন পাসওয়ার্ড দিন (কমপক্ষে ৬ অক্ষর):');
  if(!p || p.length<6){alert('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');return;}
  saved.passwordHash='fallback-'+p;
  localStorage.setItem('mirMarketUsers', JSON.stringify(users));
  alert('পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে। এবার নতুন পাসওয়ার্ড দিয়ে লগইন করুন।');
-}
-
-/* যোগাযোগ ফরম লজিক (Mailto মেথড) */
-function showContactModal(){
-  el('loginFields').style.display = 'none';
-  el('contactFields').style.display = 'block';
-  el('authIntro').textContent = 'আপনার কোনো প্রশ্ন বা বার্তা থাকলে নিচের ফর্মটি পূরণ করে পাঠান।';
-  el('authError').textContent = '';
-  el('contactStatus').textContent = '';
-}
-function cancelContact(){
-  el('contactFields').style.display = 'none';
-  el('loginFields').style.display = 'block';
-  el('authIntro').textContent = 'মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ তৈরি সিস্টেম।';
-}
-
-function sendAutoEmail(){
-  const name = val('contactName');
-  const subject = val('contactSubject');
-  const message = val('contactMessage');
-  const statusEl = document.getElementById('contactStatus');
-
-  if(!name || !subject || !message){
-    statusEl.style.color = '#b42318';
-    statusEl.textContent = 'দয়া করে নাম, বিষয় এবং বার্তা সবগুলো ঘর পূরণ করুন।';
-    return;
-  }
-
-  // আপনার জিমেইল আইডি (fahim20151@gmail.com) কোডের ভেতরে সম্পূর্ণ সুরক্ষিত রয়েছে
-  const targetEmail = atob('ZmFoaW0yMDE1MUBnbWFpbC5jb20=');
-  
-  const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent(subject + ' (' + name + ')')}&body=${encodeURIComponent("নাম: " + name + "\n\nবার্তা:\n" + message)}`;
-  
-  statusEl.style.color = '#047857';
-  statusEl.textContent = '✅ আপনার জিমেইল অ্যাপ ওপেন হচ্ছে...';
-  
-  window.location.href = mailtoLink;
-  
-  setTimeout(() => {
-    document.getElementById('contactName').value = '';
-    document.getElementById('contactSubject').value = '';
-    document.getElementById('contactMessage').value = '';
-    cancelContact();
-  }, 2000);
 }
 
 function unlockOffline(){ el('authGate').style.display='none'; document.querySelector('.wrap').style.visibility='visible'; }
