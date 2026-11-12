@@ -247,7 +247,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
        <button type="button" class="secondary" style="background:#0f766e; color:#fff; margin-top:8px;" onclick="showContactModal()">যোগাযোগ (Contact)</button>
       </div>
 
-      <!-- যোগাযোগ ফর্ম (Mailto মেথড - ১০০% নিশ্চিত কাজ করবে) -->
+      <!-- যোগাযোগ ফর্ম (Google Apps Script ব্যাকগ্রাউন্ড সেন্ড) -->
       <div id="contactFields" style="display:none;">
         <h2 style="font-size:22px; color:#0f375c; margin-bottom:10px;">যোগাযোগ</h2>
         <label>নামঃ *</label>
@@ -259,7 +259,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
         <label>বার্তাঃ *</label>
         <textarea id="contactMessage" placeholder="আপনার বার্তা এখানে লিখুন..." style="width:100%; padding:10px; border:1px solid #94a3b8; border-radius:8px; background:#fff; font-family:inherit; min-height:80px; margin-top:5px;"></textarea>
         
-        <button type="button" id="sendEmailBtn" onclick="sendAutoEmail()" style="background:#0f766e; color:#fff; margin-top:10px;">✉️ জিমেইলে বার্তা পাঠান</button>
+        <button type="button" id="sendEmailBtn" onclick="sendAutoEmail()" style="background:#0f766e; color:#fff; margin-top:10px;">✉️ সরাসরি বার্তা পাঠান</button>
         <div id="contactStatus" style="margin-top:8px; font-size:13px; font-weight:700;"></div>
         <button type="button" class="secondary" onclick="cancelContact()" style="margin-top:8px;">ফিরে যান</button>
       </div>
@@ -1056,13 +1056,13 @@ async function forgotOfflinePassword(){
  const saved=users.find(x=>x.username.toLowerCase()===u.trim().toLowerCase());
  if(!saved){alert('ইউজারনেম পাওয়া যায়নি। মেসেজ বা যোগাযোগের মাধ্যমে যোগাযোগ করুন।');return;}
  const p=prompt('নতুন পাসওয়ার্ড দিন (কমপক্ষে ৬ অক্ষর):');
- if(!p || p.length<6){alert('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');return;}
+ if(!p || p.length<6){alert('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে। হতে হবে।');return;}
  saved.passwordHash='fallback-'+p;
  localStorage.setItem('mirMarketUsers', JSON.stringify(users));
  alert('পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে। এবার নতুন পাসওয়ার্ড দিয়ে লগইন করুন।');
 }
 
-/* যোগাযোগ ফরম লজিক (Mailto মেথড) */
+/* যোগাযোগ ফরম লজিক (Google Apps Script ব্যাকগ্রাউন্ড সেন্ড) */
 function showContactModal(){
   el('loginFields').style.display = 'none';
   el('contactFields').style.display = 'block';
@@ -1076,11 +1076,12 @@ function cancelContact(){
   el('authIntro').textContent = 'মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ তৈরি সিস্টেম।';
 }
 
-function sendAutoEmail(){
+async function sendAutoEmail(){
   const name = val('contactName');
   const subject = val('contactSubject');
   const message = val('contactMessage');
   const statusEl = document.getElementById('contactStatus');
+  const btn = document.getElementById('sendEmailBtn');
 
   if(!name || !subject || !message){
     statusEl.style.color = '#b42318';
@@ -1088,22 +1089,36 @@ function sendAutoEmail(){
     return;
   }
 
-  // আপনার জিমেইল আইডি (fahim20151@gmail.com) কোডের ভেতরে সম্পূর্ণ সুরক্ষিত রয়েছে
-  const targetEmail = atob('ZmFoaW0yMDE1MUBnbWFpbC5jb20=');
-  
-  const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent(subject + ' (' + name + ')')}&body=${encodeURIComponent("নাম: " + name + "\n\nবার্তা:\n" + message)}`;
-  
-  statusEl.style.color = '#047857';
-  statusEl.textContent = '✅ আপনার জিমেইল অ্যাপ ওপেন হচ্ছে...';
-  
-  window.location.href = mailtoLink;
-  
-  setTimeout(() => {
+  btn.disabled = true;
+  btn.textContent = '⏳ পাঠানো হচ্ছে...';
+  statusEl.style.color = '#174a78';
+  statusEl.textContent = 'আপনার বার্তা পাঠানো হচ্ছে, অপেক্ষা করুন...';
+
+  try {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbyL8NY1WIy5umGPAHUttOl812vaiehOuqQw5qlPbt80GH-ioqLqRpoHSZxvZgoi_wFb/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, subject, message })
+    });
+
+    statusEl.style.color = '#047857';
+    statusEl.textContent = '✅ আপনার বার্তা সফলভাবে জিমেইলে পাঠানো হয়েছে!';
     document.getElementById('contactName').value = '';
     document.getElementById('contactSubject').value = '';
     document.getElementById('contactMessage').value = '';
-    cancelContact();
-  }, 2000);
+    setTimeout(() => {
+      cancelContact();
+    }, 2500);
+  } catch (error) {
+    statusEl.style.color = '#b42318';
+    statusEl.textContent = '❌ বার্তা পাঠাতে সমস্যা হয়েছে। ইন্টারনেট সংযোগ চেক করুন।';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✉️ সরাসরি বার্তা পাঠান';
+  }
 }
 
 function unlockOffline(){ el('authGate').style.display='none'; document.querySelector('.wrap').style.visibility='visible'; }
