@@ -247,7 +247,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
        <button type="button" class="secondary" style="background:#0f766e; color:#fff; margin-top:8px;" onclick="showContactModal()">যোগাযোগ (Contact)</button>
       </div>
 
-      <!-- যোগাযোগ ফর্ম (Web3Forms ব্যবহার করে সরাসরি fahim20151@gmail.com এ ইমেইল পাঠানোর ব্যবস্থা) -->
+      <!-- যোগাযোগ ফর্ম (আপনার আসল কি দিয়ে আপডেট করা) -->
       <div id="contactFields" style="display:none;">
         <h2 style="font-size:22px; color:#0f375c; margin-bottom:10px;">যোগাযোগ</h2>
         <label>নামঃ *</label>
@@ -1062,7 +1062,7 @@ async function forgotOfflinePassword(){
  alert('পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে। এবার নতুন পাসওয়ার্ড দিয়ে লগইন করুন।');
 }
 
-/* যোগাযোগ ফরম লজিক (Web3Forms API দিয়ে সরাসরি fahim20151@gmail.com এ পাঠানো) */
+/* যোগাযোগ ফরম লজিক (আপনার আসল কি দিয়ে আপডেট করা) */
 function showContactModal(){
   el('loginFields').style.display = 'none';
   el('contactFields').style.display = 'block';
@@ -1106,7 +1106,7 @@ async function sendAutoEmail(){
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        apikey: "a52e72db-b4cd-4e94-82ae-569d2551a37a", // সিকিউরড ফ্রি অ্যাক্সেস কী
+        apikey: "84939d0c-b7d7-43d2-a5db-3ac17e009cd6", // আপনার নিজস্ব অ্যাক্সেস কি
         to_email: targetEmail,
         name: name,
         subject: subject,
