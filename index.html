@@ -247,7 +247,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
        <button type="button" class="secondary" style="background:#0f766e; color:#fff; margin-top:8px;" onclick="showContactModal()">যোগাযোগ</button>
       </div>
 
-      <!-- যোগাযোগ ফর্ম (Google Apps Script API সংবলিত) -->
+      <!-- যোগাযোগ ফর্ম -->
       <div id="contactFields" style="display:none;">
         <h2 style="font-size:22px; color:#0f375c; margin-bottom:10px;">যোগাযোগ</h2>
         <label>নামঃ *</label>
@@ -484,6 +484,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div class="actions" style="margin-top:20px;border-top:1px solid #cbd5e1;padding-top:15px;">
 <button class="secondary" onclick="saveData()">কম্পিউটারে সংরক্ষণ</button>
 <button class="green" onclick="downloadBackup()">ডাটা ব্যাকআপ ডাউনলোড</button>
+<button class="green" onclick="uploadToGoogleDrive()" style="background:#1d4ed8;">☁️ সরাসরি গুগল ড্রাইভে ব্যাকআপ করুন</button>
 <button class="secondary" onclick="document.getElementById('restoreFile').click()">ডাটা রিস্টোর</button><input id="restoreFile" type="file" accept=".json" style="display:none" onchange="restoreBackup(event)">
 <button class="danger" onclick="logoutOffline()">লগআউট</button>
 </div>
@@ -941,6 +942,39 @@ function downloadBackup(){
   autoSaveToMobileStorage('Mir_Market_Full_Backup.json', backup);
 }
 
+// সরাসরি গুগল ড্রাইভে ব্যাকআপ করার ফাংশন
+function uploadToGoogleDrive(){
+  const d={};ids.forEach(id=>{if(el(id))d[id]=el(id).value;});
+  const fullBackupData = {
+    rentData: d, 
+    tenants, 
+    monthlyLedger, 
+    incomes, 
+    expenses, 
+    archives, 
+    monthlySummaries, 
+    auth: localStorage.getItem('mirMarketUsers')
+  };
+
+  const fileName = "Mir_Market_Cloud_Backup_" + new Date().toISOString().slice(0,10) + ".json";
+  
+  // আপনার গুগল স্ক্রিপ্ট ওয়েব অ্যাপ লিংক এখানে দিন
+  const scriptUrl = 'https://script.google.com/macros/s/AKfycbxn6Jp1AqWyL6JHTYFednggHsxsxd8b8RY1MQq0DI6PZegdzy5saRS2RzC0k5gLHyY/exec';
+
+  if(!confirm('আপনি কি আপনার সমস্ত ডেটা সরাসরি গুগল ড্রাইভে ব্যাকআপ করতে চান?')) return;
+
+  fetch(scriptUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: "FULL_BACKUP", fileName: fileName, backupData: fullBackupData })
+  }).then(() => {
+    alert('✅ আপনার সমস্ত ডেটা সফলভাবে গুগল ড্রাইভে ব্যাকআপ করা হয়েছে!');
+  }).catch(err => {
+    alert('❌ ড্রাইভে ব্যাকআপ করতে সমস্যা হয়েছে। ইন্টারনেট কানেকশন চেক করুন।');
+  });
+}
+
 function restoreBackup(event){
   const file=event.target.files&&event.target.files[0];if(!file)return;
   const reader=new FileReader();reader.onload=()=>{try{
@@ -1062,7 +1096,7 @@ async function forgotOfflinePassword(){
  alert('পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে। এবার নতুন পাসওয়ার্ড দিয়ে লগইন করুন।');
 }
 
-/* যোগাযোগ ফরম লজিক (Google Apps Script API মেথড) */
+/* যোগাযোগ ফরম লজিক */
 function showContactModal(){
   el('loginFields').style.display = 'none';
   el('contactFields').style.display = 'block';
@@ -1092,7 +1126,6 @@ function sendApiEmail(){
   statusEl.textContent = '⏳ বার্তা পাঠানো হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...';
   document.getElementById('sendEmailBtn').disabled = true;
 
-  // আপনার দেওয়া নতুন Google Apps Script Web App URL
   const scriptUrl = 'https://script.google.com/macros/s/AKfycbxn6Jp1AqWyL6JHTYFednggHsxsxd8b8RY1MQq0DI6PZegdzy5saRS2RzC0k5gLHyY/exec';
 
   fetch(scriptUrl, {
