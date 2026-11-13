@@ -22,7 +22,7 @@ input,textarea,select{width:100%;padding:10px;border:1px solid #bac6d4;border-ra
 
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}button{border:0;border-radius:8px;padding:11px 16px;background:var(--blue);color:white;font:inherit;font-weight:700;cursor:pointer}
 button.secondary{background:#475569}button.green{background:#18734b}button.danger{background:#b42318}.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.metric{background:#eef5fb;border-radius:8px;padding:12px}.metric small{display:block;color:#475569}.metric strong{font-size:20px}
+.metric{background:#eef5fb;border-radius:8px;padding:12px}.metric small{display:block;color:#475569}.metric strong{font-size:18px}
 .note{font-size:13.5px;line-height:1.6;color:#174a78;font-weight:bold;margin:0 0 20px;text-align:left;}
 
 /* রসিদ স্টাইল (ওয়েব ডিসপ্লে) */
@@ -33,15 +33,14 @@ button.secondary{background:#475569}button.green{background:#18734b}button.dange
 .receipt .kind{text-align:center;font-weight:bold;margin:6px 0 8px;color:#047857;font-size:15px;background:#ecfdf5;padding:6px;border-radius:6px;border:1px dashed #34d399}
 
 .receipt table{width:100%;border-collapse:collapse;margin:6px 0}
-.receipt td,.receipt th{border:1.5px solid #1e3a8a !important;padding:9px 12px;text-align:left;font-size:14px}
+.receipt td,.receipt th{border:1.5px solid #1e3a8a !important;padding:8px 12px;text-align:left;font-size:13.5px}
 .receipt th{background:#e0f2fe !important;color:#0369a1 !important;font-weight:700}
 
-.receipt .signatures{display:flex;justify-content:space-between;gap:40px;margin-top:40px;margin-bottom:12px;}
+.receipt .signatures{display:flex;justify-content:space-between;gap:40px;margin-top:35px;margin-bottom:12px;}
 .receipt .signatures div{border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;color:#1e293b;font-size:14px}
 .receipt .terms-note{text-align:center;font-size:12px;color:#334155;font-weight:600;border-top:1px dashed #cbd5e1;padding-top:8px;padding-bottom:2px;}
 .print-timestamp{text-align:right;font-size:12px;color:#475569;margin-bottom:4px;font-weight:600}
 
-.status{font-weight:bold;margin-top:8px}
 table.data-table{width:100%;border-collapse:collapse;margin-top:10px}
 table.data-table th,table.data-table td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14px}
 table.data-table th{background:#eef5fb;color:var(--blue)}
@@ -91,7 +90,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 
   .receipt { 
     border: 2px solid #1e3a8a !important; 
-    padding: 12px 18px !important; 
+    padding: 10px 16px !important; 
     box-shadow: none !important;
     display: flex !important;
     flex-direction: column !important;
@@ -101,31 +100,31 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
     margin: 0 !important;
   }
 
-  #printArea table { width: 100% !important; border-collapse: collapse !important; border: 1.5px solid #1e3a8a !important; margin: 4px 0 !important; }
-  #printArea th { background-color: #e0f2fe !important; color: #0369a1 !important; border: 1.5px solid #1e3a8a !important; padding: 9px 12px !important; font-weight: bold !important; font-size: 14px !important; }
-  #printArea td { border: 1.5px solid #1e3a8a !important; padding: 9px 12px !important; background-color: #ffffff !important; font-size: 14px !important; }
-  #printArea .land { background-color: #f8fafc !important; border-left: 4px solid #0284c7 !important; padding: 8px 12px !important; margin-bottom: 6px !important; font-size: 14px !important; line-height: 1.45 !important; }
-  #printArea .kind { background-color: #ecfdf5 !important; border: 1px dashed #34d399 !important; padding: 6px !important; margin: 4px 0 !important; font-size: 15px !important; }
+  #printArea table { width: 100% !important; border-collapse: collapse !important; border: 1.5px solid #1e3a8a !important; margin: 3px 0 !important; }
+  #printArea th { background-color: #e0f2fe !important; color: #0369a1 !important; border: 1.5px solid #1e3a8a !important; padding: 7px 10px !important; font-weight: bold !important; font-size: 13.5px !important; }
+  #printArea td { border: 1.5px solid #1e3a8a !important; padding: 7px 10px !important; background-color: #ffffff !important; font-size: 13.5px !important; }
+  #printArea .land { background-color: #f8fafc !important; border-left: 4px solid #0284c7 !important; padding: 7px 10px !important; margin-bottom: 5px !important; font-size: 13px !important; line-height: 1.4 !important; }
+  #printArea .kind { background-color: #ecfdf5 !important; border: 1px dashed #34d399 !important; padding: 5px !important; margin: 3px 0 !important; font-size: 14.5px !important; }
   
   #printArea .signatures { 
     display: flex !important;
     justify-content: space-between !important;
     gap: 40px !important;
-    margin-top: 25px !important; 
-    margin-bottom: 8px !important; 
+    margin-top: 20px !important; 
+    margin-bottom: 6px !important; 
   }
   #printArea .signatures div {
     border-top: 1.5px solid #1e3a8a !important;
     width: 42% !important;
     text-align: center !important;
-    padding-top: 6px !important;
+    padding-top: 5px !important;
     font-weight: 700 !important;
-    font-size: 14px !important;
+    font-size: 13.5px !important;
   }
   #printArea .terms-note { 
-    font-size: 11.5px !important; 
+    font-size: 11px !important; 
     border-top: 1px dashed #cbd5e1 !important; 
-    padding-top: 6px !important; 
+    padding-top: 5px !important; 
     text-align: center !important; 
   }
 }
@@ -304,7 +303,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <!--- TAB 1 --->
 <div id="rentTab" class="tab-content active">
   <div class="panel"><h2 class="section-title">মালিকের তথ্য</h2><div class="grid">
-  <div><label>মালিক ১</label><input id="owner1" value="মীর সহিদ উদ্দিন" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>মালিক ১-এর মোবাইল</label><input id="owner1mobile" value="01791420105" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div><label>মালিক ১ (ভাড়া ৫০% কাউন্ট হবে)</label><input id="owner1" value="মীর সহিদ উদ্দিন" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>মালিক ১-এর মোবাইল</label><input id="owner1mobile" value="01791420105" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
   <div class="full"><label>মালিক ১-এর ঠিকানা</label><input id="owner1address" value="মীর বাড়ী, বাঞ্ছানগর, ওয়ার্ড নং ০৪, ভোলা-বরিসাল রোড, লক্ষ্মীপুর" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
   <div><label>মালিক ২</label><input id="owner2" value="মীর মনির উদ্দিন" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>মালিক ২-এর মোবাইল</label><input id="owner2mobile" value="01717520882" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
   <div class="full"><label>মালিক ২-এর ঠিকানা</label><input id="owner2address" value="মীর বাড়ী, বাঞ্ছানগর, ওয়ার্ড নং ০৪, ভোলা-বরিসাল রোড, লক্ষ্মীপুর" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div></div></div>
@@ -324,21 +323,29 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 
   <div class="panel"><h2 class="section-title">জমির স্থায়ী তথ্য</h2><div class="grid">
   <div><label>জমির পরিমাণ</label><input id="landarea" value="২০৭ শতংশ" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>দাগ নম্বর</label><input id="dag" value="৮২২১" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
-  <div><label>খতিয়ান নম্বর</label><input id="khatian" value="আর এস ৬১৪০, ৪২০০" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>জমাখারিজ খতিয়ান নম্বর</label><input id="mutation" value="২৫-১৩৩৮৩" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div></div></div>
+  <div><label>খতিয়ান নম্বর</label><input id="khatian" value="আর এস ৬১৪০, ৪২০০" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>জমাখারিজ খতিয়ান নম্বর</label><input id="mutation" value="৪২০০ এর অধিনে ২৫-১৩৩৮৩" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div></div></div>
 
   <div class="panel"><h2 class="section-title">মাসিক ভাড়া ও জামানত ড্যাশবোর্ড</h2><div class="grid">
   <div><label>মোট মাসিক ভাড়া (টাকা)</label><input id="rent" type="number" min="0" step="0.01" value="0"></div>
   <div><label>মাসের শুরুতে অবশিষ্ট জামানত (টাকা)</label><input id="opening" type="number" min="0" step="0.01" value="0" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
-  <div><label>জামানত সমন্বয়ের হার</label><input value="১৫%" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>জামানত থেকে সমন্বয় (স্বয়ংক্রিয়)</label><input id="adjustment" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
-  <div><label>সমন্বয়ের পর অবশিষ্ট জামানত</label><input id="closing" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>সমন্বয়ের পর প্রদেয় ভাড়া</label><input id="net" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div></div></div>
+  <div><label>জামানত সমন্বয়ের হার</label><input value="২০%" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>জামানত থেকে সমন্বয় (২০% স্বয়ংক্রিয়)</label><input id="adjustment" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div><label>সমন্বয়ের পর অবশিষ্ট জামানত</label><input id="closing" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>সমন্বয়ের পর প্রদেয় ভাড়া</label><input id="net" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
+  <div class="full"><label>মালিক ১ (মীর সহিদ উদ্দিন)-এর মোট ভাড়া কাউন্ট (সমন্বয়ের পর প্রদেয় ভাড়ার ৫০%)</label><input id="owner1Count" readonly style="background:#ecfdf5;font-weight:bold;color:#047857;border-color:#34d399;"></div></div></div>
 
   <div class="panel"><h2 class="section-title">ভাড়া আদায় ও ব্যাংক লেনদেন</h2><div class="grid">
   <div><label>নগদে গ্রহণ (টাকা)</label><input id="cash" type="number" min="0" step="0.01" value="0"></div>
+  <div><label>মালিক ১ নগদে গ্রহণ (টাকা)</label><input id="owner1Cash" readonly style="background:#ecfdf5;font-weight:bold;color:#047857;border-color:#34d399;"></div>
+
   <div><label>ব্যাংকে জমা/গ্রহণ (টাকা)</label><input id="bank" type="number" min="0" step="0.01" value="0"></div>
+  <div><label>মালিক ১ ব্যাংকে জমা/গ্রহণ (টাকা)</label><input id="owner1Bank" readonly style="background:#ecfdf5;font-weight:bold;color:#047857;border-color:#34d399;"></div>
+
   <div><label>ব্যাংকের নাম</label><input id="bankname" placeholder="ব্যাংকের নাম"></div><div><label>শাখা</label><input id="branch" placeholder="শাখার নাম"></div>
   <div><label>জমার তারিখ</label><input id="bankdate" type="date"></div><div><label>ডিপোজিট/ট্রানজেকশন নম্বর</label><input id="bankref" placeholder="স্লিপ/ট্রানজেকশন নম্বর"></div></div>
-  <div class="summary" style="margin-top:14px"><div class="metric"><small>সমন্বয়ের পর প্রদেয়</small><strong id="showNet">৳০.০০</strong></div>
-  <div class="metric"><small>নগদ + ব্যাংকে গ্রহণ</small><strong id="showPaid">৳০.০০</strong></div><div class="metric"><small>আদায়কৃত ভাড়া</small><strong id="showDue">৳০.০০</strong></div></div><div class="status" id="status"></div></div>
+  <div class="summary" style="margin-top:14px; grid-template-columns:repeat(3,minmax(0,1fr));">
+    <div class="metric"><small>সমন্বয়ের পর প্রদেয়</small><strong id="showNet">৳০.০০</strong></div>
+    <div class="metric"><small>নগদ + ব্যাংকে গ্রহণ</small><strong id="showPaid">৳০.০০</strong></div>
+    <div class="metric" style="background:#ecfdf5;border:1px solid #a7f3d0;"><small style="color:#047857;font-weight:700;">মালিক ১ (৫০%) কাউন্ট</small><strong id="showOwner1Count" style="color:#047857;">৳০.০০</strong></div>
+  </div></div>
 
   <div class="actions">
     <button onclick="updateAll()">হিসাব আপডেট করুন</button>
@@ -497,6 +504,8 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 </div>
 
 <script>
+const SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxqhGy1EhrRLxEebAdu_jlSu6747CyDzZtZMkg6HWk-Z_VhudpCbRQ29He1wYfzd1o/exec';
+
 function switchTab(tabId, btn){
   document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.app-menu button').forEach(el=>el.classList.remove('active'));
@@ -641,6 +650,7 @@ function archiveCurrentMonth(){
     tenantAddress: val('tenantaddress'),
     netRent: money(c.net),
     paidAmount: money(c.paid),
+    owner1Count: money(c.owner1Count),
     dateStr: new Date().toLocaleDateString('bn-BD'),
     htmlContent: {
       owner: document.getElementById('ownerReceipt').innerHTML,
@@ -749,46 +759,96 @@ let monthlyLedger=JSON.parse(localStorage.getItem('mirMarketMonthlyLedger')||'{}
 const el=id=>document.getElementById(id),val=id=>(el(id)?.value||'').trim(),num=id=>Math.max(0,Number(el(id).value)||0);
 const money=n=>'৳'+Number(n||0).toLocaleString('en-BD',{minimumFractionDigits:2,maximumFractionDigits:2});
 function monthLedgerKey(){const i=el('tenantSelect').value;return i===''?null:String(i)+'::'+val('rentmonth');}
-function calc(){const key=monthLedgerKey(),saved=key?monthlyLedger[key]:null;let rent=num('rent'),opening=num('opening'),original=num('originaldeposit'),adj=Math.min(rent*.15,opening),closing=Math.max(0,opening-adj),net=Math.max(0,rent-adj);
-if(saved){rent=saved.rent;opening=saved.opening;original=saved.original;adj=saved.adj;closing=saved.closing;net=saved.net;}
-const cash=num('cash'),bank=num('bank'),paid=cash+bank,due=net-paid;
-el('adjustment').value=money(adj);el('closing').value=money(closing);el('net').value=money(net);el('showNet').textContent=money(net);el('showPaid').textContent=money(paid);el('showDue').textContent=money(Math.abs(due))+(due<0?' অতিরিক্ত':'');
-el('status').textContent=due>0?'আদায়কৃত ভাড়া: '+money(due):due<0?'অতিরিক্ত গ্রহণ: '+money(-due):'সম্পূর্ণ ভাড়া পরিশোধ হয়েছে।';return{rent,opening,original,adj,closing,net,paid,due,cash,bank};}
-function commitMonthlyAdjustment(){const key=monthLedgerKey();if(!key){alert('আগে ভাড়াটিয়া নির্বাচন করুন।');return false;}if(!monthlyLedger[key]){const c=calc();monthlyLedger[key]={rent:c.rent,opening:c.opening,original:c.original,adj:c.adj,closing:c.closing,net:c.net,receiptNo:val('receiptno'),createdAt:new Date().toISOString()};const i=Number(el('tenantSelect').value);if(tenants[i])tenants[i].balance=c.closing;localStorage.setItem('mirMarketMonthlyLedger',JSON.stringify(monthlyLedger));localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));autoSaveLocal();}return true;}
+
+function calc(){
+  const key=monthLedgerKey(),saved=key?monthlyLedger[key]:null;
+  let rent=num('rent'),opening=num('opening'),original=num('originaldeposit');
+  
+  // জামানত সমন্বয়ের হার ২০%
+  let adj=Math.min(rent*.20,opening);
+  let closing=Math.max(0,opening-adj);
+  let net=Math.max(0,rent-adj);
+
+  if(saved){
+    rent=saved.rent;
+    opening=saved.opening;
+    original=saved.original;
+    adj=saved.adj;
+    closing=saved.closing;
+    net=saved.net;
+  }
+
+  const cash=num('cash'),bank=num('bank'),paid=cash+bank;
+  
+  // মালিক ১ এর ক্ষেত্রে নগদ এবং ব্যাংক জমা একই রাখা হলো
+  const owner1Cash = cash;
+  const owner1Bank = bank;
+  const owner1Count = net * 0.50;
+
+  el('adjustment').value=money(adj);
+  el('closing').value=money(closing);
+  el('net').value=money(net);
+  el('owner1Cash').value=money(owner1Cash);
+  el('owner1Bank').value=money(owner1Bank);
+  el('owner1Count').value=money(owner1Count) + ' (সমন্বয়ের পর প্রদেয় ভাড়ার ৫০% অংশ, মালিক ১: ' + val('owner1') + ')';
+  
+  el('showNet').textContent=money(net);
+  el('showPaid').textContent=money(paid);
+  el('showOwner1Count').textContent=money(owner1Count);
+
+  return{rent,opening,original,adj,closing,net,paid,cash,bank,owner1Cash,owner1Bank,owner1Count};
+}
+
+function commitMonthlyAdjustment(){
+  const key=monthLedgerKey();
+  if(!key){alert('আগে ভাড়াটিয়া নির্বাচন করুন।');return false;}
+  if(!monthlyLedger[key]){
+    const c=calc();
+    monthlyLedger[key]={rent:c.rent,opening:c.opening,original:c.original,adj:c.adj,closing:c.closing,net:c.net,owner1Cash:c.owner1Cash,owner1Bank:c.owner1Bank,owner1Count:c.owner1Count,receiptNo:val('receiptno'),createdAt:new Date().toISOString()};
+    const i=Number(el('tenantSelect').value);
+    if(tenants[i])tenants[i].balance=c.closing;
+    localStorage.setItem('mirMarketMonthlyLedger',JSON.stringify(monthlyLedger));
+    localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));
+    autoSaveLocal();
+  }
+  return true;
+}
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
-function commonTable(c){return `<table style="width:100%;border-collapse:collapse;border:1.5px solid #1e3a8a;margin:6px 0;">
-<tr style="background-color:#e0f2fe;"><th style="border:1.5px solid #1e3a8a;padding:8px 12px;text-align:left;color:#0369a1;font-weight:bold;font-size:14px;">বিবরণ</th><th style="border:1.5px solid #1e3a8a;padding:8px 12px;text-align:left;color:#0369a1;font-weight:bold;font-size:14px;">তথ্য</th></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('rentmonth'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">রসিদ নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('receiptno'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ভাড়াটিয়ার নাম</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('tenant'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ঠিকানা</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('tenantaddress'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">মোবাইল</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('tenantmobile'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">জমির পরিমাণ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">২০৭ শতংশ</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">দাগ / খতিয়ান</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('dag'))} / ${esc(val('khatian'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">জমাখারিজ খতিয়ান</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${esc(val('mutation'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">মোট মাসিক ভাড়া</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.rent)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">মূল মোট জামানত</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.original)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">জামানত (মাসের শুরুতে)</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.opening)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">জামানত থেকে সমন্বয় (১৫%)</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.adj)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">সমন্বয়ের পর জামানত</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.closing)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;"><b>সমন্বয়ের পর প্রদেয় ভাড়া</b></td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;"><b>${money(c.net)}</b></td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">নগদে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.cash)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">ব্যাংকে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.bank)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">মোট গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(c.paid)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">আদায়কৃত ভাড়া</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:14px;">${money(Math.abs(c.due))}${c.due<0?' (অতিরিক্ত গ্রহণ)':''}</td></tr></table>`;}
+function commonTable(c){return `<table style="width:100%;border-collapse:collapse;border:1.5px solid #1e3a8a;margin:5px 0;">
+<tr style="background-color:#e0f2fe;"><th style="border:1.5px solid #1e3a8a;padding:7px 10px;text-align:left;color:#0369a1;font-weight:bold;font-size:13.5px;">বিবরণ</th><th style="border:1.5px solid #1e3a8a;padding:7px 10px;text-align:left;color:#0369a1;font-weight:bold;font-size:13.5px;">তথ্য</th></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('rentmonth'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">রসিদ নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('receiptno'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">ভাড়াটিয়ার নাম</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('tenant'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">ঠিকানা</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('tenantaddress'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">মোবাইল</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('tenantmobile'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">জমির পরিমাণ</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">২০৭ শতংশ</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">দাগ / খতিয়ান</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('dag'))} / ${esc(val('khatian'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">জমাখারিজ খতিয়ান</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('mutation'))}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">মোট মাসিক ভাড়া</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.rent)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">মূল মোট জামানত</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.original)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">জামানত (মাসের শুরুতে)</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.opening)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">জামানত থেকে সমন্বয় (২০%)</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.adj)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">সমন্বয়ের পর জামানত</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.closing)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;"><b>সমন্বয়ের পর প্রদেয় ভাড়া</b></td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;"><b>${money(c.net)}</b></td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">নগদে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.cash)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>মালিক ১ নগদে গ্রহণ</b></td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>${money(c.owner1Cash)}</b></td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">ব্যাংকে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.bank)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>মালিক ১ ব্যাংকে জমা/গ্রহণ</b></td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>${money(c.owner1Bank)}</b></td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">মোট গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.paid)}</td></tr>
+<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>মালিক ১ (৫০% অংশ - প্রদেয় ভাড়ার ওপর)</b></td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>${esc(val('owner1'))} (${money(c.owner1Count)})</b></td></tr></table>`;}
 
 function ownerInfo(){
-  return `<div class="land" style="font-size:13.5px;line-height:1.5;background:#f8fafc;padding:9px 12px;border-radius:6px;border-left:4px solid #0284c7;margin-bottom:8px;color:#334155;">
-    <b>মালিক ১:</b> ${esc(val('owner1'))}<br><b>মোবাইল:</b> ${esc(val('owner1mobile'))} — ঠিকানা: ${esc(val('owner1address'))}<br>
-    <b>মালিক ২:</b> ${esc(val('owner2'))}<br><b>মোবাইল:</b> ${esc(val('owner2mobile'))} — ঠিকানা: ${esc(val('owner2address'))}
+  return `<div class="land" style="font-size:13px;line-height:1.45;background:#f8fafc;padding:8px 12px;border-radius:6px;border-left:4px solid #0284c7;margin-bottom:6px;color:#334155;">
+    <b>মালিক ১ (ভাড়া কাউন্ট ৫০%):</b> ${esc(val('owner1'))} — মোবাইল: ${esc(val('owner1mobile'))}<br>ঠিকানা: ${esc(val('owner1address'))}<br>
+    <b>মালিক ২:</b> ${esc(val('owner2'))} — মোবাইল: ${esc(val('owner2mobile'))}<br>ঠিকানা: ${esc(val('owner2address'))}
   </div>`;
 }
 
 const termsNoteHtml = `<div class="terms-note">সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ সিস্টেম থেকে তৈরি, যাহার সকল শর্ত মীর মার্কেট এবং ল্যান্ড মালিক।</div>`;
 
 function getReceiptLogoHtml(){
-  return `<svg viewBox="0 0 150 110" width="70" height="55" xmlns="http://www.w3.org/2000/svg">
+  return `<svg viewBox="0 0 150 110" width="65" height="50" xmlns="http://www.w3.org/2000/svg">
     <rect x="15" y="25" width="120" height="75" rx="6" fill="#cbd5e1" opacity="0.35"/>
     <rect x="25" y="35" width="22" height="55" rx="3" fill="#0f2942" opacity="0.12"/>
     <rect x="55" y="35" width="22" height="55" rx="3" fill="#0f2942" opacity="0.12"/>
@@ -806,41 +866,43 @@ function buildReceipts(){
   const c=calc();
   const today = new Date();
   const autoDateStr = today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-  const timestampHtml = `<div class="print-timestamp" style="text-align:right;font-size:12px;color:#475569;margin-bottom:4px;font-weight:600;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>`;
+  const timestampHtml = `<div class="print-timestamp" style="text-align:right;font-size:11.5px;color:#475569;margin-bottom:3px;font-weight:600;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>`;
   
   const standardReceiptHeader = timestampHtml + `
-    <div style="display:flex;align-items:center;gap:15px;margin-bottom:6px;">
+    <div style="display:flex;align-items:center;gap:15px;margin-bottom:5px;">
       <div>${getReceiptLogoHtml()}</div>
       <div style="flex-grow:1;text-align:center;">
-        <h2 style="color:#1e3a8a;font-size:24px;margin:0 0 2px;font-weight:800;">মীর মার্কেট এবং ল্যান্ড</h2>
-        <div class="market-address" style="font-weight:600;color:#475569;font-size:14px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
+        <h2 style="color:#1e3a8a;font-size:22px;margin:0 0 2px;font-weight:800;">মীর মার্কেট এবং ল্যান্ড</h2>
+        <div class="market-address" style="font-weight:600;color:#475569;font-size:13.5px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
       </div>
     </div>` + ownerInfo();
 
   const bankReceiptHeader = timestampHtml + `
-    <div style="display:flex;align-items:center;gap:15px;margin-bottom:6px;padding-left:45px;">
+    <div style="display:flex;align-items:center;gap:15px;margin-bottom:5px;padding-left:45px;">
       <div>${getReceiptLogoHtml()}</div>
       <div style="flex-grow:1;text-align:center;padding-right:90px;">
-        <h2 style="color:#1e3a8a;font-size:24px;margin:0 0 2px;font-weight:800;">মীর মার্কেট এবং ল্যান্ড</h2>
-        <div class="market-address" style="font-weight:600;color:#475569;font-size:14px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
+        <h2 style="color:#1e3a8a;font-size:22px;margin:0 0 2px;font-weight:800;">মীর মার্কেট এবং ল্যান্ড</h2>
+        <div class="market-address" style="font-weight:600;color:#475569;font-size:13.5px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
       </div>
     </div>` + ownerInfo();
 
-  el('ownerReceipt').innerHTML=standardReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:6px 0 8px;color:#047857;font-size:15px;background:#ecfdf5;padding:6px;border-radius:6px;border:1px dashed #34d399;">মালিকের কপি — মাসিক ভাড়া আদায়ের হিসাব</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:40px;margin-bottom:12px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">ভাড়া গ্রহণকারীর স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">হিসাব প্রস্তুতকারীর স্বাক্ষর</div></div>`+termsNoteHtml;
+  el('ownerReceipt').innerHTML=standardReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:5px 0 6px;color:#047857;font-size:14.5px;background:#ecfdf5;padding:5px;border-radius:6px;border:1px dashed #34d399;">মালিকের কপি — মাসিক ভাড়া আদায়ের হিসাব (মালিক ১ - ৫০% কাউন্ট)</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:25px;margin-bottom:8px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">ভাড়া গ্রহণকারীর স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">হিসাব প্রস্তুতকারীর স্বাক্ষর</div></div>`+termsNoteHtml;
 
-  el('tenantReceipt').innerHTML=standardReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:6px 0 8px;color:#047857;font-size:15px;background:#ecfdf5;padding:6px;border-radius:6px;border:1px dashed #34d399;">ভাড়াটিয়ার কপি — মাসিক ভাড়া রসিদ</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:40px;margin-bottom:12px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">ভাড়াটিয়ার স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">মালিক/প্রতিনিধির স্বাক্ষর</div></div>`+termsNoteHtml;
+  el('tenantReceipt').innerHTML=standardReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:5px 0 6px;color:#047857;font-size:14.5px;background:#ecfdf5;padding:5px;border-radius:6px;border:1px dashed #34d399;">ভাড়াটিয়ার কপি — মাসিক ভাড়া রসিদ</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:25px;margin-bottom:8px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">ভাড়াটিয়ার স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">মালিক/প্রতিনিধির স্বাক্ষর</div></div>`+termsNoteHtml;
 
-  el('bankReceipt').innerHTML=bankReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:4px 0 6px;color:#047857;font-size:15px;background:#ecfdf5;padding:6px;border-radius:6px;border:1px dashed #34d399;">ব্যাংক জমার রসিদ</div>
+  el('bankReceipt').innerHTML=bankReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:4px 0 6px;color:#047857;font-size:14.5px;background:#ecfdf5;padding:5px;border-radius:6px;border:1px dashed #34d399;">ব্যাংক জমার রসিদ</div>
   <table style="width:100%;border-collapse:collapse;border:1.5px solid #1e3a8a;margin:4px 0;">
-  <tr><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">${esc(val('rentmonth'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">রসিদ নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;"><b>${esc(val('receiptno'))}</b></td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">ভাড়াটিয়ার নাম</td><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">${esc(val('tenant'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">ব্যাংকের নাম</td><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">${esc(val('bankname'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">শাখা</td><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">${esc(val('branch'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">জমার তারিখ</td><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">${esc(val('bankdate'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">ডিপোজিট/ট্রানজেকশন নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;">${esc(val('bankref'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;"><b>ব্যাংকে জমার পরিমাণ</b></td><td style="border:1.5px solid #1e3a8a;padding:9px 12px;font-size:14px;"><b>${money(c.bank)}</b></td></tr></table>
-  <div style="font-size:13.5px;margin:3px 0 0;font-weight:600;color:#334155;">জমির বিবরণ: ২০৭ শতংশ; দাগ: ${esc(val('dag'))}; খতিয়ান: ${esc(val('khatian'))}; জমাখারিজ খতিয়ান: ${esc(val('mutation'))}</div><div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:30px;margin-bottom:8px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">জমাদানকারীর স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:6px;font-weight:700;font-size:14px;">ব্যাংক Authorities সিল ও স্বাক্ষর</div></div>`+termsNoteHtml;
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('rentmonth'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">রসিদ নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;"><b>${esc(val('receiptno'))}</b></td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">ভাড়াটিয়ার নাম</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('tenant'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">ব্যাংকের নাম</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('bankname'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">শাখা</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('branch'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">জমার তারিখ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('bankdate'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">ডিপোজিট/ট্রানজেকশন নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('bankref'))}</td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;"><b>ব্যাংকে জমার পরিমাণ</b></td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;"><b>${money(c.bank)}</b></td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;background-color:#ecfdf5;"><b>মালিক ১ ব্যাংকে জমা/গ্রহণ</b></td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;background-color:#ecfdf5;"><b>${money(c.owner1Bank)}</b></td></tr>
+  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;background-color:#ecfdf5;"><b>হিসাব প্রাপক (মালিক ১ - ৫০%)</b></td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;background-color:#ecfdf5;"><b>${esc(val('owner1'))} (${money(c.owner1Count)})</b></td></tr></table>
+  <div style="font-size:13px;margin:3px 0 0;font-weight:600;color:#334155;">জমির বিবরণ: ২০৭ শতংশ; দাগ: ${esc(val('dag'))}; খতিয়ান: ${esc(val('khatian'))}; জমাখারিজ খতিয়ান: ${esc(val('mutation'))}</div><div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:25px;margin-bottom:8px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">জমাদানকারীর স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">ব্যাংক কর্তৃপক্ষের সিল ও স্বাক্ষর</div></div>`+termsNoteHtml;
 }
 
 function autoSaveLocal(){
@@ -957,19 +1019,16 @@ function uploadToGoogleDrive(){
   };
 
   const fileName = "Mir_Market_Cloud_Backup_" + new Date().toISOString().slice(0,10) + ".json";
-  
-  // আপনার গুগল স্ক্রিপ্ট ওয়েব অ্যাপ লিংক এখানে দিন
-  const scriptUrl = 'https://script.google.com/macros/s/AKfycbxn6Jp1AqWyL6JHTYFednggHsxsxd8b8RY1MQq0DI6PZegdzy5saRS2RzC0k5gLHyY/exec';
 
   if(!confirm('আপনি কি আপনার সমস্ত ডেটা সরাসরি গুগল ড্রাইভে ব্যাকআপ করতে চান?')) return;
 
-  fetch(scriptUrl, {
+  fetch(SCRIPT_WEB_APP_URL, {
     method: 'POST',
     mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ type: "FULL_BACKUP", fileName: fileName, backupData: fullBackupData })
   }).then(() => {
-    alert('✅ আপনার সমস্ত ডেটা সফলভাবে গুগল ড্রাইভে ব্যাকআপ করা হয়েছে!');
+    alert('✅ আপনার সমস্ত ডেটা সফলভাবে গুগল ড্রাইভে ব্যাকআপের জন্য পাঠানো হয়েছে! গুগল ড্রাইভের My Drive চেক করুন।');
   }).catch(err => {
     alert('❌ ড্রাইভে ব্যাকআপ করতে সমস্যা হয়েছে। ইন্টারনেট কানেকশন চেক করুন।');
   });
@@ -1001,9 +1060,14 @@ function selectTenant(index){
   el('tenantmobile').value=t.mobile;
   el('tenantaddress').value=t.address;
   el('originaldeposit').value=t.deposit;
-  el('opening').value=(t.balance!==undefined?t.balance:t.deposit);
-  if(t.rent !== undefined){
-    el('rent').value = t.rent;
+  
+  const monthKey = index + '::' + val('rentmonth');
+  if(monthlyLedger[monthKey]){
+    el('opening').value = monthlyLedger[monthKey].opening;
+    el('rent').value = monthlyLedger[monthKey].rent;
+  } else {
+    el('opening').value = (t.balance!==undefined?t.balance:t.deposit);
+    el('rent').value = (t.rent!==undefined?t.rent:0);
   }
   updateAll();
 }
@@ -1126,12 +1190,10 @@ function sendApiEmail(){
   statusEl.textContent = '⏳ বার্তা পাঠানো হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...';
   document.getElementById('sendEmailBtn').disabled = true;
 
-  const scriptUrl = 'https://script.google.com/macros/s/AKfycbxn6Jp1AqWyL6JHTYFednggHsxsxd8b8RY1MQq0DI6PZegdzy5saRS2RzC0k5gLHyY/exec';
-
-  fetch(scriptUrl, {
+  fetch(SCRIPT_WEB_APP_URL, {
     method: 'POST',
     mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ name, subject, message })
   }).then(() => {
     statusEl.style.color = '#047857';
