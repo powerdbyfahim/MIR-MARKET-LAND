@@ -13,6 +13,10 @@
 input,textarea,select{width:100%;padding:10px;border:1px solid #bac6d4;border-radius:7px;font:inherit;background:white}textarea{min-height:65px;resize:vertical}
 .section-title{color:#164e83;border-bottom:1px solid var(--line);padding-bottom:7px;margin-bottom:13px;font-size:20px;font-weight:800}.full{grid-column:1/-1}
 
+.section-header-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:13px;}
+.section-header-row .section-title{border-bottom:0;padding-bottom:0;margin-bottom:0;}
+.header-action-group{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+
 .app-menu{display:flex;gap:10px;background:#174a78;padding:12px 18px;border-radius:14px;margin-bottom:22px;box-shadow:0 4px 15px rgba(23,74,120,0.2);flex-wrap:wrap;}
 .app-menu button{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer;transition:all 0.2s}
 .app-menu button:hover,.app-menu button.active{background:#fff;color:#174a78;border-color:#fff}
@@ -181,6 +185,58 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 .banner-text-side .b-sub { font-size: 14px; color: #c5e9fa; }
 .banner-building-graphic { position: absolute; right: 0; bottom: 0; top: 0; width: 320px; pointer-events: none; display: flex; align-items: flex-end; }
 @media(max-width:760px){.banner-text-side{max-width:100%}.banner-building-graphic{display:none}}
+
+/* চুক্তিপত্র প্রিভিউ বক্স */
+.agreement-preview-box{
+  margin-top:20px;
+  border:1.5px solid var(--line);
+  border-radius:10px;
+  padding:16px;
+  background:#f8fafc;
+}
+.agreement-preview-box img{
+  max-width:100%;
+  max-height:520px;
+  border-radius:8px;
+  border:1px solid #cbd5e1;
+  display:block;
+  margin:10px auto;
+}
+.agreement-preview-box iframe{
+  width:100%;
+  height:520px;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  background:#fff;
+}
+
+/* চুক্তির শর্তসমূহ কার্ড */
+.term-card{
+  background:#f8fafc;
+  border:1px solid #cbd5e1;
+  border-left:4px solid #174a78;
+  border-radius:8px;
+  padding:12px 15px;
+  margin-bottom:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.term-card-text{
+  font-size:15px;
+  line-height:1.6;
+  color:#1e293b;
+  flex:1;
+  min-width:240px;
+}
+.term-card-actions{
+  display:flex;
+  gap:6px;
+  flex-shrink:0;
+  flex-wrap:wrap;
+}
 </style>
 </head>
 <body>
@@ -298,6 +354,8 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   <button type="button" onclick="switchTab('expenseTab', this)">📉 ২. কোন খাতে খরচ (Expense)</button>
   <button type="button" onclick="switchTab('monthlySummaryTab', this)">📊 ৩. মাসিক আয়-ব্যয় সংরক্ষণ</button>
   <button type="button" onclick="switchTab('archiveTab', this)">📁 পূর্বের রসিদ সংরক্ষণ (Archive)</button>
+  <button type="button" onclick="switchTab('agreementTab', this)">📜 ভাড়াটিয়া চুক্তিপত্র</button>
+  <button type="button" onclick="switchTab('termsTab', this)">📋 ভাড়াটিয়া চুক্তির শর্তসমূহ</button>
 </div>
 
 <!--- TAB 1 --->
@@ -372,13 +430,16 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
       </div>
       <div><label>পরিমাণ (টাকা)</label><input type="number" id="incAmount" min="0" step="0.01" placeholder="০.০০"></div>
       <div><label>বিবরণ / নোট</label><input type="text" id="incNote" placeholder="বিবরণ দিন"></div>
-      <div class="full"><button type="button" onclick="addIncomeRecord()">+ আয় এন্ট্রি যোগ করুন</button></div>
+      <div class="full" style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" id="saveIncBtn" onclick="addIncomeRecord()">+ আয় এন্ট্রি যোগ করুন</button>
+        <button type="button" class="secondary" id="cancelIncEditBtn" style="display:none;" onclick="cancelEditIncome()">সম্পাদনা বাতিল</button>
+      </div>
     </div>
     
     <div style="margin-top:25px;" id="incomePrintArea">
       <h3 style="color:#174a78;margin-bottom:10px;">আয়ের তালিকা</h3>
       <table class="data-table">
-        <thead><tr><th>তারিখ</th><th>খাত</th><th>বিবরণ</th><th>টাকা</th><th>অ্যাকশন</th></tr></thead>
+        <thead><tr><th>তারিখ</th><th>খাত</th><th>বিবরণ</th><th>টাকা</th><th>সম্পাদনা / মুছুন</th></tr></thead>
         <tbody id="incomeTableBody"></tbody>
       </table>
       <div style="margin-top:15px;font-weight:bold;font-size:16px;text-align:right;color:#174a78;" id="totalIncomeDisplay">মোট আয়: ৳০.০০</div>
@@ -406,13 +467,16 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
       </div>
       <div><label>পরিমাণ (টাকা)</label><input type="number" id="expAmount" min="0" step="0.01" placeholder="০.০০"></div>
       <div><label>বিবরণ / নোট</label><input type="text" id="expNote" placeholder="খরচের বিবরণ দিন"></div>
-      <div class="full"><button type="button" class="danger" onclick="addExpenseRecord()">+ খরচ এন্ট্রি যোগ করুন</button></div>
+      <div class="full" style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="danger" id="saveExpBtn" onclick="addExpenseRecord()">+ খরচ এন্ট্রি যোগ করুন</button>
+        <button type="button" class="secondary" id="cancelExpEditBtn" style="display:none;" onclick="cancelEditExpense()">সম্পাদনা বাতিল</button>
+      </div>
     </div>
 
     <div style="margin-top:25px;" id="expensePrintArea">
       <h3 style="color:#b42318;margin-bottom:10px;">খরচের তালিকা</h3>
       <table class="data-table">
-        <thead><tr><th>তারিখ</th><th>খরচের খাত</th><th>বিবরণ</th><th>টাকা</th><th>অ্যাকশন</th></tr></thead>
+        <thead><tr><th>তারিখ</th><th>খরচের খাত</th><th>বিবরণ</th><th>টাকা</th><th>সম্পাদনা / মুছুন</th></tr></thead>
         <tbody id="expenseTableBody"></tbody>
       </table>
       <div style="margin-top:15px;font-weight:bold;font-size:16px;text-align:right;color:#b42318;" id="totalExpenseDisplay">মোট খরচ: ৳০.০০</div>
@@ -427,14 +491,17 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="monthlySummaryTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">📊 ৩. মাসিক আয় ও ব্যয় সংরক্ষণ (Monthly Income & Expense Summary)</h2>
-    <p class="note">এখানে আপনি প্রতি মাসের মোট আয় এবং মোট খরচ আলাদাভাবে সংরক্ষণ করতে পারবেন।</p>
+    <p class="note">এখানে আপনি প্রতি মাসের মোট আয় এবং মোট খরচ আলাদাভাবে সংরক্ষণ, এডিট ও মুছতে পারবেন।</p>
     
     <div class="grid" style="margin-top:15px; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid #cbd5e1;">
       <div><label>মাসের নাম (যেমন: নভেম্বর ২০২৬)</label><input type="text" id="summaryMonth" placeholder="যেমন: নভেম্বর ২০২৬"></div>
       <div><label>উক্ত মাসের মোট আয় (টাকা)</label><input type="number" id="summaryTotalInc" min="0" step="0.01" placeholder="০.০০"></div>
       <div><label>উক্ত মাসের মোট খরচ (টাকা)</label><input type="number" id="summaryTotalExp" min="0" step="0.01" placeholder="০.০০"></div>
       <div><label>নোট / মন্তব্য</label><input type="text" id="summaryNote" placeholder="সারাংশ নোট দিন"></div>
-      <div class="full"><button type="button" class="green" onclick="saveMonthlySummary()">+ এই মাসের আয়-ব্যয় সংরক্ষণ করুন</button></div>
+      <div class="full" style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="green" id="saveSummaryBtn" onclick="saveMonthlySummary()">+ এই মাসের আয়-ব্যয় সংরক্ষণ করুন</button>
+        <button type="button" class="secondary" id="cancelSummaryEditBtn" style="display:none;" onclick="cancelEditSummary()">সম্পাদনা বাতিল</button>
+      </div>
     </div>
 
     <div style="margin-top:25px;" id="monthlySummaryPrintArea">
@@ -447,7 +514,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
             <th>মোট খরচ</th>
             <th>নিট লাভ/অবশিষ্ট</th>
             <th>নোট</th>
-            <th>অ্যাকশন</th>
+            <th>সম্পাদনা / মুছুন</th>
           </tr>
         </thead>
         <tbody id="monthlySummaryTableBody">
@@ -465,7 +532,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="archiveTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">📁 পূর্বের রসিদ ও মাসভিত্তিক আর্কাইভ (Saved Receipts Archive)</h2>
-    <p class="note">এখানে আপনার সংরক্ষিত রসিদগুলো মাস এবং ভাড়াটিয়ার নাম অনুযায়ী সংরক্ষিত রয়েছে। যেকোনো রসিদ সরাসরি প্রিন্ট বা দেখতে পারবেন।</p>
+    <p class="note">এখানে আপনার সংরক্ষিত রসিদগুলো মাস এবং ভাড়াটিয়ার নাম অনুযায়ী সংরক্ষিত রয়েছে। যেকোনো রসিদ সরাসরি প্রিন্ট বা মুছতে পারবেন।</p>
     
     <div style="margin-top:15px;">
       <table class="data-table">
@@ -477,13 +544,107 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
             <th>প্রদেয় ভাড়া</th>
             <th>জমা পরিমাণ</th>
             <th>সংরক্ষণ তারিখ</th>
-            <th>অ্যাকশন</th>
+            <th>অ্যাকশন / মুছুন</th>
           </tr>
         </thead>
         <tbody id="archiveTableBody">
           <tr><td colspan="7" style="text-align:center;color:#64748b">কোনো আর্কাইভ করা রসিদ নেই</td></tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!--- TAB 6: ভাড়াটিয়া চুক্তিপত্র --->
+<div id="agreementTab" class="tab-content">
+  <div class="panel">
+    <h2 class="section-title">📜 ভাড়াটিয়া চুক্তিপত্র সংরক্ষণ ও ব্যবস্থাপনা (Tenancy Agreements)</h2>
+    <p class="note">এখানে ভাড়াটিয়াদের চুক্তিপত্রের কপি (PDF অথবা ছবি যেমন JPG/PNG) আপলোড, এডিট/সম্পাদনা এবং মুছতে পারবেন।</p>
+
+    <div class="grid" style="margin-top:15px; background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
+      <div>
+        <label>ভাড়াটিয়া নির্বাচন করুন (অপশনাল)</label>
+        <select id="agrTenantSelect" onchange="onAgreementTenantChange(this.value)">
+          <option value="">— তালিকা থেকে ভাড়াটিয়া নিন —</option>
+        </select>
+      </div>
+      <div>
+        <label>ভাড়াটিয়ার নাম / দোকান বা রুম নম্বর *</label>
+        <input type="text" id="agrTenantName" placeholder="যেমন: করিম ট্রেডার্স - দোকান নং ২">
+      </div>
+      <div>
+        <label>চুক্তির তারিখ</label>
+        <input type="date" id="agrDate">
+      </div>
+      <div>
+        <label id="agrFileLabel">চুক্তিপত্রের ফাইল নির্বাচন করুন (PDF, JPG, PNG) *</label>
+        <input type="file" id="agrFileInput" accept=".pdf,image/*">
+      </div>
+      <div class="full">
+        <label>চুক্তিপত্রের সংক্ষিপ্ত বিবরণ / মেয়াদ / নোট</label>
+        <textarea id="agrNote" placeholder="যেমন: ১ বছরের চুক্তি, জামানত সমন্বয় শর্ত ইত্যাদি লিখুন..."></textarea>
+      </div>
+      <div class="full" style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="green" id="saveAgrBtn" onclick="uploadAgreement()">+ চুক্তিপত্র আপলোড ও সংরক্ষণ করুন</button>
+        <button type="button" class="secondary" id="cancelAgrEditBtn" style="display:none;" onclick="cancelEditAgreement()">সম্পাদনা বাতিল</button>
+      </div>
+    </div>
+
+    <div style="margin-top:25px;">
+      <h3 style="color:#174a78;margin-bottom:10px;">সংরক্ষিত ভাড়াটিয়া চুক্তিপত্রের তালিকা</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ক্রমিক</th>
+            <th>ভাড়াটিয়া / দোকান</th>
+            <th>চুক্তির তারিখ</th>
+            <th>ফাইলের নাম</th>
+            <th>নোট</th>
+            <th>সম্পাদনা / মুছুন</th>
+          </tr>
+        </thead>
+        <tbody id="agreementTableBody">
+          <tr><td colspan="6" style="text-align:center;color:#64748b">কোনো চুক্তিপত্র আপলোড করা নেই</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="agreementPreviewSection" class="agreement-preview-box" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+        <h3 id="agreementPreviewTitle" style="margin:0;color:#164e83;">চুক্তিপত্র প্রিভিউ</h3>
+        <button type="button" class="secondary" style="padding:6px 12px;font-size:13px;" onclick="closeAgreementPreview()">বন্ধ করুন</button>
+      </div>
+      <div id="agreementPreviewBody" style="margin-top:10px;"></div>
+    </div>
+  </div>
+</div>
+
+<!--- TAB 7: ভাড়াটিয়া চুক্তির শর্তসমূহ --->
+<div id="termsTab" class="tab-content">
+  <div class="panel">
+    <div class="section-header-row">
+      <h2 class="section-title">📋 ভাড়াটিয়া চুক্তির শর্তসমূহ</h2>
+      <div class="header-action-group">
+        <button type="button" class="secondary" style="padding:6px 12px;font-size:13px;" onclick="editFirstTermFromHeader()">সম্পাদনা</button>
+        <button type="button" class="secondary" style="padding:6px 12px;font-size:13px;" onclick="editFirstTermFromHeader()">এডিট</button>
+        <button type="button" class="danger" style="padding:6px 12px;font-size:13px;" onclick="clearAllAgreementTerms()">মুছুন</button>
+      </div>
+    </div>
+    <p class="note">এখানে মীর মার্কেট এবং ল্যান্ড-এর ভাড়াটিয়া চুক্তির নিয়মাবলি ও শর্তসমূহ যোগ, সম্পাদনা / এডিট, মুছুন এবং প্রিন্ট/PDF করতে পারবেন।</p>
+
+    <div style="background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1; margin-bottom:20px;">
+      <label id="termFormLabel">নতুন শর্ত যোগ করুন</label>
+      <textarea id="termInput" placeholder="যেমন: প্রতি মাসের ৫ তারিখের মধ্যে চলতি মাসের ভাড়া নগদে বা ব্যাংকের মাধ্যমে পরিশোধ করতে হবে..."></textarea>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="green" id="saveTermBtn" onclick="saveAgreementTerm()">+ শর্ত সংরক্ষণ করুন</button>
+        <button type="button" class="secondary" id="cancelEditTermBtn" style="display:none;" onclick="cancelEditTerm()">সম্পাদনা বাতিল</button>
+      </div>
+    </div>
+
+    <div id="termsListContainer"></div>
+
+    <div class="actions" style="margin-top:18px;">
+      <button type="button" class="green" onclick="printAgreementTerms()">🖨️ চুক্তির শর্তসমূহ প্রিন্ট / PDF</button>
     </div>
   </div>
 </div>
@@ -513,12 +674,37 @@ function switchTab(tabId, btn){
   btn.classList.add('active');
   if(tabId === 'archiveTab') renderArchiveTable();
   if(tabId === 'monthlySummaryTab') renderMonthlySummaryTable();
+  if(tabId === 'agreementTab'){ refreshAgreementTenantDropdown(); renderAgreementTable(); }
+  if(tabId === 'termsTab'){ renderTermsList(); }
 }
 
 let incomes = JSON.parse(localStorage.getItem('mirMarketIncomes')||'[]');
 let expenses = JSON.parse(localStorage.getItem('mirMarketExpenses')||'[]');
 let archives = JSON.parse(localStorage.getItem('mirMarketArchives')||'[]');
 let monthlySummaries = JSON.parse(localStorage.getItem('mirMarketMonthlySummaries')||'[]');
+let agreements = JSON.parse(localStorage.getItem('mirMarketAgreements')||'[]');
+
+let editingIncomeIndex = -1;
+let editingExpenseIndex = -1;
+let editingSummaryIndex = -1;
+let editingAgreementIndex = -1;
+
+const defaultAgreementTerms = [
+  'প্রতি মাসের ১০ তারিখের মধ্যে নির্ধারিত মাসিক ভাড়া নগদে অথবা মালিকের নির্ধারিত ব্যাংক হিসাবে পরিশোধ করতে হবে।',
+  'অগ্রিম জামানতের টাকা প্রতি মাসের মোট ভাড়ার ২০% হারে স্বয়ংক্রিয়ভাবে সমন্বয় করা হবে এবং অবশিষ্ট ৮০% ভাড়া নগদ বা ব্যাংকে পরিশোধযোগ্য।',
+  'মালিক পক্ষের লিখিত অনুমতি ব্যতীত ভাড়াটিয়া দোকান বা জায়গা অন্য কোনো ব্যক্তির নিকট সাব-লেট বা হস্তান্তর করতে পারবেন না।',
+  'দোকান বা প্রতিষ্ঠানের মাসিক বিদ্যুৎ বিল, পানি বিল ও অন্যান্য ইউটিলিটি চার্জ ভাড়াটিয়াকে নিজ দায়িত্বে পরিশোধ করতে হবে।',
+  'মার্কেটের মূল অবকাঠামো বা দেয়ালের কোনো প্রকার পরিবর্তন বা পরিবর্ধন করতে হলে মালিক পক্ষের পূর্বানুমতি নিতে হবে।',
+  'দোকান বা জায়গা ছেড়ে দিতে চাইলে অন্তত ২ (দুই) মাস পূর্বে উভয় পক্ষকে লিখিতভাবে অবহিত করতে হবে।',
+  'মার্কেটের অভ্যন্তরে কোনো প্রকার অবৈধ, বেআইনি বা জননিরাপত্তার জন্য ক্ষতিকর মালামাল মজুত বা ব্যবসা পরিচালনা করা সম্পূর্ণ নিষিদ্ধ।'
+];
+
+let agreementTerms = JSON.parse(localStorage.getItem('mirMarketAgreementTerms')||'null');
+if(!Array.isArray(agreementTerms)){
+  agreementTerms = [...defaultAgreementTerms];
+  localStorage.setItem('mirMarketAgreementTerms', JSON.stringify(agreementTerms));
+}
+let editingTermIndex = -1;
 
 function renderIncomeExpense(){
   const incBody = document.getElementById('incomeTableBody');
@@ -528,7 +714,17 @@ function renderIncomeExpense(){
   let totalInc = 0;
   incomes.forEach((item, idx) => {
     totalInc += Number(item.amount);
-    incBody.innerHTML += `<tr><td>${item.date}</td><td>${item.cat}</td><td>${item.note||'-'}</td><td>৳${Number(item.amount).toLocaleString('en-BD',{minimumFractionDigits:2})}</td><td><button class="danger" style="padding:4px 8px;font-size:12px" onclick="deleteIncome(${idx})">মুছুন</button></td></tr>`;
+    incBody.innerHTML += `
+      <tr>
+        <td>${esc(item.date)}</td>
+        <td>${esc(item.cat)}</td>
+        <td>${esc(item.note||'-')}</td>
+        <td>৳${Number(item.amount).toLocaleString('en-BD',{minimumFractionDigits:2})}</td>
+        <td style="white-space:nowrap;">
+          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editIncome(${idx})">সম্পাদনা / এডিট</button>
+          <button type="button" class="danger" style="padding:4px 8px;font-size:12px" onclick="deleteIncome(${idx})">মুছুন</button>
+        </td>
+      </tr>`;
   });
   document.getElementById('totalIncomeDisplay').textContent = 'মোট আয়: ৳' + totalInc.toLocaleString('en-BD',{minimumFractionDigits:2,maximumFractionDigits:2});
 
@@ -536,7 +732,17 @@ function renderIncomeExpense(){
   let totalExp = 0;
   expenses.forEach((item, idx) => {
     totalExp += Number(item.amount);
-    expBody.innerHTML += `<tr><td>${item.date}</td><td>${item.cat}</td><td>${item.note||'-'}</td><td>৳${Number(item.amount).toLocaleString('en-BD',{minimumFractionDigits:2})}</td><td><button class="danger" style="padding:4px 8px;font-size:12px" onclick="deleteExpense(${idx})">মুছুন</button></td></tr>`;
+    expBody.innerHTML += `
+      <tr>
+        <td>${esc(item.date)}</td>
+        <td>${esc(item.cat)}</td>
+        <td>${esc(item.note||'-')}</td>
+        <td>৳${Number(item.amount).toLocaleString('en-BD',{minimumFractionDigits:2})}</td>
+        <td style="white-space:nowrap;">
+          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editExpense(${idx})">সম্পাদনা / এডিট</button>
+          <button type="button" class="danger" style="padding:4px 8px;font-size:12px" onclick="deleteExpense(${idx})">মুছুন</button>
+        </td>
+      </tr>`;
   });
   document.getElementById('totalExpenseDisplay').textContent = 'মোট খরচ: ৳' + totalExp.toLocaleString('en-BD',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
@@ -547,16 +753,46 @@ function addIncomeRecord(){
   const amount = document.getElementById('incAmount').value;
   const note = document.getElementById('incNote').value;
   if(!date || !amount){ alert('তারিখ ও পরিমাণ লিখুন।'); return; }
-  incomes.push({date, cat, amount, note});
+
+  if(editingIncomeIndex >= 0){
+    incomes[editingIncomeIndex] = {date, cat, amount, note};
+    editingIncomeIndex = -1;
+    document.getElementById('saveIncBtn').textContent = '+ আয় এন্ট্রি যোগ করুন';
+    document.getElementById('cancelIncEditBtn').style.display = 'none';
+    alert('আয়ের তথ্য সফলভাবে সম্পাদনা করা হয়েছে।');
+  } else {
+    incomes.push({date, cat, amount, note});
+    alert('আয় সংরক্ষিত হয়েছে।');
+  }
   localStorage.setItem('mirMarketIncomes', JSON.stringify(incomes));
   document.getElementById('incAmount').value=''; document.getElementById('incNote').value='';
   renderIncomeExpense();
-  alert('আয় সংরক্ষিত হয়েছে।');
 }
+
+function editIncome(idx){
+  const item = incomes[idx];
+  if(!item) return;
+  editingIncomeIndex = idx;
+  document.getElementById('incDate').value = item.date;
+  document.getElementById('incCategory').value = item.cat;
+  document.getElementById('incAmount').value = item.amount;
+  document.getElementById('incNote').value = item.note || '';
+  document.getElementById('saveIncBtn').textContent = '✓ পরিবর্তন সংরক্ষণ করুন';
+  document.getElementById('cancelIncEditBtn').style.display = 'inline-block';
+}
+
+function cancelEditIncome(){
+  editingIncomeIndex = -1;
+  document.getElementById('incAmount').value=''; document.getElementById('incNote').value='';
+  document.getElementById('saveIncBtn').textContent = '+ আয় এন্ট্রি যোগ করুন';
+  document.getElementById('cancelIncEditBtn').style.display = 'none';
+}
+
 function deleteIncome(idx){
   if(!confirm('মুছে ফেলতে চান?')) return;
   incomes.splice(idx,1);
   localStorage.setItem('mirMarketIncomes', JSON.stringify(incomes));
+  if(editingIncomeIndex === idx) cancelEditIncome();
   renderIncomeExpense();
 }
 
@@ -566,16 +802,46 @@ function addExpenseRecord(){
   const amount = document.getElementById('expAmount').value;
   const note = document.getElementById('expNote').value;
   if(!date || !amount){ alert('তারিখ ও পরিমাণ লিখুন।'); return; }
-  expenses.push({date, cat, amount, note});
+
+  if(editingExpenseIndex >= 0){
+    expenses[editingExpenseIndex] = {date, cat, amount, note};
+    editingExpenseIndex = -1;
+    document.getElementById('saveExpBtn').textContent = '+ খরচ এন্ট্রি যোগ করুন';
+    document.getElementById('cancelExpEditBtn').style.display = 'none';
+    alert('খরচের তথ্য সফলভাবে সম্পাদনা করা হয়েছে।');
+  } else {
+    expenses.push({date, cat, amount, note});
+    alert('খরচ সংরক্ষিত হয়েছে।');
+  }
   localStorage.setItem('mirMarketExpenses', JSON.stringify(expenses));
   document.getElementById('expAmount').value=''; document.getElementById('expNote').value='';
   renderIncomeExpense();
-  alert('খরচ সংরক্ষিত হয়েছে।');
 }
+
+function editExpense(idx){
+  const item = expenses[idx];
+  if(!item) return;
+  editingExpenseIndex = idx;
+  document.getElementById('expDate').value = item.date;
+  document.getElementById('expCategory').value = item.cat;
+  document.getElementById('expAmount').value = item.amount;
+  document.getElementById('expNote').value = item.note || '';
+  document.getElementById('saveExpBtn').textContent = '✓ পরিবর্তন সংরক্ষণ করুন';
+  document.getElementById('cancelExpEditBtn').style.display = 'inline-block';
+}
+
+function cancelEditExpense(){
+  editingExpenseIndex = -1;
+  document.getElementById('expAmount').value=''; document.getElementById('expNote').value='';
+  document.getElementById('saveExpBtn').textContent = '+ খরচ এন্ট্রি যোগ করুন';
+  document.getElementById('cancelExpEditBtn').style.display = 'none';
+}
+
 function deleteExpense(idx){
   if(!confirm('মুছে ফেলতে চান?')) return;
   expenses.splice(idx,1);
   localStorage.setItem('mirMarketExpenses', JSON.stringify(expenses));
+  if(editingExpenseIndex === idx) cancelEditExpense();
   renderIncomeExpense();
 }
 
@@ -588,11 +854,21 @@ function saveMonthlySummary(){
   if(!month){ alert('মাসের নাম লিখুন।'); return; }
 
   const summaryItem = { month, totalInc, totalExp, netProfit: totalInc - totalExp, note };
-  const existingIdx = monthlySummaries.findIndex(item => item.month === month);
-  if(existingIdx >= 0){
-    monthlySummaries[existingIdx] = summaryItem;
+
+  if(editingSummaryIndex >= 0){
+    monthlySummaries[editingSummaryIndex] = summaryItem;
+    editingSummaryIndex = -1;
+    document.getElementById('saveSummaryBtn').textContent = '+ এই মাসের আয়-ব্যয় সংরক্ষণ করুন';
+    document.getElementById('cancelSummaryEditBtn').style.display = 'none';
+    alert('মাসিক হিসাব সফলভাবে সম্পাদনা করা হয়েছে!');
   } else {
-    monthlySummaries.unshift(summaryItem);
+    const existingIdx = monthlySummaries.findIndex(item => item.month === month);
+    if(existingIdx >= 0){
+      monthlySummaries[existingIdx] = summaryItem;
+    } else {
+      monthlySummaries.unshift(summaryItem);
+    }
+    alert('মাসিক আয়-ব্যয় সারাংশ সংরক্ষিত হয়েছে!');
   }
 
   localStorage.setItem('mirMarketMonthlySummaries', JSON.stringify(monthlySummaries));
@@ -601,7 +877,28 @@ function saveMonthlySummary(){
   document.getElementById('summaryTotalExp').value='';
   document.getElementById('summaryNote').value='';
   renderMonthlySummaryTable();
-  alert('মাসিক আয়-ব্যয় সারাংশ সংরক্ষিত হয়েছে!');
+}
+
+function editMonthlySummary(idx){
+  const item = monthlySummaries[idx];
+  if(!item) return;
+  editingSummaryIndex = idx;
+  document.getElementById('summaryMonth').value = item.month;
+  document.getElementById('summaryTotalInc').value = item.totalInc;
+  document.getElementById('summaryTotalExp').value = item.totalExp;
+  document.getElementById('summaryNote').value = item.note || '';
+  document.getElementById('saveSummaryBtn').textContent = '✓ পরিবর্তন সংরক্ষণ করুন';
+  document.getElementById('cancelSummaryEditBtn').style.display = 'inline-block';
+}
+
+function cancelEditSummary(){
+  editingSummaryIndex = -1;
+  document.getElementById('summaryMonth').value='';
+  document.getElementById('summaryTotalInc').value='';
+  document.getElementById('summaryTotalExp').value='';
+  document.getElementById('summaryNote').value='';
+  document.getElementById('saveSummaryBtn').textContent = '+ এই মাসের আয়-ব্যয় সংরক্ষণ করুন';
+  document.getElementById('cancelSummaryEditBtn').style.display = 'none';
 }
 
 function renderMonthlySummaryTable(){
@@ -615,13 +912,14 @@ function renderMonthlySummaryTable(){
     const profitColor = item.netProfit >= 0 ? '#047857' : '#b42318';
     tbody.innerHTML += `
       <tr>
-        <td><b>${item.month}</b></td>
+        <td><b>${esc(item.month)}</b></td>
         <td>৳${Number(item.totalInc).toLocaleString('en-BD',{minimumFractionDigits:2})}</td>
         <td>৳${Number(item.totalExp).toLocaleString('en-BD',{minimumFractionDigits:2})}</td>
         <td><b style="color:${profitColor}">৳${Number(item.netProfit).toLocaleString('en-BD',{minimumFractionDigits:2})}</b></td>
-        <td>${item.note || '-'}</td>
-        <td>
-          <button class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteMonthlySummary(${idx})">মুছুন</button>
+        <td>${esc(item.note || '-')}</td>
+        <td style="white-space:nowrap;">
+          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editMonthlySummary(${idx})">সম্পাদনা / এডিট</button>
+          <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteMonthlySummary(${idx})">মুছুন</button>
         </td>
       </tr>
     `;
@@ -632,6 +930,7 @@ function deleteMonthlySummary(idx){
   if(!confirm('মুছে ফেলতে চান?')) return;
   monthlySummaries.splice(idx, 1);
   localStorage.setItem('mirMarketMonthlySummaries', JSON.stringify(monthlySummaries));
+  if(editingSummaryIndex === idx) cancelEditSummary();
   renderMonthlySummaryTable();
 }
 
@@ -681,15 +980,15 @@ function renderArchiveTable(){
   archives.forEach((item, idx) => {
     tbody.innerHTML += `
       <tr>
-        <td><b>${item.month}</b></td>
-        <td>${item.receiptNo}</td>
-        <td>${item.tenantName}</td>
-        <td>${item.netRent}</td>
-        <td>${item.paidAmount}</td>
-        <td>${item.dateStr}</td>
-        <td>
-          <button class="green" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="printArchived(${idx}, 'tenant')">ভাড়াটিয়া কপি</button>
-          <button class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteArchive(${idx})">মুছুন</button>
+        <td><b>${esc(item.month)}</b></td>
+        <td>${esc(item.receiptNo)}</td>
+        <td>${esc(item.tenantName)}</td>
+        <td>${esc(item.netRent)}</td>
+        <td>${esc(item.paidAmount)}</td>
+        <td>${esc(item.dateStr)}</td>
+        <td style="white-space:nowrap;">
+          <button type="button" class="green" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="printArchived(${idx}, 'tenant')">ভাড়াটিয়া কপি</button>
+          <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteArchive(${idx})">মুছুন</button>
         </td>
       </tr>
     `;
@@ -711,6 +1010,344 @@ function deleteArchive(idx){
   archives.splice(idx, 1);
   localStorage.setItem('mirMarketArchives', JSON.stringify(archives));
   renderArchiveTable();
+}
+
+/* ভাড়াটিয়া চুক্তিপত্র ফাংশনসমূহ */
+function refreshAgreementTenantDropdown(){
+  const sel = document.getElementById('agrTenantSelect');
+  if(!sel) return;
+  const current = sel.value;
+  sel.innerHTML = '<option value="">— তালিকা থেকে ভাড়াটিয়া নিন —</option>' +
+    tenants.map((t,i)=>`<option value="${i}">${esc(t.name)}${t.mobile?' — '+esc(t.mobile):''}</option>`).join('');
+  if(current!=='' && tenants[Number(current)]) sel.value = current;
+}
+
+function onAgreementTenantChange(idx){
+  if(idx === '') return;
+  const t = tenants[Number(idx)];
+  if(t){
+    document.getElementById('agrTenantName').value = t.name;
+  }
+}
+
+function uploadAgreement(){
+  const tenantName = document.getElementById('agrTenantName').value.trim();
+  const date = document.getElementById('agrDate').value;
+  const note = document.getElementById('agrNote').value.trim();
+  const fileInput = document.getElementById('agrFileInput');
+  const file = fileInput.files && fileInput.files[0];
+
+  if(!tenantName){
+    alert('ভাড়াটিয়ার নাম বা দোকান নম্বর লিখুন।');
+    return;
+  }
+
+  const saveRecord = (filePayload) => {
+    if(editingAgreementIndex >= 0){
+      const oldItem = agreements[editingAgreementIndex];
+      agreements[editingAgreementIndex] = {
+        ...oldItem,
+        tenantName: tenantName,
+        date: date || oldItem.date,
+        fileName: filePayload ? filePayload.fileName : oldItem.fileName,
+        fileType: filePayload ? filePayload.fileType : oldItem.fileType,
+        fileData: filePayload ? filePayload.fileData : oldItem.fileData,
+        note: note
+      };
+      try{
+        localStorage.setItem('mirMarketAgreements', JSON.stringify(agreements));
+      }catch(err){
+        alert('ব্রাউজারের স্টোরেজ পূর্ণ হয়ে গেছে। কম সাইজের ফাইল ব্যবহার করুন।');
+        return;
+      }
+      editingAgreementIndex = -1;
+      document.getElementById('saveAgrBtn').textContent = '+ চুক্তিপত্র আপলোড ও সংরক্ষণ করুন';
+      document.getElementById('cancelAgrEditBtn').style.display = 'none';
+      document.getElementById('agrFileLabel').textContent = 'চুক্তিপত্রের ফাইল নির্বাচন করুন (PDF, JPG, PNG) *';
+      alert('চুক্তিপত্র সফলভাবে সম্পাদনা করা হয়েছে!');
+    } else {
+      if(!filePayload){
+        alert('চুক্তিপত্রের একটি ফাইল (PDF বা ছবি) নির্বাচন করুন।');
+        return;
+      }
+      const newAgr = {
+        id: 'AGR-' + Date.now(),
+        tenantName: tenantName,
+        date: date || new Date().toISOString().slice(0,10),
+        fileName: filePayload.fileName,
+        fileType: filePayload.fileType,
+        fileData: filePayload.fileData,
+        note: note
+      };
+      agreements.unshift(newAgr);
+      try{
+        localStorage.setItem('mirMarketAgreements', JSON.stringify(agreements));
+      }catch(err){
+        agreements.shift();
+        alert('ব্রাউজারের স্টোরেজ পূর্ণ হয়ে গেছে। বড় ফাইল হলে কম সাইজের PDF বা ছবি ব্যবহার করুন অথবা পুরোনো ফাইল মুছে দিন।');
+        return;
+      }
+      alert('ভাড়াটিয়া চুক্তিপত্র সফলভাবে আপলোড ও সংরক্ষণ করা হয়েছে!');
+    }
+
+    document.getElementById('agrTenantName').value = '';
+    document.getElementById('agrNote').value = '';
+    fileInput.value = '';
+    renderAgreementTable();
+  };
+
+  if(file){
+    if(file.size > 6 * 1024 * 1024){
+      alert('ফাইলের সাইজ ৬ MB-এর মধ্যে রাখুন যাতে ব্রাউজারে সহজে সংরক্ষণ করা যায়।');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e){
+      saveRecord({
+        fileName: file.name,
+        fileType: file.type || 'application/octet-stream',
+        fileData: e.target.result
+      });
+    };
+    reader.readAsDataURL(file);
+  } else {
+    saveRecord(null);
+  }
+}
+
+function editAgreement(idx){
+  const item = agreements[idx];
+  if(!item) return;
+  editingAgreementIndex = idx;
+  document.getElementById('agrTenantName').value = item.tenantName;
+  document.getElementById('agrDate').value = item.date;
+  document.getElementById('agrNote').value = item.note || '';
+  document.getElementById('agrFileInput').value = '';
+  document.getElementById('agrFileLabel').textContent = `নতুন ফাইল দিলে বদলাবে (বর্তমান: ${item.fileName})`;
+  document.getElementById('saveAgrBtn').textContent = '✓ পরিবর্তন সংরক্ষণ করুন';
+  document.getElementById('cancelAgrEditBtn').style.display = 'inline-block';
+}
+
+function cancelEditAgreement(){
+  editingAgreementIndex = -1;
+  document.getElementById('agrTenantName').value = '';
+  document.getElementById('agrNote').value = '';
+  document.getElementById('agrFileInput').value = '';
+  document.getElementById('agrFileLabel').textContent = 'চুক্তিপত্রের ফাইল নির্বাচন করুন (PDF, JPG, PNG) *';
+  document.getElementById('saveAgrBtn').textContent = '+ চুক্তিপত্র আপলোড ও সংরক্ষণ করুন';
+  document.getElementById('cancelAgrEditBtn').style.display = 'none';
+}
+
+function renderAgreementTable(){
+  const tbody = document.getElementById('agreementTableBody');
+  if(!tbody) return;
+  if(!agreements.length){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b">কোনো চুক্তিপত্র আপলোড করা নেই</td></tr>';
+    return;
+  }
+  tbody.innerHTML = '';
+  agreements.forEach((item, idx) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${idx + 1}</td>
+        <td><b>${esc(item.tenantName)}</b></td>
+        <td>${esc(item.date)}</td>
+        <td>${esc(item.fileName)}</td>
+        <td>${esc(item.note || '-')}</td>
+        <td style="white-space:nowrap;">
+          <button type="button" class="green" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="viewAgreement(${idx})">দেখুন</button>
+          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editAgreement(${idx})">সম্পাদনা / এডিট</button>
+          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="downloadAgreementFile(${idx})">ডাউনলোড</button>
+          <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteAgreement(${idx})">মুছুন</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function viewAgreement(idx){
+  const item = agreements[idx];
+  if(!item) return;
+  const box = document.getElementById('agreementPreviewSection');
+  const titleEl = document.getElementById('agreementPreviewTitle');
+  const bodyEl = document.getElementById('agreementPreviewBody');
+
+  titleEl.textContent = `চুক্তিপত্র: ${item.tenantName} (${item.fileName})`;
+  if(item.fileType.startsWith('image/')){
+    bodyEl.innerHTML = `<img src="${item.fileData}" alt="${esc(item.fileName)}">`;
+  } else if(item.fileType === 'application/pdf'){
+    bodyEl.innerHTML = `<iframe src="${item.fileData}"></iframe>`;
+  } else {
+    bodyEl.innerHTML = `<p style="color:#334155;">এই ফাইলের সরাসরি প্রিভিউ সাপোর্ট নাও করতে পারে। আপনি নিচের বাটন থেকে ডাউনলোড করে দেখতে পারেন।</p><button type="button" class="green" onclick="downloadAgreementFile(${idx})">ফাইল ডাউনলোড করুন</button>`;
+  }
+  box.style.display = 'block';
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+function closeAgreementPreview(){
+  document.getElementById('agreementPreviewSection').style.display = 'none';
+  document.getElementById('agreementPreviewBody').innerHTML = '';
+}
+
+function downloadAgreementFile(idx){
+  const item = agreements[idx];
+  if(!item) return;
+  const a = document.createElement('a');
+  a.href = item.fileData;
+  a.download = item.fileName || 'agreement_file';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+function deleteAgreement(idx){
+  if(!confirm('এই চুক্তিপত্রটি মুছে ফেলতে চান?')) return;
+  agreements.splice(idx, 1);
+  localStorage.setItem('mirMarketAgreements', JSON.stringify(agreements));
+  if(editingAgreementIndex === idx) cancelEditAgreement();
+  closeAgreementPreview();
+  renderAgreementTable();
+}
+
+/* ভাড়াটিয়া চুক্তির শর্তসমূহ ফাংশনসমূহ */
+function toBanglaDigits(n){
+  return String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+}
+
+function renderTermsList(){
+  const container = document.getElementById('termsListContainer');
+  if(!container) return;
+  if(!agreementTerms.length){
+    container.innerHTML = '<p style="text-align:center;color:#64748b;padding:15px;">কোনো শর্ত সংরক্ষিত নেই। ওপরের ঘর থেকে নতুন শর্ত যোগ করুন।</p>';
+    return;
+  }
+  container.innerHTML = agreementTerms.map((term, idx) => `
+    <div class="term-card">
+      <div class="term-card-text"><b>${toBanglaDigits(idx + 1)}.</b> ${esc(term)}</div>
+      <div class="term-card-actions">
+        <button type="button" class="secondary" style="padding:5px 10px;font-size:12px;" onclick="editAgreementTerm(${idx})">সম্পাদনা</button>
+        <button type="button" class="secondary" style="padding:5px 10px;font-size:12px;" onclick="editAgreementTerm(${idx})">এডিট</button>
+        <button type="button" class="danger" style="padding:5px 10px;font-size:12px;" onclick="deleteAgreementTerm(${idx})">মুছুন</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function editFirstTermFromHeader(){
+  if(!agreementTerms.length){
+    document.getElementById('termInput').focus();
+    return;
+  }
+  editAgreementTerm(0);
+}
+
+function clearAllAgreementTerms(){
+  if(!agreementTerms.length){
+    alert('মুছে ফেলার মতো কোনো শর্ত সংরক্ষিত নেই।');
+    return;
+  }
+  if(!confirm('সবগুলো চুক্তির শর্ত মুছে ফেলতে চান?')) return;
+  agreementTerms = [];
+  localStorage.setItem('mirMarketAgreementTerms', JSON.stringify(agreementTerms));
+  cancelEditTerm();
+  renderTermsList();
+}
+
+function saveAgreementTerm(){
+  const input = document.getElementById('termInput');
+  const text = input.value.trim();
+  if(!text){
+    alert('দয়া করে শর্তটি লিখুন।');
+    return;
+  }
+  if(editingTermIndex >= 0){
+    agreementTerms[editingTermIndex] = text;
+    editingTermIndex = -1;
+    document.getElementById('termFormLabel').textContent = 'নতুন শর্ত যোগ করুন';
+    document.getElementById('saveTermBtn').textContent = '+ শর্ত সংরক্ষণ করুন';
+    document.getElementById('cancelEditTermBtn').style.display = 'none';
+  } else {
+    agreementTerms.push(text);
+  }
+  localStorage.setItem('mirMarketAgreementTerms', JSON.stringify(agreementTerms));
+  input.value = '';
+  renderTermsList();
+}
+
+function editAgreementTerm(idx){
+  editingTermIndex = idx;
+  const input = document.getElementById('termInput');
+  input.value = agreementTerms[idx];
+  document.getElementById('termFormLabel').textContent = `${toBanglaDigits(idx + 1)} নং শর্ত সম্পাদনা / এডিট করুন`;
+  document.getElementById('saveTermBtn').textContent = '✓ পরিবর্তন সংরক্ষণ করুন';
+  document.getElementById('cancelEditTermBtn').style.display = 'inline-block';
+  input.focus();
+}
+
+function cancelEditTerm(){
+  editingTermIndex = -1;
+  document.getElementById('termInput').value = '';
+  document.getElementById('termFormLabel').textContent = 'নতুন শর্ত যোগ করুন';
+  document.getElementById('saveTermBtn').textContent = '+ শর্ত সংরক্ষণ করুন';
+  document.getElementById('cancelEditTermBtn').style.display = 'none';
+}
+
+function deleteAgreementTerm(idx){
+  if(!confirm('এই শর্তটি মুছে ফেলতে চান?')) return;
+  agreementTerms.splice(idx, 1);
+  localStorage.setItem('mirMarketAgreementTerms', JSON.stringify(agreementTerms));
+  if(editingTermIndex === idx) cancelEditTerm();
+  renderTermsList();
+}
+
+function printAgreementTerms(){
+  const today = new Date();
+  const autoDateStr = today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  const termsHtml = agreementTerms.map((t, i) => `
+    <tr>
+      <td style="border:1.5px solid #1e3a8a;padding:8px 10px;width:55px;text-align:center;font-weight:bold;">${toBanglaDigits(i+1)}</td>
+      <td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;line-height:1.55;">${esc(t)}</td>
+    </tr>
+  `).join('');
+
+  const printDiv = document.getElementById('printArea');
+  printDiv.style.display = 'block';
+  printDiv.innerHTML = `
+    <div class="print-page-wrap">
+      <div class="receipt" style="display:flex;">
+        <div>
+          <div style="text-align:right;font-size:11.5px;color:#475569;margin-bottom:3px;font-weight:600;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>
+          <div style="display:flex;align-items:center;gap:15px;margin-bottom:5px;">
+            <div>${getReceiptLogoHtml()}</div>
+            <div style="flex-grow:1;text-align:center;">
+              <h2 style="color:#1e3a8a;font-size:22px;margin:0 0 2px;font-weight:800;">মীর মার্কেট এবং ল্যান্ড</h2>
+              <div style="font-weight:600;color:#475569;font-size:13.5px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
+            </div>
+          </div>
+          ${ownerInfo()}
+          <div class="kind">ভাড়াটিয়া চুক্তির শর্তসমূহ ও নিয়মাবলি</div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:55px;text-align:center;">ক্রমিক</th>
+                <th>চুক্তির শর্তসমূহ</th>
+              </tr>
+            </thead>
+            <tbody>${termsHtml || '<tr><td colspan="2" style="text-align:center;">কোনো শর্ত সংরক্ষিত নেই</td></tr>'}</tbody>
+          </table>
+        </div>
+        <div>
+          <div class="signatures">
+            <div>ভাড়াটিয়ার স্বাক্ষর ও তারিখ</div>
+            <div>মালিক/প্রতিনিধির স্বাক্ষর</div>
+          </div>
+          ${termsNoteHtml}
+        </div>
+      </div>
+    </div>
+  `;
+  window.print();
+  printDiv.style.display = 'none';
 }
 
 function printReport(areaId, title){
@@ -1000,7 +1637,7 @@ function saveData(){
 
 function downloadBackup(){
   const d={};ids.forEach(id=>{if(el(id))d[id]=el(id).value;});
-  const backup={rentData:d, tenants, monthlyLedger, incomes, expenses, archives, monthlySummaries, auth:localStorage.getItem('mirMarketUsers')};
+  const backup={rentData:d, tenants, monthlyLedger, incomes, expenses, archives, monthlySummaries, agreements, agreementTerms, auth:localStorage.getItem('mirMarketUsers')};
   autoSaveToMobileStorage('Mir_Market_Full_Backup.json', backup);
 }
 
@@ -1014,7 +1651,9 @@ function uploadToGoogleDrive(){
     incomes, 
     expenses, 
     archives, 
-    monthlySummaries, 
+    monthlySummaries,
+    agreements,
+    agreementTerms,
     auth: localStorage.getItem('mirMarketUsers')
   };
 
@@ -1046,6 +1685,8 @@ function restoreBackup(event){
     localStorage.setItem('mirMarketExpenses',JSON.stringify(b.expenses||[]));
     localStorage.setItem('mirMarketArchives',JSON.stringify(b.archives||[]));
     localStorage.setItem('mirMarketMonthlySummaries',JSON.stringify(b.monthlySummaries||[]));
+    localStorage.setItem('mirMarketAgreements',JSON.stringify(b.agreements||[]));
+    if(Array.isArray(b.agreementTerms)) localStorage.setItem('mirMarketAgreementTerms',JSON.stringify(b.agreementTerms));
     if(b.auth) localStorage.setItem('mirMarketUsers', b.auth);
     location.reload();
   }catch(e){alert('সঠিক ব্যাকআপ ফাইল নয়।');}};reader.readAsText(file);
@@ -1102,6 +1743,7 @@ function initDefaults(){
 
   document.getElementById('incDate').value = now.toISOString().slice(0,10);
   document.getElementById('expDate').value = now.toISOString().slice(0,10);
+  document.getElementById('agrDate').value = now.toISOString().slice(0,10);
   
   const currentYear = now.getFullYear();
   const copyEl = document.getElementById('dynamicCopyright');
@@ -1115,7 +1757,7 @@ function initDefaults(){
     liveDateEl.textContent = `হালনাগাদ তারিখ: ${formattedLiveDate}`;
   }
 }
-refreshTenantList();initDefaults();renderIncomeExpense();ids.forEach(id=>el(id).addEventListener('input',updateAll));updateAll();
+refreshTenantList();initDefaults();renderIncomeExpense();renderAgreementTable();renderTermsList();ids.forEach(id=>el(id).addEventListener('input',updateAll));updateAll();
 
 /* লগইন ও অথেন্টিকেশন লজিক */
 function getLocalUsers(){ 
