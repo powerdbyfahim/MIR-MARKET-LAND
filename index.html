@@ -224,6 +224,20 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   gap:12px;
   flex-wrap:wrap;
 }
+.term-card.fixed-term{
+  background:#f0f9ff;
+  border-color:#bae6fd;
+  border-left:4px solid #0369a1;
+}
+.fixed-badge{
+  display:inline-block;
+  background:#0369a1;
+  color:#fff;
+  font-size:11.5px;
+  font-weight:700;
+  padding:3px 9px;
+  border-radius:999px;
+}
 .term-card-text{
   font-size:15px;
   line-height:1.6;
@@ -236,6 +250,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   gap:6px;
   flex-shrink:0;
   flex-wrap:wrap;
+  align-items:center;
 }
 </style>
 </head>
@@ -625,16 +640,16 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
     <div class="section-header-row">
       <h2 class="section-title">📋 ভাড়াটিয়া চুক্তির শর্তসমূহ</h2>
       <div class="header-action-group">
-        <button type="button" class="secondary" style="padding:6px 12px;font-size:13px;" onclick="editFirstTermFromHeader()">সম্পাদনা</button>
-        <button type="button" class="secondary" style="padding:6px 12px;font-size:13px;" onclick="editFirstTermFromHeader()">এডিট</button>
-        <button type="button" class="danger" style="padding:6px 12px;font-size:13px;" onclick="clearAllAgreementTerms()">মুছুন</button>
+        <button type="button" class="secondary" style="padding:6px 12px;font-size:13px;" onclick="editFirstEditableTerm()">সম্পাদনা</button>
+        <button type="button" class="secondary" style="padding:6px 12px;font-size:13px;" onclick="editFirstEditableTerm()">এডিট</button>
+        <button type="button" class="danger" style="padding:6px 12px;font-size:13px;" onclick="clearExtraAgreementTerms()">মুছুন</button>
       </div>
     </div>
-    <p class="note">এখানে মীর মার্কেট এবং ল্যান্ড-এর ভাড়াটিয়া চুক্তির নিয়মাবলি ও শর্তসমূহ যোগ, সম্পাদনা / এডিট, মুছুন এবং প্রিন্ট/PDF করতে পারবেন।</p>
+    <p class="note">০১ থেকে ০৭ নম্বর শর্তসমূহ স্থায়ীভাবে ফিক্সড করা আছে। প্রয়োজনে নিচ থেকে অতিরিক্ত শর্ত যোগ, সম্পাদনা / এডিট ও মুছতে পারবেন এবং প্রিন্ট/PDF করতে পারবেন।</p>
 
     <div style="background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1; margin-bottom:20px;">
-      <label id="termFormLabel">নতুন শর্ত যোগ করুন</label>
-      <textarea id="termInput" placeholder="যেমন: প্রতি মাসের ৫ তারিখের মধ্যে চলতি মাসের ভাড়া নগদে বা ব্যাংকের মাধ্যমে পরিশোধ করতে হবে..."></textarea>
+      <label id="termFormLabel">নতুন অতিরিক্ত শর্ত যোগ করুন (০১–০৭ নম্বর শর্ত ফিক্সড)</label>
+      <textarea id="termInput" placeholder="নতুন শর্ত লিখুন..."></textarea>
       <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
         <button type="button" class="green" id="saveTermBtn" onclick="saveAgreementTerm()">+ শর্ত সংরক্ষণ করুন</button>
         <button type="button" class="secondary" id="cancelEditTermBtn" style="display:none;" onclick="cancelEditTerm()">সম্পাদনা বাতিল</button>
@@ -689,22 +704,36 @@ let editingExpenseIndex = -1;
 let editingSummaryIndex = -1;
 let editingAgreementIndex = -1;
 
-const defaultAgreementTerms = [
-  'প্রতি মাসের ১০ তারিখের মধ্যে নির্ধারিত মাসিক ভাড়া নগদে অথবা মালিকের নির্ধারিত ব্যাংক হিসাবে পরিশোধ করতে হবে।',
+const fixedAgreementTerms = [
+  'প্রতি মাসের ০৫ তারিখের মধ্যে নির্ধারিত মাসিক ভাড়া নগদে অথবা মালিকের নির্ধারিত ব্যাংক হিসাবে পরিশোধ করতে হবে।',
   'অগ্রিম জামানতের টাকা প্রতি মাসের মোট ভাড়ার ২০% হারে স্বয়ংক্রিয়ভাবে সমন্বয় করা হবে এবং অবশিষ্ট ৮০% ভাড়া নগদ বা ব্যাংকে পরিশোধযোগ্য।',
-  'মালিক পক্ষের লিখিত অনুমতি ব্যতীত ভাড়াটিয়া দোকান বা জায়গা অন্য কোনো ব্যক্তির নিকট সাব-লেট বা হস্তান্তর করতে পারবেন না।',
-  'দোকান বা প্রতিষ্ঠানের মাসিক বিদ্যুৎ বিল, পানি বিল ও অন্যান্য ইউটিলিটি চার্জ ভাড়াটিয়াকে নিজ দায়িত্বে পরিশোধ করতে হবে।',
-  'মার্কেটের মূল অবকাঠামো বা দেয়ালের কোনো প্রকার পরিবর্তন বা পরিবর্ধন করতে হলে মালিক পক্ষের পূর্বানুমতি নিতে হবে।',
-  'দোকান বা জায়গা ছেড়ে দিতে চাইলে অন্তত ২ (দুই) মাস পূর্বে উভয় পক্ষকে লিখিতভাবে অবহিত করতে হবে।',
-  'মার্কেটের অভ্যন্তরে কোনো প্রকার অবৈধ, বেআইনি বা জননিরাপত্তার জন্য ক্ষতিকর মালামাল মজুত বা ব্যবসা পরিচালনা করা সম্পূর্ণ নিষিদ্ধ।'
+  'মালিক পক্ষের লিখিত অনুমতি ব্যতীত ভাড়াটিয়া ভাড়াকৃত ভূমি বা জায়গা অন্য কোনো ব্যক্তির নিকট সাব-লেট বা হস্তান্তর করতে পারবেন না।',
+  'ভাড়াকৃত ভূমির বা প্রতিষ্ঠানের মাসিক বিদ্যুৎ বিল, পানি বিল ও অন্যান্য ইউটিলিটি চার্জ ভাড়াটিয়াকে নিজ দায়িত্বে পরিশোধ করতে হবে।',
+  'ভাড়াকৃত ভূমির মূল সীমানা বা প্রাচীরের কোনো প্রকার পরিবর্তন বা পরিবর্ধন করতে হলে মালিক পক্ষের পূর্বানুমতি নিতে হবে।',
+  'ভাড়াকৃত ভূমি বা জায়গা ছেড়ে দিতে চাইলে অন্তত ০৩ (তিন) মাস পূর্বে উভয় পক্ষকে লিখিতভাবে অবহিত করতে হবে।',
+  'ভাড়াকৃত ভূমির অভ্যন্তরে কোনো প্রকার অবৈধ, বেআইনি বা জননিরাপত্তার জন্য ক্ষতিকর মালামাল মজুত বা ব্যবসা পরিচালনা করা সম্পূর্ণ নিষিদ্ধ ও এইরূপ কোন ব্যত্যয় করিলে তাহা ভাড়াটিয়া সকল দায় দায়িত্ব বহন করিবে।'
 ];
 
-let agreementTerms = JSON.parse(localStorage.getItem('mirMarketAgreementTerms')||'null');
-if(!Array.isArray(agreementTerms)){
-  agreementTerms = [...defaultAgreementTerms];
-  localStorage.setItem('mirMarketAgreementTerms', JSON.stringify(agreementTerms));
+function loadExtraTerms(){
+  let extra = JSON.parse(localStorage.getItem('mirMarketExtraTerms')||'null');
+  if(!Array.isArray(extra)){
+    const legacy = JSON.parse(localStorage.getItem('mirMarketAgreementTerms')||'null');
+    if(Array.isArray(legacy) && legacy.length > fixedAgreementTerms.length){
+      extra = legacy.slice(fixedAgreementTerms.length);
+    } else {
+      extra = [];
+    }
+    localStorage.setItem('mirMarketExtraTerms', JSON.stringify(extra));
+  }
+  return extra;
 }
-let editingTermIndex = -1;
+
+let extraAgreementTerms = loadExtraTerms();
+let editingExtraTermIndex = -1;
+
+function getAllAgreementTerms(){
+  return [...fixedAgreementTerms, ...extraAgreementTerms];
+}
 
 function renderIncomeExpense(){
   const incBody = document.getElementById('incomeTableBody');
@@ -1209,46 +1238,59 @@ function deleteAgreement(idx){
   renderAgreementTable();
 }
 
-/* ভাড়াটিয়া চুক্তির শর্তসমূহ ফাংশনসমূহ */
-function toBanglaDigits(n){
-  return String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+/* ভাড়াটিয়া চুক্তির শর্তসমূহ ফাংশনসমূহ (০১ থেকে ০৭ ফিক্সড) */
+function toBanglaNumber(n){
+  const padded = String(n).padStart(2, '0');
+  return padded.replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
 }
 
 function renderTermsList(){
   const container = document.getElementById('termsListContainer');
   if(!container) return;
-  if(!agreementTerms.length){
-    container.innerHTML = '<p style="text-align:center;color:#64748b;padding:15px;">কোনো শর্ত সংরক্ষিত নেই। ওপরের ঘর থেকে নতুন শর্ত যোগ করুন।</p>';
-    return;
-  }
-  container.innerHTML = agreementTerms.map((term, idx) => `
-    <div class="term-card">
-      <div class="term-card-text"><b>${toBanglaDigits(idx + 1)}.</b> ${esc(term)}</div>
+
+  const fixedHtml = fixedAgreementTerms.map((term, idx) => `
+    <div class="term-card fixed-term">
+      <div class="term-card-text"><b>${toBanglaNumber(idx + 1)}.</b> ${esc(term)}</div>
       <div class="term-card-actions">
-        <button type="button" class="secondary" style="padding:5px 10px;font-size:12px;" onclick="editAgreementTerm(${idx})">সম্পাদনা</button>
-        <button type="button" class="secondary" style="padding:5px 10px;font-size:12px;" onclick="editAgreementTerm(${idx})">এডিট</button>
-        <button type="button" class="danger" style="padding:5px 10px;font-size:12px;" onclick="deleteAgreementTerm(${idx})">মুছুন</button>
+        <span class="fixed-badge">ফিক্সড (০১–০৭)</span>
       </div>
     </div>
   `).join('');
+
+  const extraHtml = extraAgreementTerms.map((term, idx) => {
+    const serial = fixedAgreementTerms.length + idx + 1;
+    return `
+      <div class="term-card">
+        <div class="term-card-text"><b>${toBanglaNumber(serial)}.</b> ${esc(term)}</div>
+        <div class="term-card-actions">
+          <button type="button" class="secondary" style="padding:5px 10px;font-size:12px;" onclick="editExtraAgreementTerm(${idx})">সম্পাদনা</button>
+          <button type="button" class="secondary" style="padding:5px 10px;font-size:12px;" onclick="editExtraAgreementTerm(${idx})">এডিট</button>
+          <button type="button" class="danger" style="padding:5px 10px;font-size:12px;" onclick="deleteExtraAgreementTerm(${idx})">মুছুন</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = fixedHtml + extraHtml;
 }
 
-function editFirstTermFromHeader(){
-  if(!agreementTerms.length){
+function editFirstEditableTerm(){
+  if(!extraAgreementTerms.length){
+    alert('০১ থেকে ০৭ নম্বর শর্তসমূহ স্থায়ীভাবে ফিক্সড করা আছে। নতুন অতিরিক্ত শর্ত যুক্ত করলে সেটি এখান থেকে সম্পাদনা/এডিট ও মুছতে পারবেন।');
     document.getElementById('termInput').focus();
     return;
   }
-  editAgreementTerm(0);
+  editExtraAgreementTerm(0);
 }
 
-function clearAllAgreementTerms(){
-  if(!agreementTerms.length){
-    alert('মুছে ফেলার মতো কোনো শর্ত সংরক্ষিত নেই।');
+function clearExtraAgreementTerms(){
+  if(!extraAgreementTerms.length){
+    alert('০১ থেকে ০৭ নম্বর শর্তসমূহ ফিক্সড রয়েছে; কোনো অতিরিক্ত শর্ত সংরক্ষিত নেই।');
     return;
   }
-  if(!confirm('সবগুলো চুক্তির শর্ত মুছে ফেলতে চান?')) return;
-  agreementTerms = [];
-  localStorage.setItem('mirMarketAgreementTerms', JSON.stringify(agreementTerms));
+  if(!confirm('সব অতিরিক্ত শর্ত মুছে ফেলতে চান? (০১–০৭ নম্বর ফিক্সড শর্ত অটুট থাকবে)')) return;
+  extraAgreementTerms = [];
+  localStorage.setItem('mirMarketExtraTerms', JSON.stringify(extraAgreementTerms));
   cancelEditTerm();
   renderTermsList();
 }
@@ -1260,53 +1302,55 @@ function saveAgreementTerm(){
     alert('দয়া করে শর্তটি লিখুন।');
     return;
   }
-  if(editingTermIndex >= 0){
-    agreementTerms[editingTermIndex] = text;
-    editingTermIndex = -1;
-    document.getElementById('termFormLabel').textContent = 'নতুন শর্ত যোগ করুন';
+  if(editingExtraTermIndex >= 0){
+    extraAgreementTerms[editingExtraTermIndex] = text;
+    editingExtraTermIndex = -1;
+    document.getElementById('termFormLabel').textContent = 'নতুন অতিরিক্ত শর্ত যোগ করুন (০১–০৭ নম্বর শর্ত ফিক্সড)';
     document.getElementById('saveTermBtn').textContent = '+ শর্ত সংরক্ষণ করুন';
     document.getElementById('cancelEditTermBtn').style.display = 'none';
   } else {
-    agreementTerms.push(text);
+    extraAgreementTerms.push(text);
   }
-  localStorage.setItem('mirMarketAgreementTerms', JSON.stringify(agreementTerms));
+  localStorage.setItem('mirMarketExtraTerms', JSON.stringify(extraAgreementTerms));
   input.value = '';
   renderTermsList();
 }
 
-function editAgreementTerm(idx){
-  editingTermIndex = idx;
+function editExtraAgreementTerm(idx){
+  editingExtraTermIndex = idx;
+  const serial = fixedAgreementTerms.length + idx + 1;
   const input = document.getElementById('termInput');
-  input.value = agreementTerms[idx];
-  document.getElementById('termFormLabel').textContent = `${toBanglaDigits(idx + 1)} নং শর্ত সম্পাদনা / এডিট করুন`;
+  input.value = extraAgreementTerms[idx];
+  document.getElementById('termFormLabel').textContent = `${toBanglaNumber(serial)} নং শর্ত সম্পাদনা / এডিট করুন`;
   document.getElementById('saveTermBtn').textContent = '✓ পরিবর্তন সংরক্ষণ করুন';
   document.getElementById('cancelEditTermBtn').style.display = 'inline-block';
   input.focus();
 }
 
 function cancelEditTerm(){
-  editingTermIndex = -1;
+  editingExtraTermIndex = -1;
   document.getElementById('termInput').value = '';
-  document.getElementById('termFormLabel').textContent = 'নতুন শর্ত যোগ করুন';
+  document.getElementById('termFormLabel').textContent = 'নতুন অতিরিক্ত শর্ত যোগ করুন (০১–০৭ নম্বর শর্ত ফিক্সড)';
   document.getElementById('saveTermBtn').textContent = '+ শর্ত সংরক্ষণ করুন';
   document.getElementById('cancelEditTermBtn').style.display = 'none';
 }
 
-function deleteAgreementTerm(idx){
-  if(!confirm('এই শর্তটি মুছে ফেলতে চান?')) return;
-  agreementTerms.splice(idx, 1);
-  localStorage.setItem('mirMarketAgreementTerms', JSON.stringify(agreementTerms));
-  if(editingTermIndex === idx) cancelEditTerm();
+function deleteExtraAgreementTerm(idx){
+  if(!confirm('এই অতিরিক্ত শর্তটি মুছে ফেলতে চান?')) return;
+  extraAgreementTerms.splice(idx, 1);
+  localStorage.setItem('mirMarketExtraTerms', JSON.stringify(extraAgreementTerms));
+  if(editingExtraTermIndex === idx) cancelEditTerm();
   renderTermsList();
 }
 
 function printAgreementTerms(){
   const today = new Date();
   const autoDateStr = today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-  const termsHtml = agreementTerms.map((t, i) => `
+  const allTerms = getAllAgreementTerms();
+  const termsHtml = allTerms.map((t, i) => `
     <tr>
-      <td style="border:1.5px solid #1e3a8a;padding:8px 10px;width:55px;text-align:center;font-weight:bold;">${toBanglaDigits(i+1)}</td>
-      <td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;line-height:1.55;">${esc(t)}</td>
+      <td style="border:1.5px solid #1e3a8a;padding:7px 10px;width:55px;text-align:center;font-weight:bold;">${toBanglaNumber(i+1)}</td>
+      <td style="border:1.5px solid #1e3a8a;padding:7px 12px;font-size:13.5px;line-height:1.5;">${esc(t)}</td>
     </tr>
   `).join('');
 
@@ -1333,7 +1377,7 @@ function printAgreementTerms(){
                 <th>চুক্তির শর্তসমূহ</th>
               </tr>
             </thead>
-            <tbody>${termsHtml || '<tr><td colspan="2" style="text-align:center;">কোনো শর্ত সংরক্ষিত নেই</td></tr>'}</tbody>
+            <tbody>${termsHtml}</tbody>
           </table>
         </div>
         <div>
@@ -1637,7 +1681,7 @@ function saveData(){
 
 function downloadBackup(){
   const d={};ids.forEach(id=>{if(el(id))d[id]=el(id).value;});
-  const backup={rentData:d, tenants, monthlyLedger, incomes, expenses, archives, monthlySummaries, agreements, agreementTerms, auth:localStorage.getItem('mirMarketUsers')};
+  const backup={rentData:d, tenants, monthlyLedger, incomes, expenses, archives, monthlySummaries, agreements, fixedAgreementTerms, extraAgreementTerms, auth:localStorage.getItem('mirMarketUsers')};
   autoSaveToMobileStorage('Mir_Market_Full_Backup.json', backup);
 }
 
@@ -1653,7 +1697,8 @@ function uploadToGoogleDrive(){
     archives, 
     monthlySummaries,
     agreements,
-    agreementTerms,
+    fixedAgreementTerms,
+    extraAgreementTerms,
     auth: localStorage.getItem('mirMarketUsers')
   };
 
@@ -1686,7 +1731,7 @@ function restoreBackup(event){
     localStorage.setItem('mirMarketArchives',JSON.stringify(b.archives||[]));
     localStorage.setItem('mirMarketMonthlySummaries',JSON.stringify(b.monthlySummaries||[]));
     localStorage.setItem('mirMarketAgreements',JSON.stringify(b.agreements||[]));
-    if(Array.isArray(b.agreementTerms)) localStorage.setItem('mirMarketAgreementTerms',JSON.stringify(b.agreementTerms));
+    if(Array.isArray(b.extraAgreementTerms)) localStorage.setItem('mirMarketExtraTerms',JSON.stringify(b.extraAgreementTerms));
     if(b.auth) localStorage.setItem('mirMarketUsers', b.auth);
     location.reload();
   }catch(e){alert('সঠিক ব্যাকআপ ফাইল নয়।');}};reader.readAsText(file);
