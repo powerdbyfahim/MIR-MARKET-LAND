@@ -280,7 +280,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
           <h2>Welcome!</h2>
           <p class="market-address" style="margin-bottom:8px;">Sign in to your account</p>
         </div>
-        <!-- লগইন প্যানেলের লোগো -->
         <div style="flex-shrink:0; margin-top:-12px;">
           <svg viewBox="0 0 150 110" width="125" height="95" xmlns="http://www.w3.org/2000/svg">
             <rect x="15" y="25" width="120" height="75" rx="6" fill="#cbd5e1" opacity="0.35"/>
@@ -307,7 +306,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
        <button type="button" class="secondary" onclick="cancelSignup()">লগইনে ফিরে যান</button>
       </div>
 
-      <!-- লগইন ফিল্ড এবং যোগাযোগ বাটন -->
       <div id="loginFields">
        <label>User ID / Username</label><input id="loginUser" placeholder="ইউজারনেম লিখুন">
        <label>Password</label><input id="loginPass" type="password" placeholder="পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter')loginOffline()">
@@ -317,7 +315,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
        <button type="button" class="secondary" style="background:#0f766e; color:#fff; margin-top:8px;" onclick="showContactModal()">যোগাযোগ</button>
       </div>
 
-      <!-- যোগাযোগ ফর্ম -->
       <div id="contactFields" style="display:none;">
         <h2 style="font-size:22px; color:#0f375c; margin-bottom:10px;">যোগাযোগ</h2>
         <label>নামঃ *</label>
@@ -349,7 +346,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   <div class="banner-text-side">
     <h1>মীর মার্কেট এবং ল্যান্ড</h1>
     <div class="b-address">📍 পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
-    <div class="b-sub">মাসিক ভাড়া আদায়  •  জামানত সমন্বয়  •  ব্যাংক জমা  •  রশিদ ব্যবস্থাপনা</div>
+    <div class="b-sub">মাসিক ভাড়া আদায়  •  জামানত সমন্বয়  •  ব্যাংক জমা  •  রসিদ ব্যবস্থাপনা</div>
   </div>
   <div class="banner-building-graphic">
     <svg viewBox="0 0 280 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -1041,7 +1038,6 @@ function deleteArchive(idx){
   renderArchiveTable();
 }
 
-/* ভাড়াটিয়া চুক্তিপত্র ফাংশনসমূহ */
 function refreshAgreementTenantDropdown(){
   const sel = document.getElementById('agrTenantSelect');
   if(!sel) return;
@@ -1238,7 +1234,6 @@ function deleteAgreement(idx){
   renderAgreementTable();
 }
 
-/* ভাড়াটিয়া চুক্তির শর্তসমূহ ফাংশনসমূহ (০১ থেকে ০৭ ফিক্সড) */
 function toBanglaNumber(n){
   const padded = String(n).padStart(2, '0');
   return padded.replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
@@ -1445,7 +1440,6 @@ function calc(){
   const key=monthLedgerKey(),saved=key?monthlyLedger[key]:null;
   let rent=num('rent'),opening=num('opening'),original=num('originaldeposit');
   
-  // জামানত সমন্বয়ের হার ২০%
   let adj=Math.min(rent*.20,opening);
   let closing=Math.max(0,opening-adj);
   let net=Math.max(0,rent-adj);
@@ -1461,7 +1455,6 @@ function calc(){
 
   const cash=num('cash'),bank=num('bank'),paid=cash+bank;
   
-  // মালিক ১ এর ক্ষেত্রে নগদ এবং ব্যাংক জমা একই রাখা হলো
   const owner1Cash = cash;
   const owner1Bank = bank;
   const owner1Count = net * 0.50;
@@ -1685,7 +1678,6 @@ function downloadBackup(){
   autoSaveToMobileStorage('Mir_Market_Full_Backup.json', backup);
 }
 
-// সরাসরি গুগল ড্রাইভে ব্যাকআপ করার ফাংশন
 function uploadToGoogleDrive(){
   const d={};ids.forEach(id=>{if(el(id))d[id]=el(id).value;});
   const fullBackupData = {
@@ -1804,7 +1796,6 @@ function initDefaults(){
 }
 refreshTenantList();initDefaults();renderIncomeExpense();renderAgreementTable();renderTermsList();ids.forEach(id=>el(id).addEventListener('input',updateAll));updateAll();
 
-/* লগইন ও অথেন্টিকেশন লজিক */
 function getLocalUsers(){ 
   let u=[]; 
   try{
@@ -1847,7 +1838,6 @@ async function forgotOfflinePassword(){
  alert('পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে। এবার নতুন পাসওয়ার্ড দিয়ে লগইন করুন।');
 }
 
-/* যোগাযোগ ফরম লজিক */
 function showContactModal(){
   el('loginFields').style.display = 'none';
   el('contactFields').style.display = 'block';
@@ -1881,7 +1871,7 @@ function sendApiEmail(){
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({ name, subject, message })
+    body: JSON.stringify({ type: "CONTACT_EMAIL", name, subject, message })
   }).then(() => {
     statusEl.style.color = '#047857';
     statusEl.textContent = '✅ আপনার বার্তা সফলভাবে পাঠানো হয়েছে!';
