@@ -246,10 +246,10 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
         </div>
       </div>
       
-      <p id="authIntro" class="note">মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র অ্যাডমিন এডিট ও বাতিল করতে পারবেন।</p>
+      <p id="authIntro" class="note">মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। প্রত্যেকে নিজস্ব User ID ও Password দিয়ে লগইন করে শুধু দেখতে পারবেন; এডিট বা বাতিল করতে পারবেন না।</p>
       
       <div id="setupFields" style="display:none">
-       <label>ইউজারনেম</label><input id="authUser" placeholder="যেমন: যেকোনো নাম">
+       <label>ইউজারনেম (User ID)</label><input id="authUser" placeholder="নিজস্ব ইউজার আইডি লিখুন">
        <label>পাসওয়ার্ড</label><input id="authPass" type="password" placeholder="কমপক্ষে ৬ অক্ষর">
        <label>পাসওয়ার্ড নিশ্চিত করুন</label><input id="authPass2" type="password" placeholder="আবার পাসওয়ার্ড দিন">
        <button type="button" onclick="createOfflineAccount()">অ্যাকাউন্ট তৈরি করুন</button>
@@ -257,8 +257,8 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
       </div>
 
       <div id="loginFields">
-       <label>User ID / Username</label><input id="loginUser" placeholder="ইউজারনেম লিখুন">
-       <label>Password</label><input id="loginPass" type="password" placeholder="পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter')loginOffline()">
+       <label>User ID / Username</label><input id="loginUser" placeholder="নিজস্ব ইউজার আইডি লিখুন">
+       <label>Password</label><input id="loginPass" type="password" placeholder="নিজস্ব পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter')loginOffline()">
        <button type="button" onclick="loginOffline()">Sign in</button>
        <button type="button" class="secondary" onclick="showSignup()">নতুন সাইন আপ (Register)</button>
        <button type="button" class="secondary" onclick="forgotOfflinePassword()">পাসওয়ার্ড ভুলে গেছেন? (Forgot password?)</button>
@@ -302,7 +302,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 
 <div class="wrap">
 <div id="roleStatusBanner" class="role-banner viewer">
-  <span id="roleStatusText">বর্তমান ইউজার: অতিথি (শুধুমাত্র দেখার অনুমতি)</span>
+  <span id="roleStatusText">বর্তমান ইউজার: অতিথি (শুধুমাত্র দেখার অনুমতি — এডিট বা বাতিল করা যাবে না)</span>
   <button type="button" class="danger" style="padding:6px 12px;font-size:12.5px;" onclick="logoutOffline()">লগআউট</button>
 </div>
 
@@ -789,7 +789,7 @@ function fillHiddenAdminLogin(){
 function hasAdminPermission(showAlertIfDenied = true){
   if(isAdminFahim) return true;
   if(showAlertIfDenied){
-    alert('শুধুমাত্র অ্যাডমিন হিসেবে লগইন করলে এডিট, বাতিল, মুছে ফেলা বা সংরক্ষণ করা যাবে। অন্যান্য ইউজার শুধুমাত্র দেখতে পারবেন।');
+    alert('আপনার User ID দিয়ে শুধুমাত্র দেখার অনুমতি রয়েছে। কোনো কিছু এডিট, বাতিল বা মুছতে পারবেন না।');
   }
   return false;
 }
@@ -2290,9 +2290,9 @@ function getLocalUsers(){
 }
 async function createOfflineAccount(){
  const u=val('authUser'),p=el('authPass').value,p2=el('authPass2').value;
- if(!u || p.length<6 || p!==p2){ alert('সঠিক ইউজারনেম এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।'); return; }
+ if(!u || p.length<6 || p!==p2){ alert('সঠিক ইউজার আইডি এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।'); return; }
  if(u.toLowerCase()===ADMIN_USERNAME){
-   alert('এই ইউজারনেমটি সংরক্ষিত অ্যাডমিনের জন্য নির্ধারিত। অন্য ইউজারনেম ব্যবহার করুন।');
+   alert('এই ইউজার আইডিটি সংরক্ষিত অ্যাডমিনের জন্য নির্ধারিত। অন্য ইউজার আইডি ব্যবহার করুন।');
    return;
  }
  const users=getLocalUsers();
@@ -2301,11 +2301,13 @@ async function createOfflineAccount(){
  if(existingIdx>=0) users[existingIdx]=newUserObj;
  else users.push(newUserObj);
  localStorage.setItem('mirMarketUsers', JSON.stringify(users));
+ alert('আপনার User ID ও Password তৈরি হয়েছে! এবার লগইন করে শুধু হিসাব দেখতে পারবেন।');
  unlockOffline(u);
 }
 async function loginOffline(){
  const users=getLocalUsers(),u=val('loginUser'),p=el('loginPass').value;
- if(!u){ el('authError').textContent='দয়া করে ইউজারনেম লিখুন।'; return; }
+ if(!u){ el('authError').textContent='দয়া করে User ID লিখুন।'; return; }
+ if(!p){ el('authError').textContent='দয়া করে Password লিখুন।'; return; }
 
  if(u.toLowerCase()===ADMIN_USERNAME){
    if(p!==FIXED_ADMIN_PASS){
@@ -2317,38 +2319,33 @@ async function loginOffline(){
  }
 
  const saved=users.find(x=>x.username.toLowerCase()===u.toLowerCase());
- if(saved){
-   if(('fallback-'+p)!==saved.passwordHash){
-     el('authError').textContent='পাসওয়ার্ড ভুল।';
-     return;
-   }
-   unlockOffline(saved.username);
+ if(!saved){
+   el('authError').textContent='এই User ID পাওয়া যায়নি। আগে "নতুন সাইন আপ (Register)" থেকে নিজের User ID ও Password তৈরি করুন।';
    return;
  }
-
- if(!p || p.length<1){
-   el('authError').textContent='লগইন করতে পাসওয়ার্ড দিন।';
+ if(('fallback-'+p)!==saved.passwordHash){
+   el('authError').textContent='Password ভুল। সঠিক Password লিখুন।';
    return;
  }
- unlockOffline(u);
+ unlockOffline(saved.username);
 }
-function showSignup(){ el('loginFields').style.display='none'; el('setupFields').style.display='block'; el('authIntro').textContent='নতুন ব্যবহারকারীর জন্য ইউজারনেম ও পাসওয়ার্ড তৈরি করুন।'; el('authError').textContent=''; }
-function cancelSignup(){ el('setupFields').style.display='none'; el('loginFields').style.display='block'; el('authIntro').textContent='মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র অ্যাডমিন এডিট ও বাতিল করতে পারবেন।'; }
+function showSignup(){ el('loginFields').style.display='none'; el('setupFields').style.display='block'; el('authIntro').textContent='নিজস্ব User ID ও Password তৈরি করুন। লগইন করার পর আপনি শুধু হিসাব দেখতে পারবেন, এডিট বা বাতিল করতে পারবেন না।'; el('authError').textContent=''; }
+function cancelSignup(){ el('setupFields').style.display='none'; el('loginFields').style.display='block'; el('authIntro').textContent='মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। প্রত্যেকে নিজস্ব User ID ও Password দিয়ে লগইন করে শুধু দেখতে পারবেন; এডিট বা বাতিল করতে পারবেন না।'; }
 async function forgotOfflinePassword(){
  const users=getLocalUsers();
- const u=prompt('আপনার ইউজারনেম লিখুন:');
+ const u=prompt('আপনার User ID লিখুন:');
  if(!u)return;
  if(u.trim().toLowerCase()===ADMIN_USERNAME){
-   alert('অ্যাডমিন ইউজারনেম ও পাসওয়ার্ড ফিক্সড নির্ধারিত রয়েছে।');
+   alert('অ্যাডমিন ইউজার আইডি ও পাসওয়ার্ড ফিক্সড নির্ধারিত রয়েছে।');
    return;
  }
  const saved=users.find(x=>x.username.toLowerCase()===u.trim().toLowerCase());
- if(!saved){alert('ইউজারনেম পাওয়া যায়নি।');return;}
- const p=prompt('নতুন পাসওয়ার্ড দিন (কমপক্ষে ৬ অক্ষর):');
+ if(!saved){alert('User ID পাওয়া যায়নি।');return;}
+ const p=prompt('নতুন Password দিন (কমপক্ষে ৬ অক্ষর):');
  if(!p || p.length<6){alert('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');return;}
  saved.passwordHash='fallback-'+p;
  localStorage.setItem('mirMarketUsers', JSON.stringify(users));
- alert('পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে। এবার নতুন পাসওয়ার্ড দিয়ে লগইন করুন।');
+ alert('Password সফলভাবে পরিবর্তন হয়েছে। এবার নতুন Password দিয়ে লগইন করুন।');
 }
 
 function showContactModal(){
@@ -2361,7 +2358,7 @@ function showContactModal(){
 function cancelContact(){
   el('contactFields').style.display = 'none';
   el('loginFields').style.display = 'block';
-  el('authIntro').textContent = 'মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র অ্যাডমিন এডিট ও বাতিল করতে পারবেন।';
+  el('authIntro').textContent = 'মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। প্রত্যেকে নিজস্ব User ID ও Password দিয়ে লগইন করে শুধু দেখতে পারবেন; এডিট বা বাতিল করতে পারবেন না।';
 }
 
 function sendApiEmail(){
