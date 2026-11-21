@@ -103,6 +103,31 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 #authCard button.secondary{ background: #ffffff; color: #334155; border: 1px solid #cbd5e1; margin-top: 8px; box-shadow: none; }
 #authError{ margin: 10px 0 0; text-align: left; font-size: 13px; }
 
+.hidden-admin-trigger{
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f766e;
+  background: transparent;
+  border: 1px dashed #0f766e;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.hidden-admin-box{
+  display: none;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #99f6e4;
+  font-size: 12.5px;
+  color: #0f172a;
+}
+
 @media(max-width: 850px){
   #authGate{ flex-direction: column; }
   .auth-left-banner{ display: none; }
@@ -221,10 +246,10 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
         </div>
       </div>
       
-      <p id="authIntro" class="note">মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র Fahim এডিট ও বাতিল করতে পারবেন।</p>
+      <p id="authIntro" class="note">মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র অ্যাডমিন এডিট ও বাতিল করতে পারবেন।</p>
       
       <div id="setupFields" style="display:none">
-       <label>ইউজারনেম</label><input id="authUser" placeholder="যেমন: Fahim বা যেকোনো নাম">
+       <label>ইউজারনেম</label><input id="authUser" placeholder="যেমন: যেকোনো নাম">
        <label>পাসওয়ার্ড</label><input id="authPass" type="password" placeholder="কমপক্ষে ৬ অক্ষর">
        <label>পাসওয়ার্ড নিশ্চিত করুন</label><input id="authPass2" type="password" placeholder="আবার পাসওয়ার্ড দিন">
        <button type="button" onclick="createOfflineAccount()">অ্যাকাউন্ট তৈরি করুন</button>
@@ -232,12 +257,21 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
       </div>
 
       <div id="loginFields">
-       <label>User ID / Username</label><input id="loginUser" placeholder="ইউজারনেম লিখুন (যেমন: Fahim)">
+       <label>User ID / Username</label><input id="loginUser" placeholder="ইউজারনেম লিখুন">
        <label>Password</label><input id="loginPass" type="password" placeholder="পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter')loginOffline()">
        <button type="button" onclick="loginOffline()">Sign in</button>
        <button type="button" class="secondary" onclick="showSignup()">নতুন সাইন আপ (Register)</button>
        <button type="button" class="secondary" onclick="forgotOfflinePassword()">পাসওয়ার্ড ভুলে গেছেন? (Forgot password?)</button>
        <button type="button" class="secondary" style="background:#0f766e; color:#fff; margin-top:8px;" onclick="showContactModal()">যোগাযোগ</button>
+
+       <div style="margin-top:8px;">
+         <span class="hidden-admin-trigger" onclick="toggleHiddenAdminBox()">🔐 অ্যাডমিন ক্রেডেনশিয়াল (ট্যাপ করুন)</span>
+         <div id="hiddenAdminBox" class="hidden-admin-box">
+           <div><b>অ্যাডমিন নাম:</b> <span id="revealAdminName"></span></div>
+           <div><b>পাসওয়ার্ড:</b> <span id="revealAdminPass"></span></div>
+           <button type="button" class="secondary" style="margin-top:8px;padding:6px 10px;font-size:12px;" onclick="fillHiddenAdminLogin()">ইনপুট ঘরে বসান</button>
+         </div>
+       </div>
       </div>
 
       <div id="contactFields" style="display:none;">
@@ -362,7 +396,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="allLandTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">মীর সকল ল্যান্ড — দলিল ও খতিয়ান/দাগ রেজিস্টার (স্থায়ী ফিক্সড)</h2>
-    <p class="note">এখানে যে দলিল, খতিয়ান, দাগ নং, জায়গা ও অংশ যুক্ত করবেন, তা স্থায়ীভাবে ফিক্সড/সংরক্ষিত থাকবে। শুধুমাত্র Fahim নতুন তথ্য যুক্ত, এডিট বা বাতিল করতে পারবেন।</p>
+    <p class="note">এখানে যে দলিল, খতিয়ান, দাগ নং, জায়গা ও অংশ যুক্ত করবেন, তা স্থায়ীভাবে ফিক্সড/সংরক্ষিত থাকবে। শুধুমাত্র অ্যাডমিন নতুন তথ্য যুক্ত, এডিট বা বাতিল করতে পারবেন।</p>
 
     <div class="grid admin-only" style="margin-top:15px; background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
       <div>
@@ -551,7 +585,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="monthlySummaryTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">📊 ৩. মাসিক আয় ও ব্যয় সংরক্ষণ (Monthly Income & Expense Summary)</h2>
-    <p class="note">এখানে প্রতি মাসের মোট আয় এবং মোট খরচ আলাদাভাবে সংরক্ষিত রয়েছে। শুধুমাত্র Fahim নতুন হিসাব যোগ, এডিট বা মুছতে পারবেন।</p>
+    <p class="note">এখানে প্রতি মাসের মোট আয় এবং মোট খরচ আলাদাভাবে সংরক্ষিত রয়েছে। শুধুমাত্র অ্যাডমিন নতুন হিসাব যোগ, এডিট বা মুছতে পারবেন।</p>
     
     <div class="grid admin-only" style="margin-top:15px; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid #cbd5e1;">
       <div><label>মাসের নাম (যেমন: নভেম্বর ২০২৬)</label><input type="text" id="summaryMonth" placeholder="যেমন: নভেম্বর ২০২৬"></div>
@@ -592,7 +626,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="archiveTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">📁 পূর্বের রসিদ ও মাসভিত্তিক আর্কাইভ (Saved Receipts Archive)</h2>
-    <p class="note">এখানে আপনার সংরক্ষিত রসিদগুলো মাস এবং ভাড়াটিয়ার নাম অনুযায়ী সংরক্ষিত রয়েছে। যেকোনো রসিদ সরাসরি প্রিন্ট করতে পারবেন; মুছতে পারবেন শুধুমাত্র Fahim।</p>
+    <p class="note">এখানে আপনার সংরক্ষিত রসিদগুলো মাস এবং ভাড়াটিয়ার নাম অনুযায়ী সংরক্ষিত রয়েছে। যেকোনো রসিদ সরাসরি প্রিন্ট করতে পারবেন; মুছতে পারবেন শুধুমাত্র অ্যাডমিন।</p>
     
     <div style="margin-top:15px;">
       <table class="data-table">
@@ -619,7 +653,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="agreementTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">📜 ভাড়াটিয়া চুক্তিপত্র সংরক্ষণ ও ব্যবস্থাপনা (Tenancy Agreements)</h2>
-    <p class="note">এখানে ভাড়াটিয়াদের চুক্তিপত্রের কপি (PDF অথবা ছবি যেমন JPG/PNG) দেখা ও ডাউনলোড করা যাবে; শুধুমাত্র Fahim আপলোড, এডিট বা মুছতে পারবেন।</p>
+    <p class="note">এখানে ভাড়াটিয়াদের চুক্তিপত্রের কপি (PDF অথবা ছবি যেমন JPG/PNG) দেখা ও ডাউনলোড করা যাবে; শুধুমাত্র অ্যাডমিন আপলোড, এডিট বা মুছতে পারবেন।</p>
 
     <div class="grid admin-only" style="margin-top:15px; background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
       <div>
@@ -690,7 +724,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
         <button type="button" class="danger" style="padding:6px 12px;font-size:13px;" onclick="clearExtraAgreementTerms()">মুছুন</button>
       </div>
     </div>
-    <p class="note">০১ থেকে ০৭ নম্বর শর্তসমূহ স্থায়ীভাবে ফিক্সড করা আছে। শুধুমাত্র Fahim অতিরিক্ত শর্ত যোগ, সম্পাদনা / এডিট ও মুছতে পারবেন; সবাই প্রিন্ট/PDF করতে পারবেন।</p>
+    <p class="note">০১ থেকে ০৭ নম্বর শর্তসমূহ স্থায়ীভাবে ফিক্সড করা আছে। শুধুমাত্র অ্যাডমিন অতিরিক্ত শর্ত যোগ, সম্পাদনা / এডিট ও মুছতে পারবেন; সবাই প্রিন্ট/PDF করতে পারবেন।</p>
 
     <div class="admin-only" style="background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1; margin-bottom:20px;">
       <label id="termFormLabel">নতুন অতিরিক্ত শর্ত যোগ করুন (০১–০৭ নম্বর শর্ত ফিক্সড)</label>
@@ -725,14 +759,37 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <script>
 const SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxqhGy1EhrRLxEebAdu_jlSu6747CyDzZtZMkg6HWk-Z_VhudpCbRQ29He1wYfzd1o/exec';
 
-const ADMIN_USERNAME = 'fahim';
+const FIXED_ADMIN_USER = 'Fahim';
+const FIXED_ADMIN_PASS = '242526';
+const ADMIN_USERNAME = FIXED_ADMIN_USER.toLowerCase();
 let currentLoggedInUser = '';
 let isAdminFahim = false;
+
+function toggleHiddenAdminBox(){
+  const box = document.getElementById('hiddenAdminBox');
+  if(!box) return;
+  const isShown = box.style.display === 'block';
+  if(!isShown){
+    document.getElementById('revealAdminName').textContent = FIXED_ADMIN_USER;
+    document.getElementById('revealAdminPass').textContent = FIXED_ADMIN_PASS;
+    box.style.display = 'block';
+  } else {
+    box.style.display = 'none';
+  }
+}
+
+function fillHiddenAdminLogin(){
+  const uEl = document.getElementById('loginUser');
+  const pEl = document.getElementById('loginPass');
+  if(uEl) uEl.value = FIXED_ADMIN_USER;
+  if(pEl) pEl.value = FIXED_ADMIN_PASS;
+  document.getElementById('authError').textContent = '';
+}
 
 function hasAdminPermission(showAlertIfDenied = true){
   if(isAdminFahim) return true;
   if(showAlertIfDenied){
-    alert('শুধুমাত্র Fahim হিসেবে লগইন করলে এডিট, বাতিল, মুছে ফেলা বা সংরক্ষণ করা যাবে। অন্যান্য ইউজার শুধুমাত্র দেখতে পারবেন।');
+    alert('শুধুমাত্র অ্যাডমিন হিসেবে লগইন করলে এডিট, বাতিল, মুছে ফেলা বা সংরক্ষণ করা যাবে। অন্যান্য ইউজার শুধুমাত্র দেখতে পারবেন।');
   }
   return false;
 }
@@ -768,7 +825,6 @@ function applyRolePermissions(){
   renderTermsList();
 }
 
-/* পরিচ্ছন্ন প্রিন্ট উইন্ডো হেল্পার (ব্ল্যাঙ্ক পেজ প্রতিরোধী) */
 function openCleanPrintWindow(bodyHtml, orientation = 'portrait', docTitle = 'প্রিন্ট রিপোর্ট'){
   const isLandscape = orientation === 'landscape';
   const pageSizeCss = isLandscape ? 'A4 landscape' : 'A4 portrait';
@@ -2224,16 +2280,21 @@ function getLocalUsers(){
   let u=[]; 
   try{
     u=JSON.parse(localStorage.getItem('mirMarketUsers')||'[]');
-    if(!u.length){
-      u=[{username:'Fahim', passwordHash:'fallback-123456'}];
-      localStorage.setItem('mirMarketUsers', JSON.stringify(u));
-    }
+    const adminEntry = {username: FIXED_ADMIN_USER, passwordHash: 'fallback-' + FIXED_ADMIN_PASS};
+    const adminIdx = u.findIndex(x=>String(x.username||'').toLowerCase()===ADMIN_USERNAME);
+    if(adminIdx>=0) u[adminIdx]=adminEntry;
+    else u.unshift(adminEntry);
+    localStorage.setItem('mirMarketUsers', JSON.stringify(u));
   }catch(e){} 
   return u; 
 }
 async function createOfflineAccount(){
  const u=val('authUser'),p=el('authPass').value,p2=el('authPass2').value;
  if(!u || p.length<6 || p!==p2){ alert('সঠিক ইউজারনেম এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।'); return; }
+ if(u.toLowerCase()===ADMIN_USERNAME){
+   alert('এই ইউজারনেমটি সংরক্ষিত অ্যাডমিনের জন্য নির্ধারিত। অন্য ইউজারনেম ব্যবহার করুন।');
+   return;
+ }
  const users=getLocalUsers();
  const existingIdx=users.findIndex(x=>x.username.toLowerCase()===u.toLowerCase());
  const newUserObj={username:u, passwordHash:'fallback-'+p};
@@ -2245,8 +2306,17 @@ async function createOfflineAccount(){
 async function loginOffline(){
  const users=getLocalUsers(),u=val('loginUser'),p=el('loginPass').value;
  if(!u){ el('authError').textContent='দয়া করে ইউজারনেম লিখুন।'; return; }
- const saved=users.find(x=>x.username.toLowerCase()===u.toLowerCase());
 
+ if(u.toLowerCase()===ADMIN_USERNAME){
+   if(p!==FIXED_ADMIN_PASS){
+     el('authError').textContent='অ্যাডমিন পাসওয়ার্ড সঠিক নয়।';
+     return;
+   }
+   unlockOffline(FIXED_ADMIN_USER);
+   return;
+ }
+
+ const saved=users.find(x=>x.username.toLowerCase()===u.toLowerCase());
  if(saved){
    if(('fallback-'+p)!==saved.passwordHash){
      el('authError').textContent='পাসওয়ার্ড ভুল।';
@@ -2263,11 +2333,15 @@ async function loginOffline(){
  unlockOffline(u);
 }
 function showSignup(){ el('loginFields').style.display='none'; el('setupFields').style.display='block'; el('authIntro').textContent='নতুন ব্যবহারকারীর জন্য ইউজারনেম ও পাসওয়ার্ড তৈরি করুন।'; el('authError').textContent=''; }
-function cancelSignup(){ el('setupFields').style.display='none'; el('loginFields').style.display='block'; el('authIntro').textContent='মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র Fahim এডিট ও বাতিল করতে পারবেন।'; }
+function cancelSignup(){ el('setupFields').style.display='none'; el('loginFields').style.display='block'; el('authIntro').textContent='মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র অ্যাডমিন এডিট ও বাতিল করতে পারবেন।'; }
 async function forgotOfflinePassword(){
  const users=getLocalUsers();
  const u=prompt('আপনার ইউজারনেম লিখুন:');
  if(!u)return;
+ if(u.trim().toLowerCase()===ADMIN_USERNAME){
+   alert('অ্যাডমিন ইউজারনেম ও পাসওয়ার্ড ফিক্সড নির্ধারিত রয়েছে।');
+   return;
+ }
  const saved=users.find(x=>x.username.toLowerCase()===u.trim().toLowerCase());
  if(!saved){alert('ইউজারনেম পাওয়া যায়নি।');return;}
  const p=prompt('নতুন পাসওয়ার্ড দিন (কমপক্ষে ৬ অক্ষর):');
@@ -2287,7 +2361,7 @@ function showContactModal(){
 function cancelContact(){
   el('contactFields').style.display = 'none';
   el('loginFields').style.display = 'block';
-  el('authIntro').textContent = 'মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র Fahim এডিট ও বাতিল করতে পারবেন।';
+  el('authIntro').textContent = 'মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র অ্যাডমিন এডিট ও বাতিল করতে পারবেন।';
 }
 
 function sendApiEmail(){
