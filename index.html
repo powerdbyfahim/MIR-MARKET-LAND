@@ -153,6 +153,60 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   }
 }
 
+/* মীর সকল ল্যান্ড — A4 Landscape (0.5in চারপাশে মার্জিন) */
+@media print {
+  body.landscape-print {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  body.landscape-print #printArea {
+    position: static !important;
+    width: 100% !important;
+  }
+  body.landscape-print .landscape-sheet {
+    width: 100% !important;
+  }
+  body.landscape-print .landscape-header {
+    border: 2px solid #1e3a8a;
+    background: #eef5fb !important;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  body.landscape-print .landscape-main-title {
+    margin: 0;
+    color: #172033 !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+  }
+  body.landscape-print .landscape-sub-title {
+    margin: 2px 0 0;
+    color: #1e3a8a !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+  }
+  body.landscape-print table.data-table {
+    width: 100% !important;
+    table-layout: auto !important;
+    margin-top: 6px !important;
+  }
+  body.landscape-print table.data-table th,
+  body.landscape-print table.data-table td {
+    padding: 6px 7px !important;
+    font-size: 11.5px !important;
+    line-height: 1.35 !important;
+    word-break: break-word !important;
+  }
+  body.landscape-print tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+
 /* স্প্লিট লগইন গেটওয়ে */
 #authGate{
   position:fixed; inset:0; z-index:99999; background:#ffffff;
@@ -264,6 +318,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   align-items:center;
 }
 </style>
+<style id="dynamicPagePrintStyle"></style>
 </head>
 <body>
 
@@ -447,7 +502,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <!--- TAB: মীর সকল ল্যান্ড --->
 <div id="allLandTab" class="tab-content">
   <div class="panel">
-    <h2 class="section-title">🗺️ মীর সকল ল্যান্ড — দলিল ও খতিয়ান/দাগ রেজিস্টার (স্থায়ী ফিক্সড)</h2>
+    <h2 class="section-title">মীর সকল ল্যান্ড — দলিল ও খতিয়ান/দাগ রেজিস্টার (স্থায়ী ফিক্সড)</h2>
     <p class="note">এখানে যে দলিল, খতিয়ান, দাগ নং, জায়গা ও অংশ যুক্ত করবেন, তা স্থায়ীভাবে ফিক্সড/সংরক্ষিত থাকবে। শুধুমাত্র Fahim নতুন তথ্য যুক্ত, এডিট বা বাতিল করতে পারবেন।</p>
 
     <div class="grid admin-only" style="margin-top:15px; background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
@@ -556,7 +611,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
     </div>
 
     <div style="margin-top:15px;">
-      <button type="button" class="green" onclick="printReport('allLandPrintArea', 'মীর সকল ল্যান্ড — দলিল ও খতিয়ান/দাগ রিপোর্ট')">🖨️ মীর সকল ল্যান্ড রিপোর্ট প্রিন্ট / PDF (Auto Date)</button>
+      <button type="button" class="green" onclick="printAllLandLandscape()">🖨️ মীর সকল ল্যান্ড প্রিন্ট / PDF (A4 Landscape)</button>
     </div>
   </div>
 </div>
@@ -1067,6 +1122,55 @@ function renderAllLandTable(){
       </tr>
     `;
   });
+}
+
+function printAllLandLandscape(){
+  const originalContent = document.getElementById('allLandPrintArea').innerHTML;
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = originalContent;
+
+  const headingEl = tempDiv.querySelector('h3');
+  if(headingEl) headingEl.remove();
+  tempDiv.querySelectorAll('th:last-child, td:last-child').forEach(el => el.remove());
+
+  const today = new Date();
+  const autoDateStr = today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+  const pageStyleEl = document.getElementById('dynamicPagePrintStyle');
+  if(pageStyleEl){
+    pageStyleEl.textContent = `@media print { @page { size: A4 landscape; margin: 0.5in 0.5in 0.5in 0.5in; } }`;
+  }
+
+  document.body.classList.add('landscape-print');
+  const printDiv = document.getElementById('printArea');
+  printDiv.style.display = 'block';
+  printDiv.innerHTML = `
+    <div class="landscape-sheet">
+      <div class="landscape-header">
+        <div>
+          <h1 class="landscape-main-title">মীর সকল ল্যান্ড</h1>
+          <div class="landscape-sub-title">মীর মার্কেট এবং ল্যান্ড — পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
+        </div>
+        <div style="text-align:right;font-size:12px;color:#334155;font-weight:700;">
+          <div>পেজ: A4 Landscape</div>
+          <div>প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>
+        </div>
+      </div>
+      ${tempDiv.innerHTML}
+    </div>
+  `;
+
+  const cleanupPrint = () => {
+    printDiv.style.display = 'none';
+    printDiv.innerHTML = '';
+    document.body.classList.remove('landscape-print');
+    if(pageStyleEl) pageStyleEl.textContent = '';
+    window.removeEventListener('afterprint', cleanupPrint);
+  };
+  window.addEventListener('afterprint', cleanupPrint);
+
+  window.print();
+  setTimeout(cleanupPrint, 800);
 }
 
 function renderIncomeExpense(){
@@ -1770,9 +1874,6 @@ function printReport(areaId, title){
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = originalContent;
   tempDiv.querySelectorAll('th.admin-only, td.admin-only').forEach(el=>el.remove());
-  if(areaId === 'allLandPrintArea'){
-    tempDiv.querySelectorAll('th:last-child, td:last-child').forEach(el=>el.remove());
-  }
 
   const today = new Date();
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -2242,7 +2343,6 @@ async function loginOffline(){
    return;
  }
 
- // রেজিস্টার্ড না থাকা যেকোনো ইউজারনেম দিয়ে View-Only মোডে লগইন করতে পারবে
  if(!p || p.length<1){
    el('authError').textContent='লগইন করতে পাসওয়ার্ড দিন।';
    return;
