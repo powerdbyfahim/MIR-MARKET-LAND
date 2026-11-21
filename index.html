@@ -38,7 +38,6 @@ button.secondary{background:#475569}button.green{background:#18734b}button.dange
 
 body.viewer-mode .admin-only{display:none !important;}
 
-/* রসিদ স্টাইল (ওয়েব ডিসপ্লে) */
 .receipt{background:white;border:2px solid #1e3a8a;border-radius:12px;padding:20px;margin:18px 0;display:none;position:relative;}
 .receipt h2{text-align:center;color:#1e3a8a;font-size:24px;margin:0 0 2px;font-weight:800}
 .receipt .market-address{text-align:center;font-weight:600;color:#475569;margin-bottom:8px;font-size:14px}
@@ -71,188 +70,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 
 @media(max-width:700px){.grid,.summary{grid-template-columns:1fr}.wrap{padding:10px}.receipt{padding:14px}}
 
-/* সম্পূর্ণ A4 পেজ নিখুঁত ফিটিং (পোর্ট্রেট রসিদ) */
-@media print {
-  @page { size: A4 portrait; margin: 6mm; }
-  html, body { 
-    background: #fff !important; 
-    margin: 0 !important; 
-    padding: 0 !important; 
-    -webkit-print-color-adjust: exact !important; 
-    print-color-adjust: exact !important; 
-  }
-  body:not(.landscape-print) {
-    height: 100% !important;
-    overflow: hidden !important;
-  }
-  body:not(.landscape-print) * { visibility: hidden !important; }
-  body:not(.landscape-print) #printArea,
-  body:not(.landscape-print) #printArea * { visibility: visible !important; }
-  body:not(.landscape-print) #printArea { 
-    position: absolute !important; 
-    left: 0 !important; 
-    top: 0 !important; 
-    width: 100% !important; 
-    display: block !important;
-  }
-
-  .print-page-wrap {
-    box-sizing: border-box !important;
-    width: 100% !important;
-    height: 285mm !important;
-    max-height: 285mm !important;
-    overflow: hidden !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-    page-break-after: always !important;
-    break-after: page !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-  }
-  .print-page-wrap:last-child {
-    page-break-after: avoid !important;
-    break-after: avoid !important;
-  }
-
-  .receipt { 
-    border: 2px solid #1e3a8a !important; 
-    padding: 10px 16px !important; 
-    box-shadow: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    width: 100% !important;
-    height: 100% !important;
-    margin: 0 !important;
-  }
-
-  #printArea table { width: 100% !important; border-collapse: collapse !important; border: 1.5px solid #1e3a8a !important; margin: 3px 0 !important; }
-  #printArea th { background-color: #e0f2fe !important; color: #0369a1 !important; border: 1.5px solid #1e3a8a !important; padding: 7px 10px !important; font-weight: bold !important; font-size: 13.5px !important; }
-  #printArea td { border: 1.5px solid #1e3a8a !important; padding: 7px 10px !important; background-color: #ffffff !important; font-size: 13.5px !important; }
-  #printArea .land { background-color: #f8fafc !important; border-left: 4px solid #0284c7 !important; padding: 7px 10px !important; margin-bottom: 5px !important; font-size: 13px !important; line-height: 1.4 !important; }
-  #printArea .kind { background-color: #ecfdf5 !important; border: 1px dashed #34d399 !important; padding: 5px !important; margin: 3px 0 !important; font-size: 14.5px !important; }
-  
-  #printArea .signatures { 
-    display: flex !important;
-    justify-content: space-between !important;
-    gap: 40px !important;
-    margin-top: 20px !important; 
-    margin-bottom: 6px !important; 
-  }
-  #printArea .signatures div {
-    border-top: 1.5px solid #1e3a8a !important;
-    width: 42% !important;
-    text-align: center !important;
-    padding-top: 5px !important;
-    font-weight: 700 !important;
-    font-size: 13.5px !important;
-  }
-  #printArea .terms-note { 
-    font-size: 11px !important; 
-    border-top: 1px dashed #cbd5e1 !important; 
-    padding-top: 5px !important; 
-    text-align: center !important; 
-  }
-}
-
-/* মীর সকল ল্যান্ড — A4 Landscape (0.5in চারপাশে মার্জিন, ব্ল্যাঙ্ক পেজ ছাড়া নিখুঁত ফিট) */
-@media print {
-  body.landscape-print #authGate,
-  body.landscape-print .wrap {
-    display: none !important;
-  }
-  body.landscape-print {
-    background: #fff !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-  body.landscape-print #printArea {
-    display: block !important;
-    position: static !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  body.landscape-print .landscape-sheet {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  body.landscape-print .landscape-header {
-    border: 1.5px solid #1e3a8a;
-    background: #eef5fb !important;
-    border-radius: 6px;
-    padding: 8px 12px;
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-  }
-  body.landscape-print .landscape-main-title {
-    margin: 0;
-    color: #172033 !important;
-    font-size: 21px !important;
-    font-weight: 800 !important;
-  }
-  body.landscape-print .landscape-sub-title {
-    margin: 2px 0 0;
-    color: #1e3a8a !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-  }
-  body.landscape-print .table-scroll {
-    overflow: visible !important;
-    width: 100% !important;
-  }
-  body.landscape-print #printArea table.data-table {
-    width: 100% !important;
-    max-width: 100% !important;
-    table-layout: fixed !important;
-    border-collapse: collapse !important;
-    margin-top: 4px !important;
-  }
-  body.landscape-print #printArea table.data-table th,
-  body.landscape-print #printArea table.data-table td {
-    padding: 4px 4px !important;
-    font-size: 9.5px !important;
-    line-height: 1.3 !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-    vertical-align: top !important;
-  }
-  body.landscape-print #printArea table.data-table th:nth-child(1),
-  body.landscape-print #printArea table.data-table td:nth-child(1) { width: 4%; text-align: center !important; }
-  body.landscape-print #printArea table.data-table th:nth-child(2),
-  body.landscape-print #printArea table.data-table td:nth-child(2) { width: 7.5%; }
-  body.landscape-print #printArea table.data-table th:nth-child(3),
-  body.landscape-print #printArea table.data-table td:nth-child(3) { width: 9.5%; }
-  body.landscape-print #printArea table.data-table th:nth-child(4),
-  body.landscape-print #printArea table.data-table td:nth-child(4) { width: 9.5%; }
-  body.landscape-print #printArea table.data-table th:nth-child(5),
-  body.landscape-print #printArea table.data-table td:nth-child(5) { width: 10%; }
-  body.landscape-print #printArea table.data-table th:nth-child(6),
-  body.landscape-print #printArea table.data-table td:nth-child(6) { width: 8.5%; }
-  body.landscape-print #printArea table.data-table th:nth-child(7),
-  body.landscape-print #printArea table.data-table td:nth-child(7) { width: 6%; }
-  body.landscape-print #printArea table.data-table th:nth-child(8),
-  body.landscape-print #printArea table.data-table td:nth-child(8),
-  body.landscape-print #printArea table.data-table th:nth-child(9),
-  body.landscape-print #printArea table.data-table td:nth-child(9),
-  body.landscape-print #printArea table.data-table th:nth-child(10),
-  body.landscape-print #printArea table.data-table td:nth-child(10),
-  body.landscape-print #printArea table.data-table th:nth-child(11),
-  body.landscape-print #printArea table.data-table td:nth-child(11),
-  body.landscape-print #printArea table.data-table th:nth-child(12),
-  body.landscape-print #printArea table.data-table td:nth-child(12) { width: 9%; }
-
-  body.landscape-print tr {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-}
-
 /* স্প্লিট লগইন গেটওয়ে */
 #authGate{
   position:fixed; inset:0; z-index:99999; background:#ffffff;
@@ -266,7 +83,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 .auth-left-banner p{ font-size: 19px; font-weight: 700; color: #e3f4ff; margin: 0; line-height: 1.5; }
 .auth-left-banner svg{ max-width: 100%; height: auto; opacity: 0.85; margin-top: 20px; }
 
-/* ডানপাশের সফট লাইট ব্লু প্যানেল */
 .auth-right-panel{
   width: 480px; 
   background: linear-gradient(180deg, #edf6ff 0%, #dbeafe 100%); 
@@ -306,7 +122,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 .banner-building-graphic { position: absolute; right: 0; bottom: 0; top: 0; width: 320px; pointer-events: none; display: flex; align-items: flex-end; }
 @media(max-width:760px){.banner-text-side{max-width:100%}.banner-building-graphic{display:none}}
 
-/* চুক্তিপত্র প্রিভিউ বক্স */
 .agreement-preview-box{
   margin-top:20px;
   border:1.5px solid var(--line);
@@ -330,7 +145,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   background:#fff;
 }
 
-/* চুক্তির শর্তসমূহ কার্ড */
 .term-card{
   background:#f8fafc;
   border:1px solid #cbd5e1;
@@ -364,7 +178,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   align-items:center;
 }
 </style>
-<style id="dynamicPagePrintStyle"></style>
 </head>
 <body>
 
@@ -904,8 +717,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <button class="danger" onclick="logoutOffline()">লগআউট</button>
 </div>
 
-<!-- Hidden Print Area -->
-<div id="printArea" style="display:none;"></div>
 <section class="receipt" id="ownerReceipt"></section>
 <section class="receipt" id="tenantReceipt"></section>
 <section class="receipt" id="bankReceipt"></section>
@@ -955,6 +766,114 @@ function applyRolePermissions(){
   renderArchiveTable();
   renderAgreementTable();
   renderTermsList();
+}
+
+/* পরিচ্ছন্ন প্রিন্ট উইন্ডো হেল্পার (ব্ল্যাঙ্ক পেজ প্রতিরোধী) */
+function openCleanPrintWindow(bodyHtml, orientation = 'portrait', docTitle = 'প্রিন্ট রিপোর্ট'){
+  const isLandscape = orientation === 'landscape';
+  const pageSizeCss = isLandscape ? 'A4 landscape' : 'A4 portrait';
+  const marginCss = isLandscape ? '10mm' : '8mm';
+
+  const extraLandscapeCss = isLandscape ? `
+    @page { size: A4 landscape; margin: 10mm; }
+    body { margin: 0; padding: 0; }
+    .print-container { width: 100%; max-width: 100%; }
+    .land-header {
+      border: 1.5px solid #1e3a8a;
+      background: #eef5fb;
+      border-radius: 6px;
+      padding: 6px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .land-header h1 { margin: 0; color: #172033; font-size: 20px; font-weight: 800; }
+    .land-header .sub { color: #1e3a8a; font-size: 12px; font-weight: 700; margin-top: 2px; }
+    table.data-table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+    }
+    table.data-table th, table.data-table td {
+      border: 1px solid #94a3b8;
+      padding: 4px 5px;
+      font-size: 9.2px;
+      line-height: 1.25;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      vertical-align: top;
+    }
+    table.data-table th { background: #e0f2fe; color: #0369a1; font-weight: 700; }
+    tr { page-break-inside: avoid; break-inside: avoid; }
+  ` : `
+    @page { size: A4 portrait; margin: 8mm; }
+    body { margin: 0; padding: 0; }
+    .print-container { width: 100%; max-width: 100%; }
+    .receipt-page {
+      page-break-after: always;
+      break-after: page;
+    }
+    .receipt-page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+    .receipt {
+      display: block !important;
+      border: 2px solid #1e3a8a;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 0;
+      background: #fff;
+    }
+    .receipt h2 { text-align: center; color: #1e3a8a; font-size: 22px; margin: 0 0 2px; font-weight: 800; }
+    .receipt .market-address { text-align: center; font-weight: 600; color: #475569; margin-bottom: 6px; font-size: 13px; }
+    .receipt .land { font-size: 12.5px; line-height: 1.4; background: #f8fafc; padding: 6px 10px; border-radius: 6px; border-left: 4px solid #0284c7; margin-bottom: 6px; color: #334155; }
+    .receipt .kind { text-align: center; font-weight: bold; margin: 5px 0 6px; color: #047857; font-size: 14px; background: #ecfdf5; padding: 5px; border-radius: 6px; border: 1px dashed #34d399; }
+    .receipt table { width: 100%; border-collapse: collapse; margin: 4px 0; }
+    .receipt td, .receipt th { border: 1.5px solid #1e3a8a; padding: 5px 9px; text-align: left; font-size: 12.5px; }
+    .receipt th { background: #e0f2fe; color: #0369a1; font-weight: 700; }
+    .receipt .signatures { display: flex; justify-content: space-between; gap: 40px; margin-top: 22px; margin-bottom: 6px; }
+    .receipt .signatures div { border-top: 1.5px solid #1e3a8a; width: 42%; text-align: center; padding-top: 4px; font-weight: 700; color: #1e293b; font-size: 13px; }
+    .receipt .terms-note { text-align: center; font-size: 11px; color: #334155; font-weight: 600; border-top: 1px dashed #cbd5e1; padding-top: 5px; }
+    table.data-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    table.data-table th, table.data-table td { border: 1px solid #cbd5e1; padding: 7px 10px; text-align: left; font-size: 12.5px; }
+    table.data-table th { background: #eef5fb; color: #174a78; }
+    tr { page-break-inside: avoid; break-inside: avoid; }
+  `;
+
+  const printWin = window.open('', '_blank', 'width=1024,height=768');
+  if(!printWin){
+    alert('ব্রাউজারে পপ-আপ ব্লক করা থাকতে পারে। দয়া করে এই সাইটের পপ-আপ অনুমতি দিন অথবা Ctrl+P ব্যবহার করুন।');
+    return;
+  }
+
+  printWin.document.open();
+  printWin.document.write(`<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>${esc(docTitle)}</title>
+<style>
+  @page { size: ${pageSizeCss}; margin: ${marginCss}; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { margin: 0; padding: 0; background: #fff; color: #172033; font-family: "Noto Sans Bengali","SolaimanLipi",Arial,sans-serif; }
+  ${extraLandscapeCss}
+</style>
+</head>
+<body>
+  <div class="print-container">${bodyHtml}</div>
+  <script>
+    window.onload = function() {
+      setTimeout(function() {
+        window.print();
+      }, 250);
+    };
+  <\/script>
+</body>
+</html>`);
+  printWin.document.close();
 }
 
 function switchTab(tabId, btn){
@@ -1182,41 +1101,20 @@ function printAllLandLandscape(){
   const today = new Date();
   const autoDateStr = today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-  const pageStyleEl = document.getElementById('dynamicPagePrintStyle');
-  if(pageStyleEl){
-    pageStyleEl.textContent = `@media print { @page { size: A4 landscape; margin: 0.5in 0.5in 0.5in 0.5in; } }`;
-  }
-
-  document.body.classList.add('landscape-print');
-  const printDiv = document.getElementById('printArea');
-  printDiv.style.display = 'block';
-  printDiv.innerHTML = `
-    <div class="landscape-sheet">
-      <div class="landscape-header">
-        <div>
-          <h1 class="landscape-main-title">মীর সকল ল্যান্ড</h1>
-          <div class="landscape-sub-title">মীর মার্কেট এবং ল্যান্ড — পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
-        </div>
-        <div style="text-align:right;font-size:11.5px;color:#334155;font-weight:700;">
-          <div>পেজ: A4 Landscape</div>
-          <div>প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>
-        </div>
+  const html = `
+    <div class="land-header">
+      <div>
+        <h1>মীর সকল ল্যান্ড</h1>
+        <div class="sub">মীর মার্কেট এবং ল্যান্ড — পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
       </div>
-      ${tempDiv.innerHTML}
+      <div style="text-align:right;font-size:11px;color:#334155;font-weight:700;">
+        <div>পেজ: A4 Landscape</div>
+        <div>প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>
+      </div>
     </div>
+    ${tempDiv.innerHTML}
   `;
-
-  const cleanupPrint = () => {
-    printDiv.style.display = 'none';
-    printDiv.innerHTML = '';
-    document.body.classList.remove('landscape-print');
-    if(pageStyleEl) pageStyleEl.textContent = '';
-    window.removeEventListener('afterprint', cleanupPrint);
-  };
-  window.addEventListener('afterprint', cleanupPrint);
-
-  window.print();
-  setTimeout(cleanupPrint, 800);
+  openCleanPrintWindow(html, 'landscape', 'মীর সকল ল্যান্ড');
 }
 
 function renderIncomeExpense(){
@@ -1535,11 +1433,8 @@ function renderArchiveTable(){
 function printArchived(idx, type){
   const item = archives[idx];
   if(!item) return;
-  const printDiv = document.getElementById('printArea');
-  printDiv.style.display = 'block';
-  printDiv.innerHTML = `<div class="print-page-wrap">${item.htmlContent[type] || item.htmlContent.tenant}</div>`;
-  window.print();
-  printDiv.style.display = 'none';
+  const content = item.htmlContent[type] || item.htmlContent.tenant;
+  openCleanPrintWindow(`<div class="receipt-page"><div class="receipt">${content}</div></div>`, 'portrait', 'আর্কাইভ রসিদ');
 }
 
 function deleteArchive(idx){
@@ -1875,44 +1770,37 @@ function printAgreementTerms(){
     </tr>
   `).join('');
 
-  const printDiv = document.getElementById('printArea');
-  printDiv.style.display = 'block';
-  printDiv.innerHTML = `
-    <div class="print-page-wrap">
-      <div class="receipt" style="display:flex;">
-        <div>
-          <div style="text-align:right;font-size:11.5px;color:#475569;margin-bottom:3px;font-weight:600;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>
-          <div style="display:flex;align-items:center;gap:15px;margin-bottom:5px;">
-            <div>${getReceiptLogoHtml()}</div>
-            <div style="flex-grow:1;text-align:center;">
-              <h2 style="color:#1e3a8a;font-size:22px;margin:0 0 2px;font-weight:800;">মীর মার্কেট এবং ল্যান্ড</h2>
-              <div style="font-weight:600;color:#475569;font-size:13.5px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
-            </div>
+  const html = `
+    <div class="receipt-page">
+      <div class="receipt">
+        <div style="text-align:right;font-size:11.5px;color:#475569;margin-bottom:3px;font-weight:600;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>
+        <div style="display:flex;align-items:center;gap:15px;margin-bottom:5px;">
+          <div>${getReceiptLogoHtml()}</div>
+          <div style="flex-grow:1;text-align:center;">
+            <h2>মীর মার্কেট এবং ল্যান্ড</h2>
+            <div class="market-address">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
           </div>
-          ${ownerInfo()}
-          <div class="kind">ভাড়াটিয়া চুক্তির শর্তসমূহ ও নিয়মাবলি</div>
-          <table>
-            <thead>
-              <tr>
-                <th style="width:55px;text-align:center;">ক্রমিক</th>
-                <th>চুক্তির শর্তসমূহ</th>
-              </tr>
-            </thead>
-            <tbody>${termsHtml}</tbody>
-          </table>
         </div>
-        <div>
-          <div class="signatures">
-            <div>ভাড়াটিয়ার স্বাক্ষর ও তারিখ</div>
-            <div>মালিক/প্রতিনিধির স্বাক্ষর</div>
-          </div>
-          ${termsNoteHtml}
+        ${ownerInfo()}
+        <div class="kind">ভাড়াটিয়া চুক্তির শর্তসমূহ ও নিয়মাবলি</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:55px;text-align:center;">ক্রমিক</th>
+              <th>চুক্তির শর্তসমূহ</th>
+            </tr>
+          </thead>
+          <tbody>${termsHtml}</tbody>
+        </table>
+        <div class="signatures">
+          <div>ভাড়াটিয়ার স্বাক্ষর ও তারিখ</div>
+          <div>মালিক/প্রতিনিধির স্বাক্ষর</div>
         </div>
+        ${termsNoteHtml}
       </div>
     </div>
   `;
-  window.print();
-  printDiv.style.display = 'none';
+  openCleanPrintWindow(html, 'portrait', 'ভাড়াটিয়া চুক্তির শর্তসমূহ');
 }
 
 function printReport(areaId, title){
@@ -1925,34 +1813,19 @@ function printReport(areaId, title){
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
   const autoDateStr = today.toLocaleDateString('bn-BD', options);
 
-  const printDiv = document.getElementById('printArea');
-  printDiv.style.display = 'block';
-  printDiv.innerHTML = `
+  const html = `
     <div style="display:flex;align-items:center;gap:15px;margin-bottom:6px;padding-left:45px;">
-      <div>
-        <svg viewBox="0 0 150 110" width="70" height="55" xmlns="http://www.w3.org/2000/svg">
-          <rect x="15" y="25" width="120" height="75" rx="6" fill="#cbd5e1" opacity="0.35"/>
-          <rect x="25" y="35" width="22" height="55" rx="3" fill="#0f2942" opacity="0.12"/>
-          <rect x="55" y="35" width="22" height="55" rx="3" fill="#0f2942" opacity="0.12"/>
-          <rect x="85" y="35" width="22" height="55" rx="3" fill="#0f2942" opacity="0.12"/>
-          <path d="M 10 25 Q 75 10 140 25" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
-          <line x1="6" y1="100" x2="144" y2="100" stroke="#0f2942" stroke-width="5" stroke-linecap="round"/>
-          <path d="M 16 100 L 16 22 L 75 72 L 134 22 L 134 100 Z" fill="#d97706" opacity="0.22"/>
-          <path d="M 16 100 L 16 22 L 75 72 L 134 22 L 134 100" fill="none" stroke="#0f2942" stroke-width="9.5" stroke-linejoin="round" stroke-linecap="round"/>
-          <path d="M 16 100 L 16 22 L 75 72 L 134 22 L 134 100" fill="none" stroke="#f59e0b" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/>
-          <path d="M 21 27 L 75 74 L 129 27" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-        </svg>
-      </div>
+      <div>${getReceiptLogoHtml()}</div>
       <div style="flex-grow:1;text-align:center;padding-right:90px;">
         <h2 style="color:#1e3a8a;margin:0 0 2px;">মীর মার্কেট এবং ল্যান্ড</h2>
         <div style="font-weight:600;color:#475569;font-size:14px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
       </div>
     </div>
-    <div style="text-align:center;font-weight:bold;font-size:16px;margin-bottom:6px;color:#047857;">${title}</div>
-    <div class="print-timestamp" style="text-align:right;font-size:12px;color:#64748b;margin-bottom:12px;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>
-  ` + tempDiv.innerHTML;
-  window.print();
-  printDiv.style.display = 'none';
+    <div style="text-align:center;font-weight:bold;font-size:16px;margin-bottom:6px;color:#047857;">${esc(title)}</div>
+    <div style="text-align:right;font-size:12px;color:#64748b;margin-bottom:12px;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>
+    ${tempDiv.innerHTML}
+  `;
+  openCleanPrintWindow(html, 'portrait', title);
 }
 
 const ids=['owner1mobile','owner1address','owner2mobile','owner2address','tenant','tenantmobile','tenantaddress','rentmonth','receiptno','rent','originaldeposit','opening','cash','bank','bankname','branch','bankdate','bankref'];
@@ -2016,31 +1889,31 @@ function commitMonthlyAdjustment(){
 }
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
-function commonTable(c){return `<table style="width:100%;border-collapse:collapse;border:1.5px solid #1e3a8a;margin:5px 0;">
-<tr style="background-color:#e0f2fe;"><th style="border:1.5px solid #1e3a8a;padding:7px 10px;text-align:left;color:#0369a1;font-weight:bold;font-size:13.5px;">বিবরণ</th><th style="border:1.5px solid #1e3a8a;padding:7px 10px;text-align:left;color:#0369a1;font-weight:bold;font-size:13.5px;">তথ্য</th></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('rentmonth'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">রসিদ নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('receiptno'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">ভাড়াটিয়ার নাম</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('tenant'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">ঠিকানা</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('tenantaddress'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">মোবাইল</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('tenantmobile'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">জমির পরিমাণ</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">২০৭ শতংশ</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">দাগ / খতিয়ান</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('dag'))} / ${esc(val('khatian'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">জমাখারিজ খতিয়ান</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${esc(val('mutation'))}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">মোট মাসিক ভাড়া</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.rent)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">মূল মোট জামানত</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.original)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">জামানত (মাসের শুরুতে)</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.opening)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">জামানত থেকে সমন্বয় (২০%)</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.adj)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">সমন্বয়ের পর জামানত</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.closing)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;"><b>সমন্বয়ের পর প্রদেয় ভাড়া</b></td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;"><b>${money(c.net)}</b></td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">নগদে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.cash)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>মালিক ১ নগদে গ্রহণ</b></td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>${money(c.owner1Cash)}</b></td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">ব্যাংকে গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.bank)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>মালিক ১ ব্যাংকে জমা/গ্রহণ</b></td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>${money(c.owner1Bank)}</b></td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">মোট গ্রহণ</td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;">${money(c.paid)}</td></tr>
-<tr><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>মালিক ১ (৫০% অংশ - প্রদেয় ভাড়ার ওপর)</b></td><td style="border:1.5px solid #1e3a8a;padding:7px 10px;font-size:13.5px;background-color:#ecfdf5;"><b>${esc(val('owner1'))} (${money(c.owner1Count)})</b></td></tr></table>`;}
+function commonTable(c){return `<table>
+<tr><th>বিবরণ</th><th>তথ্য</th></tr>
+<tr><td>ভাড়ার মাস</td><td>${esc(val('rentmonth'))}</td></tr>
+<tr><td>রসিদ নম্বর</td><td>${esc(val('receiptno'))}</td></tr>
+<tr><td>ভাড়াটিয়ার নাম</td><td>${esc(val('tenant'))}</td></tr>
+<tr><td>ঠিকানা</td><td>${esc(val('tenantaddress'))}</td></tr>
+<tr><td>মোবাইল</td><td>${esc(val('tenantmobile'))}</td></tr>
+<tr><td>জমির পরিমাণ</td><td>২০৭ শতংশ</td></tr>
+<tr><td>দাগ / খতিয়ান</td><td>${esc(val('dag'))} / ${esc(val('khatian'))}</td></tr>
+<tr><td>জমাখারিজ খতিয়ান</td><td>${esc(val('mutation'))}</td></tr>
+<tr><td>মোট মাসিক ভাড়া</td><td>${money(c.rent)}</td></tr>
+<tr><td>মূল মোট জামানত</td><td>${money(c.original)}</td></tr>
+<tr><td>জামানত (মাসের শুরুতে)</td><td>${money(c.opening)}</td></tr>
+<tr><td>জামানত থেকে সমন্বয় (২০%)</td><td>${money(c.adj)}</td></tr>
+<tr><td>সমন্বয়ের পর জামানত</td><td>${money(c.closing)}</td></tr>
+<tr><td><b>সমন্বয়ের পর প্রদেয় ভাড়া</b></td><td><b>${money(c.net)}</b></td></tr>
+<tr><td>নগদে গ্রহণ</td><td>${money(c.cash)}</td></tr>
+<tr><td style="background-color:#ecfdf5;"><b>মালিক ১ নগদে গ্রহণ</b></td><td style="background-color:#ecfdf5;"><b>${money(c.owner1Cash)}</b></td></tr>
+<tr><td>ব্যাংকে গ্রহণ</td><td>${money(c.bank)}</td></tr>
+<tr><td style="background-color:#ecfdf5;"><b>মালিক ১ ব্যাংকে জমা/গ্রহণ</b></td><td style="background-color:#ecfdf5;"><b>${money(c.owner1Bank)}</b></td></tr>
+<tr><td>মোট গ্রহণ</td><td>${money(c.paid)}</td></tr>
+<tr><td style="background-color:#ecfdf5;"><b>মালিক ১ (৫০% অংশ - প্রদেয় ভাড়ার ওপর)</b></td><td style="background-color:#ecfdf5;"><b>${esc(val('owner1'))} (${money(c.owner1Count)})</b></td></tr></table>`;}
 
 function ownerInfo(){
-  return `<div class="land" style="font-size:13px;line-height:1.45;background:#f8fafc;padding:8px 12px;border-radius:6px;border-left:4px solid #0284c7;margin-bottom:6px;color:#334155;">
+  return `<div class="land">
     <b>মালিক ১ (ভাড়া কাউন্ট ৫০%):</b> ${esc(val('owner1'))} — মোবাইল: ${esc(val('owner1mobile'))}<br>ঠিকানা: ${esc(val('owner1address'))}<br>
     <b>মালিক ২:</b> ${esc(val('owner2'))} — মোবাইল: ${esc(val('owner2mobile'))}<br>ঠিকানা: ${esc(val('owner2address'))}
   </div>`;
@@ -2067,14 +1940,14 @@ function buildReceipts(){
   const c=calc();
   const today = new Date();
   const autoDateStr = today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-  const timestampHtml = `<div class="print-timestamp" style="text-align:right;font-size:11.5px;color:#475569;margin-bottom:3px;font-weight:600;">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>`;
+  const timestampHtml = `<div class="print-timestamp">প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>`;
   
   const standardReceiptHeader = timestampHtml + `
     <div style="display:flex;align-items:center;gap:15px;margin-bottom:5px;">
       <div>${getReceiptLogoHtml()}</div>
       <div style="flex-grow:1;text-align:center;">
-        <h2 style="color:#1e3a8a;font-size:22px;margin:0 0 2px;font-weight:800;">মীর মার্কেট এবং ল্যান্ড</h2>
-        <div class="market-address" style="font-weight:600;color:#475569;font-size:13.5px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
+        <h2>মীর মার্কেট এবং ল্যান্ড</h2>
+        <div class="market-address">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
       </div>
     </div>` + ownerInfo();
 
@@ -2082,28 +1955,28 @@ function buildReceipts(){
     <div style="display:flex;align-items:center;gap:15px;margin-bottom:5px;padding-left:45px;">
       <div>${getReceiptLogoHtml()}</div>
       <div style="flex-grow:1;text-align:center;padding-right:90px;">
-        <h2 style="color:#1e3a8a;font-size:22px;margin:0 0 2px;font-weight:800;">মীর মার্কেট এবং ল্যান্ড</h2>
-        <div class="market-address" style="font-weight:600;color:#475569;font-size:13.5px;">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
+        <h2>মীর মার্কেট এবং ল্যান্ড</h2>
+        <div class="market-address">পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
       </div>
     </div>` + ownerInfo();
 
-  el('ownerReceipt').innerHTML=standardReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:5px 0 6px;color:#047857;font-size:14.5px;background:#ecfdf5;padding:5px;border-radius:6px;border:1px dashed #34d399;">মালিকের কপি — মাসিক ভাড়া আদায়ের হিসাব (মালিক ১ - ৫০% কাউন্ট)</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:25px;margin-bottom:8px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">ভাড়া গ্রহণকারীর স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">হিসাব প্রস্তুতকারীর স্বাক্ষর</div></div>`+termsNoteHtml;
+  el('ownerReceipt').innerHTML=standardReceiptHeader+`<div class="kind">মালিকের কপি — মাসিক ভাড়া আদায়ের হিসাব (মালিক ১ - ৫০% কাউন্ট)</div>`+commonTable(c)+`<div class="signatures"><div>ভাড়া গ্রহণকারীর স্বাক্ষর</div><div>হিসাব প্রস্তুতকারীর স্বাক্ষর</div></div>`+termsNoteHtml;
 
-  el('tenantReceipt').innerHTML=standardReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:5px 0 6px;color:#047857;font-size:14.5px;background:#ecfdf5;padding:5px;border-radius:6px;border:1px dashed #34d399;">ভাড়াটিয়ার কপি — মাসিক ভাড়া রসিদ</div>`+commonTable(c)+`<div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:25px;margin-bottom:8px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">ভাড়াটিয়ার স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">মালিক/প্রতিনিধির স্বাক্ষর</div></div>`+termsNoteHtml;
+  el('tenantReceipt').innerHTML=standardReceiptHeader+`<div class="kind">ভাড়াটিয়ার কপি — মাসিক ভাড়া রসিদ</div>`+commonTable(c)+`<div class="signatures"><div>ভাড়াটিয়ার স্বাক্ষর</div><div>মালিক/প্রতিনিধির স্বাক্ষর</div></div>`+termsNoteHtml;
 
-  el('bankReceipt').innerHTML=bankReceiptHeader+`<div class="kind" style="text-align:center;font-weight:bold;margin:4px 0 6px;color:#047857;font-size:14.5px;background:#ecfdf5;padding:5px;border-radius:6px;border:1px dashed #34d399;">ব্যাংক জমার রসিদ</div>
-  <table style="width:100%;border-collapse:collapse;border:1.5px solid #1e3a8a;margin:4px 0;">
-  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">ভাড়ার মাস</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('rentmonth'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">রসিদ নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;"><b>${esc(val('receiptno'))}</b></td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">ভাড়াটিয়ার নাম</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('tenant'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">ব্যাংকের নাম</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('bankname'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">শাখা</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('branch'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">জমার তারিখ</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('bankdate'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">ডিপোজিট/ট্রানজেকশন নম্বর</td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;">${esc(val('bankref'))}</td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;"><b>ব্যাংকে জমার পরিমাণ</b></td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;"><b>${money(c.bank)}</b></td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;background-color:#ecfdf5;"><b>মালিক ১ ব্যাংকে জমা/গ্রহণ</b></td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;background-color:#ecfdf5;"><b>${money(c.owner1Bank)}</b></td></tr>
-  <tr><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;background-color:#ecfdf5;"><b>হিসাব প্রাপক (মালিক ১ - ৫০%)</b></td><td style="border:1.5px solid #1e3a8a;padding:8px 12px;font-size:13.5px;background-color:#ecfdf5;"><b>${esc(val('owner1'))} (${money(c.owner1Count)})</b></td></tr></table>
-  <div style="font-size:13px;margin:3px 0 0;font-weight:600;color:#334155;">জমির বিবরণ: ২০৭ শতংশ; দাগ: ${esc(val('dag'))}; খতিয়ান: ${esc(val('khatian'))}; জমাখারিজ খতিয়ান: ${esc(val('mutation'))}</div><div class="signatures" style="display:flex;justify-content:space-between;gap:40px;margin-top:25px;margin-bottom:8px;"><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">জমাদানকারীর স্বাক্ষর</div><div style="border-top:1.5px solid #1e3a8a;width:42%;text-align:center;padding-top:5px;font-weight:700;font-size:13.5px;">ব্যাংক কর্তৃপক্ষের সিল ও স্বাক্ষর</div></div>`+termsNoteHtml;
+  el('bankReceipt').innerHTML=bankReceiptHeader+`<div class="kind">ব্যাংক জমার রসিদ</div>
+  <table>
+  <tr><td>ভাড়ার মাস</td><td>${esc(val('rentmonth'))}</td></tr>
+  <tr><td>রসিদ নম্বর</td><td><b>${esc(val('receiptno'))}</b></td></tr>
+  <tr><td>ভাড়াটিয়ার নাম</td><td>${esc(val('tenant'))}</td></tr>
+  <tr><td>ব্যাংকের নাম</td><td>${esc(val('bankname'))}</td></tr>
+  <tr><td>শাখা</td><td>${esc(val('branch'))}</td></tr>
+  <tr><td>জমার তারিখ</td><td>${esc(val('bankdate'))}</td></tr>
+  <tr><td>ডিপোজিট/ট্রানজেকশন নম্বর</td><td>${esc(val('bankref'))}</td></tr>
+  <tr><td><b>ব্যাংকে জমার পরিমাণ</b></td><td><b>${money(c.bank)}</b></td></tr>
+  <tr><td style="background-color:#ecfdf5;"><b>মালিক ১ ব্যাংকে জমা/গ্রহণ</b></td><td style="background-color:#ecfdf5;"><b>${money(c.owner1Bank)}</b></td></tr>
+  <tr><td style="background-color:#ecfdf5;"><b>হিসাব প্রাপক (মালিক ১ - ৫০%)</b></td><td style="background-color:#ecfdf5;"><b>${esc(val('owner1'))} (${money(c.owner1Count)})</b></td></tr></table>
+  <div style="font-size:12.5px;margin:3px 0 0;font-weight:600;color:#334155;">জমির বিবরণ: ২০৭ শতংশ; দাগ: ${esc(val('dag'))}; খতিয়ান: ${esc(val('khatian'))}; জমাখারিজ খতিয়ান: ${esc(val('mutation'))}</div><div class="signatures"><div>জমাদানকারীর স্বাক্ষর</div><div>ব্যাংক কর্তৃপক্ষের সিল ও স্বাক্ষর</div></div>`+termsNoteHtml;
 }
 
 function autoSaveLocal(){
@@ -2153,11 +2026,8 @@ function printCopy(type){
     autoSaveToMobileStorage(`MirMarket_${type}_${tenantName}_${rentMonth}.json`, backupPayload);
   }
 
-  const printDiv = document.getElementById('printArea');
-  printDiv.style.display = 'block';
-  printDiv.innerHTML = `<div class="print-page-wrap">${document.getElementById(map[type]).innerHTML}</div>`;
-  window.print();
-  printDiv.style.display = 'none';
+  const singleHtml = `<div class="receipt-page"><div class="receipt">${document.getElementById(map[type]).innerHTML}</div></div>`;
+  openCleanPrintWindow(singleHtml, 'portrait', `রসিদ - ${tenantName}`);
   if(isAdminFahim) incrementReceiptNumber();
 }
 
@@ -2180,15 +2050,12 @@ function printAllReceipts(){
     autoSaveToMobileStorage(`MirMarket_All_Receipts_${tenantName}_${rentMonth}.json`, allPayload);
   }
 
-  const printDiv = document.getElementById('printArea');
-  printDiv.style.display = 'block';
-  printDiv.innerHTML = `
-    <div class="print-page-wrap">${document.getElementById('ownerReceipt').innerHTML}</div>
-    <div class="print-page-wrap">${document.getElementById('tenantReceipt').innerHTML}</div>
-    <div class="print-page-wrap">${document.getElementById('bankReceipt').innerHTML}</div>
+  const allHtml = `
+    <div class="receipt-page"><div class="receipt">${document.getElementById('ownerReceipt').innerHTML}</div></div>
+    <div class="receipt-page"><div class="receipt">${document.getElementById('tenantReceipt').innerHTML}</div></div>
+    <div class="receipt-page"><div class="receipt">${document.getElementById('bankReceipt').innerHTML}</div></div>
   `;
-  window.print();
-  printDiv.style.display = 'none';
+  openCleanPrintWindow(allHtml, 'portrait', `সকল রসিদ - ${tenantName}`);
   if(isAdminFahim) incrementReceiptNumber();
 }
 
