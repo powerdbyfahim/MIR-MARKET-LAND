@@ -50,6 +50,16 @@ table.data-table th,table.data-table td{border:1px solid var(--line);padding:9px
 table.data-table th{background:#eef5fb;color:var(--blue)}
 .table-scroll{width:100%;overflow-x:auto;}
 
+.fixed-badge{
+  display:inline-block;
+  background:#0369a1;
+  color:#fff;
+  font-size:11.5px;
+  font-weight:700;
+  padding:3px 9px;
+  border-radius:999px;
+}
+
 @media(max-width:700px){.grid,.summary{grid-template-columns:1fr}.wrap{padding:10px}.receipt{padding:14px}}
 
 /* সম্পূর্ণ A4 পেজ নিখুঁত ফিটিং */
@@ -229,15 +239,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   background:#f0f9ff;
   border-color:#bae6fd;
   border-left:4px solid #0369a1;
-}
-.fixed-badge{
-  display:inline-block;
-  background:#0369a1;
-  color:#fff;
-  font-size:11.5px;
-  font-weight:700;
-  padding:3px 9px;
-  border-radius:999px;
 }
 .term-card-text{
   font-size:15px;
@@ -432,8 +433,8 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <!--- TAB: মীর সকল ল্যান্ড --->
 <div id="allLandTab" class="tab-content">
   <div class="panel">
-    <h2 class="section-title">🗺️ মীর সকল ল্যান্ড — দলিল ও খতিয়ান/দাগ রেজিস্টার</h2>
-    <p class="note">এখানে দলিল নং, দলিল দাতা ও গ্রহীতার নাম, কোন জায়গার জমি, অত্র দলিলের অংশ কতটুকু, রেজিস্ট্রি সাল এবং সি এস, পি এস, এস এ, আর এস ও ওল্ড পি এস খতিয়ান ও দাগ নং সংরক্ষণ, এডিট ও মুছতে পারবেন।</p>
+    <h2 class="section-title">🗺️ মীর সকল ল্যান্ড — দলিল ও খতিয়ান/দাগ রেজিস্টার (স্থায়ী ফিক্সড)</h2>
+    <p class="note">এখানে যে দলিল, খতিয়ান, দাগ নং, জায়গা ও অংশ যুক্ত করবেন, তা স্থায়ীভাবে ফিক্সড/সংরক্ষিত থাকবে এবং ব্যাকআপ/রিস্টোরের সাথেও সুরক্ষিত থাকবে।</p>
 
     <div class="grid" style="margin-top:15px; background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
       <div>
@@ -507,13 +508,13 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
       </div>
 
       <div class="full" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
-        <button type="button" class="green" id="saveLandBtn" onclick="saveLandRecord()">+ দলিল ও জমির তথ্য সংরক্ষণ করুন</button>
+        <button type="button" class="green" id="saveLandBtn" onclick="saveLandRecord()">+ দলিল ও জমির তথ্য স্থায়ীভাবে সংরক্ষণ করুন</button>
         <button type="button" class="secondary" id="cancelLandEditBtn" style="display:none;" onclick="cancelEditLand()">সম্পাদনা বাতিল</button>
       </div>
     </div>
 
     <div style="margin-top:25px;" id="allLandPrintArea">
-      <h3 style="color:#174a78;margin-bottom:10px;">মীর সকল ল্যান্ড — সংরক্ষিত দলিল ও খতিয়ান তালিকা</h3>
+      <h3 style="color:#174a78;margin-bottom:10px;">মীর সকল ল্যান্ড — স্থায়ী সংরক্ষিত দলিল, খতিয়ান ও দাগ তালিকা</h3>
       <div class="table-scroll">
         <table class="data-table">
           <thead>
@@ -530,7 +531,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
               <th>এস এ খতিয়ান / দাগ</th>
               <th>আর এস খতিয়ান / দাগ</th>
               <th>ওল্ড পি এস খতিয়ান / দাগ</th>
-              <th>সম্পাদনা / মুছুন</th>
+              <th>স্থায়ী স্ট্যাটাস / সম্পাদনা</th>
             </tr>
           </thead>
           <tbody id="allLandTableBody">
@@ -810,7 +811,26 @@ function switchTab(tabId, btn){
   if(tabId === 'termsTab'){ renderTermsList(); }
 }
 
-let allLands = JSON.parse(localStorage.getItem('mirMarketAllLands')||'[]');
+function loadFixedAllLands(){
+  const primary = JSON.parse(localStorage.getItem('mirMarketAllLands')||'null');
+  const mirror = JSON.parse(localStorage.getItem('mirMarketAllLandsFixed')||'null');
+  if(Array.isArray(primary) && primary.length){
+    localStorage.setItem('mirMarketAllLandsFixed', JSON.stringify(primary));
+    return primary;
+  }
+  if(Array.isArray(mirror) && mirror.length){
+    localStorage.setItem('mirMarketAllLands', JSON.stringify(mirror));
+    return mirror;
+  }
+  return Array.isArray(primary) ? primary : [];
+}
+
+function persistFixedAllLands(){
+  localStorage.setItem('mirMarketAllLands', JSON.stringify(allLands));
+  localStorage.setItem('mirMarketAllLandsFixed', JSON.stringify(allLands));
+}
+
+let allLands = loadFixedAllLands();
 let incomes = JSON.parse(localStorage.getItem('mirMarketIncomes')||'[]');
 let expenses = JSON.parse(localStorage.getItem('mirMarketExpenses')||'[]');
 let archives = JSON.parse(localStorage.getItem('mirMarketArchives')||'[]');
@@ -885,6 +905,7 @@ function saveLandRecord(){
   }
 
   const record = {
+    fixedLocked: true,
     deedNo, landLocation, landDeedShare, regYear, donorName, recipientName,
     csKhatian, csDag,
     psKhatian, psDag,
@@ -896,15 +917,15 @@ function saveLandRecord(){
   if(editingLandIndex >= 0){
     allLands[editingLandIndex] = record;
     editingLandIndex = -1;
-    document.getElementById('saveLandBtn').textContent = '+ দলিল ও জমির তথ্য সংরক্ষণ করুন';
+    document.getElementById('saveLandBtn').textContent = '+ দলিল ও জমির তথ্য স্থায়ীভাবে সংরক্ষণ করুন';
     document.getElementById('cancelLandEditBtn').style.display = 'none';
-    alert('দলিল ও জমির তথ্য সফলভাবে সম্পাদনা করা হয়েছে!');
+    alert('দলিল, খতিয়ান ও দাগ নং স্থায়ীভাবে সম্পাদনা করা হয়েছে!');
   } else {
     allLands.unshift(record);
-    alert('দলিল ও জমির তথ্য সফলভাবে সংরক্ষণ করা হয়েছে!');
+    alert('দলিল, খতিয়ান ও দাগ নং স্থায়ীভাবে সংরক্ষণ করা হয়েছে!');
   }
 
-  localStorage.setItem('mirMarketAllLands', JSON.stringify(allLands));
+  persistFixedAllLands();
   clearLandForm();
   renderAllLandTable();
 }
@@ -930,7 +951,7 @@ function editLandRecord(idx){
   document.getElementById('landOldPsKhatian').value = item.oldPsKhatian || '';
   document.getElementById('landOldPsDag').value = item.oldPsDag || '';
 
-  document.getElementById('saveLandBtn').textContent = '✓ পরিবর্তন সংরক্ষণ করুন';
+  document.getElementById('saveLandBtn').textContent = '✓ পরিবর্তন স্থায়ীভাবে সংরক্ষণ করুন';
   document.getElementById('cancelLandEditBtn').style.display = 'inline-block';
   document.getElementById('landDeedNo').focus();
 }
@@ -938,14 +959,14 @@ function editLandRecord(idx){
 function cancelEditLand(){
   editingLandIndex = -1;
   clearLandForm();
-  document.getElementById('saveLandBtn').textContent = '+ দলিল ও জমির তথ্য সংরক্ষণ করুন';
+  document.getElementById('saveLandBtn').textContent = '+ দলিল ও জমির তথ্য স্থায়ীভাবে সংরক্ষণ করুন';
   document.getElementById('cancelLandEditBtn').style.display = 'none';
 }
 
 function deleteLandRecord(idx){
-  if(!confirm('এই দলিল ও জমির তথ্যটি মুছে ফেলতে চান?')) return;
+  if(!confirm('এই স্থায়ী দলিল ও জমির তথ্যটি মুছে ফেলতে চান?')) return;
   allLands.splice(idx, 1);
-  localStorage.setItem('mirMarketAllLands', JSON.stringify(allLands));
+  persistFixedAllLands();
   if(editingLandIndex === idx) cancelEditLand();
   renderAllLandTable();
 }
@@ -974,6 +995,7 @@ function renderAllLandTable(){
         <td>খতিয়ান: ${esc(item.rsKhatian || '-')}<br>দাগ: ${esc(item.rsDag || '-')}</td>
         <td>খতিয়ান: ${esc(item.oldPsKhatian || '-')}<br>দাগ: ${esc(item.oldPsDag || '-')}</td>
         <td style="white-space:nowrap;">
+          <span class="fixed-badge" style="margin-bottom:5px;">ফিক্সড</span><br>
           <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editLandRecord(${idx})">সম্পাদনা / এডিট</button>
           <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteLandRecord(${idx})">মুছুন</button>
         </td>
@@ -1834,6 +1856,7 @@ function autoSaveLocal(){
   const d={};ids.forEach(id=>{if(el(id))d[id]=el(id).value;});
   localStorage.setItem('mirMarketRentData',JSON.stringify(d));
   localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));
+  persistFixedAllLands();
  }catch(e){}
 }
 function updateAll(){buildReceipts();autoSaveLocal();}
@@ -1924,7 +1947,7 @@ function saveData(){
 
 function downloadBackup(){
   const d={};ids.forEach(id=>{if(el(id))d[id]=el(id).value;});
-  const backup={rentData:d, tenants, monthlyLedger, allLands, incomes, expenses, archives, monthlySummaries, agreements, fixedAgreementTerms, extraAgreementTerms, auth:localStorage.getItem('mirMarketUsers')};
+  const backup={rentData:d, tenants, monthlyLedger, allLands, fixedAllLands: allLands, incomes, expenses, archives, monthlySummaries, agreements, fixedAgreementTerms, extraAgreementTerms, auth:localStorage.getItem('mirMarketUsers')};
   autoSaveToMobileStorage('Mir_Market_Full_Backup.json', backup);
 }
 
@@ -1935,6 +1958,7 @@ function uploadToGoogleDrive(){
     tenants, 
     monthlyLedger,
     allLands,
+    fixedAllLands: allLands,
     incomes, 
     expenses, 
     archives, 
@@ -1966,10 +1990,12 @@ function restoreBackup(event){
   const reader=new FileReader();reader.onload=()=>{try{
     const b=JSON.parse(reader.result);
     if(!b.rentData)throw new Error();
+    const restoredLands = Array.isArray(b.allLands) && b.allLands.length ? b.allLands : (Array.isArray(b.fixedAllLands) ? b.fixedAllLands : []);
     localStorage.setItem('mirMarketRentData',JSON.stringify(b.rentData));
     localStorage.setItem('mirMarketTenants',JSON.stringify(b.tenants||[]));
     localStorage.setItem('mirMarketMonthlyLedger',JSON.stringify(b.monthlyLedger||{}));
-    localStorage.setItem('mirMarketAllLands',JSON.stringify(b.allLands||[]));
+    localStorage.setItem('mirMarketAllLands',JSON.stringify(restoredLands));
+    localStorage.setItem('mirMarketAllLandsFixed',JSON.stringify(restoredLands));
     localStorage.setItem('mirMarketIncomes',JSON.stringify(b.incomes||[]));
     localStorage.setItem('mirMarketExpenses',JSON.stringify(b.expenses||[]));
     localStorage.setItem('mirMarketArchives',JSON.stringify(b.archives||[]));
