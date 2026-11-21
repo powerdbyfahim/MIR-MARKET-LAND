@@ -71,21 +71,24 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 
 @media(max-width:700px){.grid,.summary{grid-template-columns:1fr}.wrap{padding:10px}.receipt{padding:14px}}
 
-/* সম্পূর্ণ A4 পেজ নিখুঁত ফিটিং */
+/* সম্পূর্ণ A4 পেজ নিখুঁত ফিটিং (পোর্ট্রেট রসিদ) */
 @media print {
   @page { size: A4 portrait; margin: 6mm; }
   html, body { 
     background: #fff !important; 
     margin: 0 !important; 
     padding: 0 !important; 
-    height: 100% !important;
-    overflow: hidden !important;
     -webkit-print-color-adjust: exact !important; 
     print-color-adjust: exact !important; 
   }
-  body * { visibility: hidden !important; }
-  #printArea, #printArea * { visibility: visible !important; }
-  #printArea { 
+  body:not(.landscape-print) {
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+  body:not(.landscape-print) * { visibility: hidden !important; }
+  body:not(.landscape-print) #printArea,
+  body:not(.landscape-print) #printArea * { visibility: visible !important; }
+  body:not(.landscape-print) #printArea { 
     position: absolute !important; 
     left: 0 !important; 
     top: 0 !important; 
@@ -153,54 +156,97 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   }
 }
 
-/* মীর সকল ল্যান্ড — A4 Landscape (0.5in চারপাশে মার্জিন) */
+/* মীর সকল ল্যান্ড — A4 Landscape (0.5in চারপাশে মার্জিন, ব্ল্যাঙ্ক পেজ ছাড়া নিখুঁত ফিট) */
 @media print {
+  body.landscape-print #authGate,
+  body.landscape-print .wrap {
+    display: none !important;
+  }
   body.landscape-print {
+    background: #fff !important;
     height: auto !important;
     overflow: visible !important;
   }
   body.landscape-print #printArea {
+    display: block !important;
     position: static !important;
     width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   body.landscape-print .landscape-sheet {
     width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   body.landscape-print .landscape-header {
-    border: 2px solid #1e3a8a;
+    border: 1.5px solid #1e3a8a;
     background: #eef5fb !important;
-    border-radius: 8px;
-    padding: 10px 14px;
-    margin-bottom: 10px;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
   body.landscape-print .landscape-main-title {
     margin: 0;
     color: #172033 !important;
-    font-size: 24px !important;
+    font-size: 21px !important;
     font-weight: 800 !important;
   }
   body.landscape-print .landscape-sub-title {
     margin: 2px 0 0;
     color: #1e3a8a !important;
-    font-size: 13.5px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
   }
-  body.landscape-print table.data-table {
+  body.landscape-print .table-scroll {
+    overflow: visible !important;
     width: 100% !important;
-    table-layout: auto !important;
-    margin-top: 6px !important;
   }
-  body.landscape-print table.data-table th,
-  body.landscape-print table.data-table td {
-    padding: 6px 7px !important;
-    font-size: 11.5px !important;
-    line-height: 1.35 !important;
-    word-break: break-word !important;
+  body.landscape-print #printArea table.data-table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    margin-top: 4px !important;
   }
+  body.landscape-print #printArea table.data-table th,
+  body.landscape-print #printArea table.data-table td {
+    padding: 4px 4px !important;
+    font-size: 9.5px !important;
+    line-height: 1.3 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    vertical-align: top !important;
+  }
+  body.landscape-print #printArea table.data-table th:nth-child(1),
+  body.landscape-print #printArea table.data-table td:nth-child(1) { width: 4%; text-align: center !important; }
+  body.landscape-print #printArea table.data-table th:nth-child(2),
+  body.landscape-print #printArea table.data-table td:nth-child(2) { width: 7.5%; }
+  body.landscape-print #printArea table.data-table th:nth-child(3),
+  body.landscape-print #printArea table.data-table td:nth-child(3) { width: 9.5%; }
+  body.landscape-print #printArea table.data-table th:nth-child(4),
+  body.landscape-print #printArea table.data-table td:nth-child(4) { width: 9.5%; }
+  body.landscape-print #printArea table.data-table th:nth-child(5),
+  body.landscape-print #printArea table.data-table td:nth-child(5) { width: 10%; }
+  body.landscape-print #printArea table.data-table th:nth-child(6),
+  body.landscape-print #printArea table.data-table td:nth-child(6) { width: 8.5%; }
+  body.landscape-print #printArea table.data-table th:nth-child(7),
+  body.landscape-print #printArea table.data-table td:nth-child(7) { width: 6%; }
+  body.landscape-print #printArea table.data-table th:nth-child(8),
+  body.landscape-print #printArea table.data-table td:nth-child(8),
+  body.landscape-print #printArea table.data-table th:nth-child(9),
+  body.landscape-print #printArea table.data-table td:nth-child(9),
+  body.landscape-print #printArea table.data-table th:nth-child(10),
+  body.landscape-print #printArea table.data-table td:nth-child(10),
+  body.landscape-print #printArea table.data-table th:nth-child(11),
+  body.landscape-print #printArea table.data-table td:nth-child(11),
+  body.landscape-print #printArea table.data-table th:nth-child(12),
+  body.landscape-print #printArea table.data-table td:nth-child(12) { width: 9%; }
+
   body.landscape-print tr {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
@@ -1151,7 +1197,7 @@ function printAllLandLandscape(){
           <h1 class="landscape-main-title">মীর সকল ল্যান্ড</h1>
           <div class="landscape-sub-title">মীর মার্কেট এবং ল্যান্ড — পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড</div>
         </div>
-        <div style="text-align:right;font-size:12px;color:#334155;font-weight:700;">
+        <div style="text-align:right;font-size:11.5px;color:#334155;font-weight:700;">
           <div>পেজ: A4 Landscape</div>
           <div>প্রিন্ট তারিখ ও সময়: ${autoDateStr}</div>
         </div>
