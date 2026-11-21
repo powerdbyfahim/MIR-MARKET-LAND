@@ -29,6 +29,15 @@ button.secondary{background:#475569}button.green{background:#18734b}button.dange
 .metric{background:#eef5fb;border-radius:8px;padding:12px}.metric small{display:block;color:#475569}.metric strong{font-size:18px}
 .note{font-size:13.5px;line-height:1.6;color:#174a78;font-weight:bold;margin:0 0 20px;text-align:left;}
 
+.role-banner{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+  padding:10px 16px;border-radius:10px;margin-bottom:14px;font-weight:700;font-size:14px;
+}
+.role-banner.admin{background:#ecfdf5;color:#047857;border:1px solid #6ee7b7;}
+.role-banner.viewer{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+
+body.viewer-mode .admin-only{display:none !important;}
+
 /* রসিদ স্টাইল (ওয়েব ডিসপ্লে) */
 .receipt{background:white;border:2px solid #1e3a8a;border-radius:12px;padding:20px;margin:18px 0;display:none;position:relative;}
 .receipt h2{text-align:center;color:#1e3a8a;font-size:24px;margin:0 0 2px;font-weight:800}
@@ -298,10 +307,10 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
         </div>
       </div>
       
-      <p id="authIntro" class="note">মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ তৈরি সিস্টেম।</p>
+      <p id="authIntro" class="note">মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র Fahim এডিট ও বাতিল করতে পারবেন।</p>
       
       <div id="setupFields" style="display:none">
-       <label>ইউজারনেম</label><input id="authUser" placeholder="ইউজারনেম লিখুন">
+       <label>ইউজারনেম</label><input id="authUser" placeholder="যেমন: Fahim বা যেকোনো নাম">
        <label>পাসওয়ার্ড</label><input id="authPass" type="password" placeholder="কমপক্ষে ৬ অক্ষর">
        <label>পাসওয়ার্ড নিশ্চিত করুন</label><input id="authPass2" type="password" placeholder="আবার পাসওয়ার্ড দিন">
        <button type="button" onclick="createOfflineAccount()">অ্যাকাউন্ট তৈরি করুন</button>
@@ -309,7 +318,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
       </div>
 
       <div id="loginFields">
-       <label>User ID / Username</label><input id="loginUser" placeholder="ইউজারনেম লিখুন">
+       <label>User ID / Username</label><input id="loginUser" placeholder="ইউজারনেম লিখুন (যেমন: Fahim)">
        <label>Password</label><input id="loginPass" type="password" placeholder="পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter')loginOffline()">
        <button type="button" onclick="loginOffline()">Sign in</button>
        <button type="button" class="secondary" onclick="showSignup()">নতুন সাইন আপ (Register)</button>
@@ -344,6 +353,11 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 </div>
 
 <div class="wrap">
+<div id="roleStatusBanner" class="role-banner viewer">
+  <span id="roleStatusText">বর্তমান ইউজার: অতিথি (শুধুমাত্র দেখার অনুমতি)</span>
+  <button type="button" class="danger" style="padding:6px 12px;font-size:12.5px;" onclick="logoutOffline()">লগআউট</button>
+</div>
+
 <div class="dashboard-header-banner">
   <div class="banner-text-side">
     <h1>মীর মার্কেট এবং ল্যান্ড</h1>
@@ -382,12 +396,12 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   <div class="full"><label>মালিক ২-এর ঠিকানা</label><input id="owner2address" value="মীর বাড়ী, বাঞ্ছানগর, ওয়ার্ড নং ০৪, ভোলা-বরিসাল রোড, লক্ষ্মীপুর" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div></div></div>
 
   <div class="panel"><h2 class="section-title">ভাড়াটিয়া ব্যবস্থাপনা ও তথ্য</h2><div class="grid">
-  <div class="full"><label>আগে যোগ করা ভাড়াটিয়া নির্বাচন করুন</label><select id="tenantSelect" onchange="selectTenant(this.value)"><option value="">— ভাড়াটিয়া নির্বাচন —</option></select><button type="button" class="danger" style="margin-top:8px" onclick="deleteTenant()">নির্বাচিত ভাড়াটিয়ার তথ্য বাতিল করুন</button></div>
+  <div class="full"><label>আগে যোগ করা ভাড়াটিয়া নির্বাচন করুন</label><select id="tenantSelect" onchange="selectTenant(this.value)"><option value="">— ভাড়াটিয়া নির্বাচন —</option></select><button type="button" class="danger admin-only" style="margin-top:8px" onclick="deleteTenant()">নির্বাচিত ভাড়াটিয়ার তথ্য বাতিল করুন</button></div>
   <div><label>ভাড়াটিয়ার নাম</label><input id="tenant" placeholder="নাম লিখুন" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>মোবাইল নম্বর</label><input id="tenantmobile" placeholder="মোবাইল নম্বর" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
   <div class="full"><label>ভাড়াটিয়ার ঠিকানা</label><textarea id="tenantaddress" placeholder="ঠিকানা" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></textarea></div>
   <div><label>এই ভাড়াটিয়ার নির্ধারিত অগ্রিম জামানত (টাকা)</label><input id="originaldeposit" type="number" min="0" step="0.01" value="0" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
   <div><label>ভাড়ার মাস (স্বয়ংক্রিয় পরিবর্তন)</label><input id="rentmonth" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div><div><label>রসিদ নম্বর (স্বয়ংক্রিয়)</label><input id="receiptno" readonly style="background:#eef5fb;font-weight:bold;color:#174a78;"></div>
-  </div><div class="panel" style="background:#f8fafc;margin-top:14px"><h3 class="section-title">নতুন ভাড়াটিয়া যোগ করুন</h3><div class="grid">
+  </div><div class="panel admin-only" style="background:#f8fafc;margin-top:14px"><h3 class="section-title">নতুন ভাড়াটিয়া যোগ করুন</h3><div class="grid">
   <div><label>নতুন ভাড়াটিয়ার নাম</label><input id="newTenantName" placeholder="পূর্ণ নাম"></div><div><label>মোবাইল নম্বর</label><input id="newTenantMobile" placeholder="মোবাইল নম্বর"></div>
   <div class="full"><label>ঠিকানা</label><textarea id="newTenantAddress" placeholder="ভাড়াটিয়ার ঠিকানা"></textarea></div>
   <div><label>নির্ধারিত অগ্রিম জামানত (টাকা)</label><input id="newTenantDeposit" type="number" min="0" step="0.01" placeholder="অগ্রিম জামানত"></div>
@@ -421,12 +435,12 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   </div></div>
 
   <div class="actions">
-    <button onclick="updateAll()">হিসাব আপডেট করুন</button>
+    <button class="admin-only" onclick="updateAll()">হিসাব আপডেট করুন</button>
     <button class="green" onclick="printCopy('owner')">মালিকের কপি PDF</button>
     <button class="green" onclick="printCopy('tenant')">ভাড়াটিয়ার কপি PDF</button>
     <button class="green" onclick="printCopy('bank')">ব্যাংক জমার রসিদ PDF</button>
     <button class="green" onclick="printAllReceipts()" style="background:#0284c7">📄 মালিক, ভাড়াটিয়া ও ব্যাংক কপি একত্রে প্রিন্ট (Print All)</button>
-    <button class="green" onclick="archiveCurrentMonth()" style="background:#047857">📁 বর্তমান মাসের রসিদ আর্কাইভ ও সংরক্ষণ করুন</button>
+    <button class="green admin-only" onclick="archiveCurrentMonth()" style="background:#047857">📁 বর্তমান মাসের রসিদ আর্কাইভ ও সংরক্ষণ করুন</button>
   </div>
 </div>
 
@@ -434,9 +448,9 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="allLandTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">🗺️ মীর সকল ল্যান্ড — দলিল ও খতিয়ান/দাগ রেজিস্টার (স্থায়ী ফিক্সড)</h2>
-    <p class="note">এখানে যে দলিল, খতিয়ান, দাগ নং, জায়গা ও অংশ যুক্ত করবেন, তা স্থায়ীভাবে ফিক্সড/সংরক্ষিত থাকবে এবং ব্যাকআপ/রিস্টোরের সাথেও সুরক্ষিত থাকবে।</p>
+    <p class="note">এখানে যে দলিল, খতিয়ান, দাগ নং, জায়গা ও অংশ যুক্ত করবেন, তা স্থায়ীভাবে ফিক্সড/সংরক্ষিত থাকবে। শুধুমাত্র Fahim নতুন তথ্য যুক্ত, এডিট বা বাতিল করতে পারবেন।</p>
 
-    <div class="grid" style="margin-top:15px; background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
+    <div class="grid admin-only" style="margin-top:15px; background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
       <div>
         <label>দলিল নং *</label>
         <input type="text" id="landDeedNo" placeholder="যেমন: ৪৫১২/২০২৪">
@@ -551,7 +565,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="incomeTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">📈 ১. আয় হিসাব (Income Records)</h2>
-    <div class="grid" style="margin-top:15px;">
+    <div class="grid admin-only" style="margin-top:15px;">
       <div><label>তারিখ</label><input type="date" id="incDate"></div>
       <div><label>আয়ের খাত</label>
         <select id="incCategory">
@@ -571,7 +585,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
     <div style="margin-top:25px;" id="incomePrintArea">
       <h3 style="color:#174a78;margin-bottom:10px;">আয়ের তালিকা</h3>
       <table class="data-table">
-        <thead><tr><th>তারিখ</th><th>খাত</th><th>বিবরণ</th><th>টাকা</th><th>সম্পাদনা / মুছুন</th></tr></thead>
+        <thead><tr><th>তারিখ</th><th>খাত</th><th>বিবরণ</th><th>টাকা</th><th class="admin-only">সম্পাদনা / মুছুন</th></tr></thead>
         <tbody id="incomeTableBody"></tbody>
       </table>
       <div style="margin-top:15px;font-weight:bold;font-size:16px;text-align:right;color:#174a78;" id="totalIncomeDisplay">মোট আয়: ৳০.০০</div>
@@ -586,7 +600,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="expenseTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">📉 ২. কোন খাতে খরচ হয় সেই হিসাব (Expense Records)</h2>
-    <div class="grid" style="margin-top:15px;">
+    <div class="grid admin-only" style="margin-top:15px;">
       <div><label>তারিখ</label><input type="date" id="expDate"></div>
       <div><label>খরচের খাত</label>
         <select id="expCategory">
@@ -608,7 +622,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
     <div style="margin-top:25px;" id="expensePrintArea">
       <h3 style="color:#b42318;margin-bottom:10px;">খরচের তালিকা</h3>
       <table class="data-table">
-        <thead><tr><th>তারিখ</th><th>খরচের খাত</th><th>বিবরণ</th><th>টাকা</th><th>সম্পাদনা / মুছুন</th></tr></thead>
+        <thead><tr><th>তারিখ</th><th>খরচের খাত</th><th>বিবরণ</th><th>টাকা</th><th class="admin-only">সম্পাদনা / মুছুন</th></tr></thead>
         <tbody id="expenseTableBody"></tbody>
       </table>
       <div style="margin-top:15px;font-weight:bold;font-size:16px;text-align:right;color:#b42318;" id="totalExpenseDisplay">মোট খরচ: ৳০.০০</div>
@@ -623,9 +637,9 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="monthlySummaryTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">📊 ৩. মাসিক আয় ও ব্যয় সংরক্ষণ (Monthly Income & Expense Summary)</h2>
-    <p class="note">এখানে আপনি প্রতি মাসের মোট আয় এবং মোট খরচ আলাদাভাবে সংরক্ষণ, এডিট ও মুছতে পারবেন।</p>
+    <p class="note">এখানে প্রতি মাসের মোট আয় এবং মোট খরচ আলাদাভাবে সংরক্ষিত রয়েছে। শুধুমাত্র Fahim নতুন হিসাব যোগ, এডিট বা মুছতে পারবেন।</p>
     
-    <div class="grid" style="margin-top:15px; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid #cbd5e1;">
+    <div class="grid admin-only" style="margin-top:15px; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid #cbd5e1;">
       <div><label>মাসের নাম (যেমন: নভেম্বর ২০২৬)</label><input type="text" id="summaryMonth" placeholder="যেমন: নভেম্বর ২০২৬"></div>
       <div><label>উক্ত মাসের মোট আয় (টাকা)</label><input type="number" id="summaryTotalInc" min="0" step="0.01" placeholder="০.০০"></div>
       <div><label>উক্ত মাসের মোট খরচ (টাকা)</label><input type="number" id="summaryTotalExp" min="0" step="0.01" placeholder="০.০০"></div>
@@ -646,7 +660,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
             <th>মোট খরচ</th>
             <th>নিট লাভ/অবশিষ্ট</th>
             <th>নোট</th>
-            <th>সম্পাদনা / মুছুন</th>
+            <th class="admin-only">সম্পাদনা / মুছুন</th>
           </tr>
         </thead>
         <tbody id="monthlySummaryTableBody">
@@ -664,7 +678,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="archiveTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">📁 পূর্বের রসিদ ও মাসভিত্তিক আর্কাইভ (Saved Receipts Archive)</h2>
-    <p class="note">এখানে আপনার সংরক্ষিত রসিদগুলো মাস এবং ভাড়াটিয়ার নাম অনুযায়ী সংরক্ষিত রয়েছে। যেকোনো রসিদ সরাসরি প্রিন্ট বা মুছতে পারবেন।</p>
+    <p class="note">এখানে আপনার সংরক্ষিত রসিদগুলো মাস এবং ভাড়াটিয়ার নাম অনুযায়ী সংরক্ষিত রয়েছে। যেকোনো রসিদ সরাসরি প্রিন্ট করতে পারবেন; মুছতে পারবেন শুধুমাত্র Fahim।</p>
     
     <div style="margin-top:15px;">
       <table class="data-table">
@@ -691,9 +705,9 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 <div id="agreementTab" class="tab-content">
   <div class="panel">
     <h2 class="section-title">📜 ভাড়াটিয়া চুক্তিপত্র সংরক্ষণ ও ব্যবস্থাপনা (Tenancy Agreements)</h2>
-    <p class="note">এখানে ভাড়াটিয়াদের চুক্তিপত্রের কপি (PDF অথবা ছবি যেমন JPG/PNG) আপলোড, এডিট/সম্পাদনা এবং মুছতে পারবেন।</p>
+    <p class="note">এখানে ভাড়াটিয়াদের চুক্তিপত্রের কপি (PDF অথবা ছবি যেমন JPG/PNG) দেখা ও ডাউনলোড করা যাবে; শুধুমাত্র Fahim আপলোড, এডিট বা মুছতে পারবেন।</p>
 
-    <div class="grid" style="margin-top:15px; background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
+    <div class="grid admin-only" style="margin-top:15px; background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
       <div>
         <label>ভাড়াটিয়া নির্বাচন করুন (অপশনাল)</label>
         <select id="agrTenantSelect" onchange="onAgreementTenantChange(this.value)">
@@ -756,15 +770,15 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
   <div class="panel">
     <div class="section-header-row">
       <h2 class="section-title">📋 ভাড়াটিয়া চুক্তির শর্তসমূহ</h2>
-      <div class="header-action-group">
+      <div class="header-action-group admin-only">
         <button type="button" class="secondary" style="padding:6px 12px;font-size:13px;" onclick="editFirstEditableTerm()">সম্পাদনা</button>
         <button type="button" class="secondary" style="padding:6px 12px;font-size:13px;" onclick="editFirstEditableTerm()">এডিট</button>
         <button type="button" class="danger" style="padding:6px 12px;font-size:13px;" onclick="clearExtraAgreementTerms()">মুছুন</button>
       </div>
     </div>
-    <p class="note">০১ থেকে ০৭ নম্বর শর্তসমূহ স্থায়ীভাবে ফিক্সড করা আছে। প্রয়োজনে নিচ থেকে অতিরিক্ত শর্ত যোগ, সম্পাদনা / এডিট ও মুছতে পারবেন এবং প্রিন্ট/PDF করতে পারবেন।</p>
+    <p class="note">০১ থেকে ০৭ নম্বর শর্তসমূহ স্থায়ীভাবে ফিক্সড করা আছে। শুধুমাত্র Fahim অতিরিক্ত শর্ত যোগ, সম্পাদনা / এডিট ও মুছতে পারবেন; সবাই প্রিন্ট/PDF করতে পারবেন।</p>
 
-    <div style="background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1; margin-bottom:20px;">
+    <div class="admin-only" style="background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1; margin-bottom:20px;">
       <label id="termFormLabel">নতুন অতিরিক্ত শর্ত যোগ করুন (০১–০৭ নম্বর শর্ত ফিক্সড)</label>
       <textarea id="termInput" placeholder="নতুন শর্ত লিখুন..."></textarea>
       <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
@@ -782,10 +796,10 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 </div>
 
 <div class="actions" style="margin-top:20px;border-top:1px solid #cbd5e1;padding-top:15px;">
-<button class="secondary" onclick="saveData()">কম্পিউটারে সংরক্ষণ</button>
+<button class="secondary admin-only" onclick="saveData()">কম্পিউটারে সংরক্ষণ</button>
 <button class="green" onclick="downloadBackup()">ডাটা ব্যাকআপ ডাউনলোড</button>
-<button class="green" onclick="uploadToGoogleDrive()" style="background:#1d4ed8;">☁️ সরাসরি গুগল ড্রাইভে ব্যাকআপ করুন</button>
-<button class="secondary" onclick="document.getElementById('restoreFile').click()">ডাটা রিস্টোর</button><input id="restoreFile" type="file" accept=".json" style="display:none" onchange="restoreBackup(event)">
+<button class="green admin-only" onclick="uploadToGoogleDrive()" style="background:#1d4ed8;">☁️ সরাসরি গুগল ড্রাইভে ব্যাকআপ করুন</button>
+<button class="secondary admin-only" onclick="document.getElementById('restoreFile').click()">ডাটা রিস্টোর</button><input id="restoreFile" type="file" accept=".json" style="display:none" onchange="restoreBackup(event)">
 <button class="danger" onclick="logoutOffline()">লগআউট</button>
 </div>
 
@@ -798,6 +812,49 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 
 <script>
 const SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxqhGy1EhrRLxEebAdu_jlSu6747CyDzZtZMkg6HWk-Z_VhudpCbRQ29He1wYfzd1o/exec';
+
+const ADMIN_USERNAME = 'fahim';
+let currentLoggedInUser = '';
+let isAdminFahim = false;
+
+function hasAdminPermission(showAlertIfDenied = true){
+  if(isAdminFahim) return true;
+  if(showAlertIfDenied){
+    alert('শুধুমাত্র Fahim হিসেবে লগইন করলে এডিট, বাতিল, মুছে ফেলা বা সংরক্ষণ করা যাবে। অন্যান্য ইউজার শুধুমাত্র দেখতে পারবেন।');
+  }
+  return false;
+}
+
+function applyRolePermissions(){
+  const body = document.body;
+  const banner = document.getElementById('roleStatusBanner');
+  const statusText = document.getElementById('roleStatusText');
+
+  if(isAdminFahim){
+    body.classList.remove('viewer-mode');
+    if(banner){
+      banner.className = 'role-banner admin';
+    }
+    if(statusText){
+      statusText.textContent = `বর্তমান ইউজার: ${currentLoggedInUser} (অ্যাডমিন — সংরক্ষণ, এডিট ও বাতিল করার পূর্ণ অনুমতি রয়েছে)`;
+    }
+  } else {
+    body.classList.add('viewer-mode');
+    if(banner){
+      banner.className = 'role-banner viewer';
+    }
+    if(statusText){
+      statusText.textContent = `বর্তমান ইউজার: ${currentLoggedInUser || 'অতিথি'} (শুধুমাত্র দেখার অনুমতি — এডিট বা বাতিল করা যাবে না)`;
+    }
+  }
+
+  renderAllLandTable();
+  renderIncomeExpense();
+  renderMonthlySummaryTable();
+  renderArchiveTable();
+  renderAgreementTable();
+  renderTermsList();
+}
 
 function switchTab(tabId, btn){
   document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
@@ -826,6 +883,7 @@ function loadFixedAllLands(){
 }
 
 function persistFixedAllLands(){
+  if(!hasAdminPermission(false)) return;
   localStorage.setItem('mirMarketAllLands', JSON.stringify(allLands));
   localStorage.setItem('mirMarketAllLandsFixed', JSON.stringify(allLands));
 }
@@ -881,6 +939,7 @@ function clearLandForm(){
 }
 
 function saveLandRecord(){
+  if(!hasAdminPermission()) return;
   const deedNo = document.getElementById('landDeedNo').value.trim();
   const landLocation = document.getElementById('landLocation').value.trim();
   const landDeedShare = document.getElementById('landDeedShare').value.trim();
@@ -931,6 +990,7 @@ function saveLandRecord(){
 }
 
 function editLandRecord(idx){
+  if(!hasAdminPermission()) return;
   const item = allLands[idx];
   if(!item) return;
   editingLandIndex = idx;
@@ -964,6 +1024,7 @@ function cancelEditLand(){
 }
 
 function deleteLandRecord(idx){
+  if(!hasAdminPermission()) return;
   if(!confirm('এই স্থায়ী দলিল ও জমির তথ্যটি মুছে ফেলতে চান?')) return;
   allLands.splice(idx, 1);
   persistFixedAllLands();
@@ -980,6 +1041,11 @@ function renderAllLandTable(){
   }
   tbody.innerHTML = '';
   allLands.forEach((item, idx) => {
+    const actionCellHtml = isAdminFahim
+      ? `<button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editLandRecord(${idx})">সম্পাদনা / এডিট</button>
+         <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteLandRecord(${idx})">মুছুন</button>`
+      : `<span style="font-size:12px;color:#64748b;font-weight:600;">শুধুমাত্র দেখার অনুমতি</span>`;
+
     tbody.innerHTML += `
       <tr>
         <td>${idx + 1}</td>
@@ -996,8 +1062,7 @@ function renderAllLandTable(){
         <td>খতিয়ান: ${esc(item.oldPsKhatian || '-')}<br>দাগ: ${esc(item.oldPsDag || '-')}</td>
         <td style="white-space:nowrap;">
           <span class="fixed-badge" style="margin-bottom:5px;">ফিক্সড</span><br>
-          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editLandRecord(${idx})">সম্পাদনা / এডিট</button>
-          <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteLandRecord(${idx})">মুছুন</button>
+          ${actionCellHtml}
         </td>
       </tr>
     `;
@@ -1007,45 +1072,53 @@ function renderAllLandTable(){
 function renderIncomeExpense(){
   const incBody = document.getElementById('incomeTableBody');
   const expBody = document.getElementById('expenseTableBody');
+  const colSpan = isAdminFahim ? 5 : 4;
   
-  incBody.innerHTML = incomes.length ? '' : '<tr><td colspan="5" style="text-align:center;color:#64748b">কোনো আয় এন্ট্রি নেই</td></tr>';
+  incBody.innerHTML = incomes.length ? '' : `<tr><td colspan="${colSpan}" style="text-align:center;color:#64748b">কোনো আয় এন্ট্রি নেই</td></tr>`;
   let totalInc = 0;
   incomes.forEach((item, idx) => {
     totalInc += Number(item.amount);
+    const incActionTd = isAdminFahim
+      ? `<td style="white-space:nowrap;">
+           <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editIncome(${idx})">সম্পাদনা / এডিট</button>
+           <button type="button" class="danger" style="padding:4px 8px;font-size:12px" onclick="deleteIncome(${idx})">মুছুন</button>
+         </td>`
+      : '';
     incBody.innerHTML += `
       <tr>
         <td>${esc(item.date)}</td>
         <td>${esc(item.cat)}</td>
         <td>${esc(item.note||'-')}</td>
         <td>৳${Number(item.amount).toLocaleString('en-BD',{minimumFractionDigits:2})}</td>
-        <td style="white-space:nowrap;">
-          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editIncome(${idx})">সম্পাদনা / এডিট</button>
-          <button type="button" class="danger" style="padding:4px 8px;font-size:12px" onclick="deleteIncome(${idx})">মুছুন</button>
-        </td>
+        ${incActionTd}
       </tr>`;
   });
   document.getElementById('totalIncomeDisplay').textContent = 'মোট আয়: ৳' + totalInc.toLocaleString('en-BD',{minimumFractionDigits:2,maximumFractionDigits:2});
 
-  expBody.innerHTML = expenses.length ? '' : '<tr><td colspan="5" style="text-align:center;color:#64748b">কোনো খরচ এন্ট্রি নেই</td></tr>';
+  expBody.innerHTML = expenses.length ? '' : `<tr><td colspan="${colSpan}" style="text-align:center;color:#64748b">কোনো খরচ এন্ট্রি নেই</td></tr>`;
   let totalExp = 0;
   expenses.forEach((item, idx) => {
     totalExp += Number(item.amount);
+    const expActionTd = isAdminFahim
+      ? `<td style="white-space:nowrap;">
+           <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editExpense(${idx})">সম্পাদনা / এডিট</button>
+           <button type="button" class="danger" style="padding:4px 8px;font-size:12px" onclick="deleteExpense(${idx})">মুছুন</button>
+         </td>`
+      : '';
     expBody.innerHTML += `
       <tr>
         <td>${esc(item.date)}</td>
         <td>${esc(item.cat)}</td>
         <td>${esc(item.note||'-')}</td>
         <td>৳${Number(item.amount).toLocaleString('en-BD',{minimumFractionDigits:2})}</td>
-        <td style="white-space:nowrap;">
-          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editExpense(${idx})">সম্পাদনা / এডিট</button>
-          <button type="button" class="danger" style="padding:4px 8px;font-size:12px" onclick="deleteExpense(${idx})">মুছুন</button>
-        </td>
+        ${expActionTd}
       </tr>`;
   });
   document.getElementById('totalExpenseDisplay').textContent = 'মোট খরচ: ৳' + totalExp.toLocaleString('en-BD',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
 function addIncomeRecord(){
+  if(!hasAdminPermission()) return;
   const date = document.getElementById('incDate').value;
   const cat = document.getElementById('incCategory').value;
   const amount = document.getElementById('incAmount').value;
@@ -1068,6 +1141,7 @@ function addIncomeRecord(){
 }
 
 function editIncome(idx){
+  if(!hasAdminPermission()) return;
   const item = incomes[idx];
   if(!item) return;
   editingIncomeIndex = idx;
@@ -1087,6 +1161,7 @@ function cancelEditIncome(){
 }
 
 function deleteIncome(idx){
+  if(!hasAdminPermission()) return;
   if(!confirm('মুছে ফেলতে চান?')) return;
   incomes.splice(idx,1);
   localStorage.setItem('mirMarketIncomes', JSON.stringify(incomes));
@@ -1095,6 +1170,7 @@ function deleteIncome(idx){
 }
 
 function addExpenseRecord(){
+  if(!hasAdminPermission()) return;
   const date = document.getElementById('expDate').value;
   const cat = document.getElementById('expCategory').value;
   const amount = document.getElementById('expAmount').value;
@@ -1117,6 +1193,7 @@ function addExpenseRecord(){
 }
 
 function editExpense(idx){
+  if(!hasAdminPermission()) return;
   const item = expenses[idx];
   if(!item) return;
   editingExpenseIndex = idx;
@@ -1136,6 +1213,7 @@ function cancelEditExpense(){
 }
 
 function deleteExpense(idx){
+  if(!hasAdminPermission()) return;
   if(!confirm('মুছে ফেলতে চান?')) return;
   expenses.splice(idx,1);
   localStorage.setItem('mirMarketExpenses', JSON.stringify(expenses));
@@ -1144,6 +1222,7 @@ function deleteExpense(idx){
 }
 
 function saveMonthlySummary(){
+  if(!hasAdminPermission()) return;
   const month = document.getElementById('summaryMonth').value.trim();
   const totalInc = Number(document.getElementById('summaryTotalInc').value) || 0;
   const totalExp = Number(document.getElementById('summaryTotalExp').value) || 0;
@@ -1178,6 +1257,7 @@ function saveMonthlySummary(){
 }
 
 function editMonthlySummary(idx){
+  if(!hasAdminPermission()) return;
   const item = monthlySummaries[idx];
   if(!item) return;
   editingSummaryIndex = idx;
@@ -1201,13 +1281,20 @@ function cancelEditSummary(){
 
 function renderMonthlySummaryTable(){
   const tbody = document.getElementById('monthlySummaryTableBody');
+  const colSpan = isAdminFahim ? 6 : 5;
   if(!monthlySummaries.length){
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b">কোনো মাসিক হিসাব সংরক্ষিত নেই</td></tr>';
+    tbody.innerHTML = `<tr><td colspan="${colSpan}" style="text-align:center;color:#64748b">কোনো মাসিক হিসাব সংরক্ষিত নেই</td></tr>`;
     return;
   }
   tbody.innerHTML = '';
   monthlySummaries.forEach((item, idx) => {
     const profitColor = item.netProfit >= 0 ? '#047857' : '#b42318';
+    const sumActionTd = isAdminFahim
+      ? `<td style="white-space:nowrap;">
+           <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editMonthlySummary(${idx})">সম্পাদনা / এডিট</button>
+           <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteMonthlySummary(${idx})">মুছুন</button>
+         </td>`
+      : '';
     tbody.innerHTML += `
       <tr>
         <td><b>${esc(item.month)}</b></td>
@@ -1215,16 +1302,14 @@ function renderMonthlySummaryTable(){
         <td>৳${Number(item.totalExp).toLocaleString('en-BD',{minimumFractionDigits:2})}</td>
         <td><b style="color:${profitColor}">৳${Number(item.netProfit).toLocaleString('en-BD',{minimumFractionDigits:2})}</b></td>
         <td>${esc(item.note || '-')}</td>
-        <td style="white-space:nowrap;">
-          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editMonthlySummary(${idx})">সম্পাদনা / এডিট</button>
-          <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteMonthlySummary(${idx})">মুছুন</button>
-        </td>
+        ${sumActionTd}
       </tr>
     `;
   });
 }
 
 function deleteMonthlySummary(idx){
+  if(!hasAdminPermission()) return;
   if(!confirm('মুছে ফেলতে চান?')) return;
   monthlySummaries.splice(idx, 1);
   localStorage.setItem('mirMarketMonthlySummaries', JSON.stringify(monthlySummaries));
@@ -1233,6 +1318,7 @@ function deleteMonthlySummary(idx){
 }
 
 function archiveCurrentMonth(){
+  if(!hasAdminPermission()) return;
   const tenantName = val('tenant');
   const month = val('rentmonth');
   if(!tenantName || !month){ alert('ভাড়াটিয়া এবং ভাড়ার মাস নির্বাচন করুন।'); return; }
@@ -1276,6 +1362,9 @@ function renderArchiveTable(){
   }
   tbody.innerHTML = '';
   archives.forEach((item, idx) => {
+    const delBtn = isAdminFahim
+      ? `<button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteArchive(${idx})">মুছুন</button>`
+      : '';
     tbody.innerHTML += `
       <tr>
         <td><b>${esc(item.month)}</b></td>
@@ -1286,7 +1375,7 @@ function renderArchiveTable(){
         <td>${esc(item.dateStr)}</td>
         <td style="white-space:nowrap;">
           <button type="button" class="green" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="printArchived(${idx}, 'tenant')">ভাড়াটিয়া কপি</button>
-          <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteArchive(${idx})">মুছুন</button>
+          ${delBtn}
         </td>
       </tr>
     `;
@@ -1304,6 +1393,7 @@ function printArchived(idx, type){
 }
 
 function deleteArchive(idx){
+  if(!hasAdminPermission()) return;
   if(!confirm('এই আর্কাইভ রসিদটি মুছে ফেলতে চান?')) return;
   archives.splice(idx, 1);
   localStorage.setItem('mirMarketArchives', JSON.stringify(archives));
@@ -1328,6 +1418,7 @@ function onAgreementTenantChange(idx){
 }
 
 function uploadAgreement(){
+  if(!hasAdminPermission()) return;
   const tenantName = document.getElementById('agrTenantName').value.trim();
   const date = document.getElementById('agrDate').value;
   const note = document.getElementById('agrNote').value.trim();
@@ -1413,6 +1504,7 @@ function uploadAgreement(){
 }
 
 function editAgreement(idx){
+  if(!hasAdminPermission()) return;
   const item = agreements[idx];
   if(!item) return;
   editingAgreementIndex = idx;
@@ -1444,6 +1536,10 @@ function renderAgreementTable(){
   }
   tbody.innerHTML = '';
   agreements.forEach((item, idx) => {
+    const adminBtns = isAdminFahim
+      ? `<button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editAgreement(${idx})">সম্পাদনা / এডিট</button>
+         <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteAgreement(${idx})">মুছুন</button>`
+      : '';
     tbody.innerHTML += `
       <tr>
         <td>${idx + 1}</td>
@@ -1453,9 +1549,8 @@ function renderAgreementTable(){
         <td>${esc(item.note || '-')}</td>
         <td style="white-space:nowrap;">
           <button type="button" class="green" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="viewAgreement(${idx})">দেখুন</button>
-          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editAgreement(${idx})">সম্পাদনা / এডিট</button>
           <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="downloadAgreementFile(${idx})">ডাউনলোড</button>
-          <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteAgreement(${idx})">মুছুন</button>
+          ${adminBtns}
         </td>
       </tr>
     `;
@@ -1498,6 +1593,7 @@ function downloadAgreementFile(idx){
 }
 
 function deleteAgreement(idx){
+  if(!hasAdminPermission()) return;
   if(!confirm('এই চুক্তিপত্রটি মুছে ফেলতে চান?')) return;
   agreements.splice(idx, 1);
   localStorage.setItem('mirMarketAgreements', JSON.stringify(agreements));
@@ -1526,13 +1622,16 @@ function renderTermsList(){
 
   const extraHtml = extraAgreementTerms.map((term, idx) => {
     const serial = fixedAgreementTerms.length + idx + 1;
+    const extraBtns = isAdminFahim
+      ? `<button type="button" class="secondary" style="padding:5px 10px;font-size:12px;" onclick="editExtraAgreementTerm(${idx})">সম্পাদনা</button>
+         <button type="button" class="secondary" style="padding:5px 10px;font-size:12px;" onclick="editExtraAgreementTerm(${idx})">এডিট</button>
+         <button type="button" class="danger" style="padding:5px 10px;font-size:12px;" onclick="deleteExtraAgreementTerm(${idx})">মুছুন</button>`
+      : '';
     return `
       <div class="term-card">
         <div class="term-card-text"><b>${toBanglaNumber(serial)}.</b> ${esc(term)}</div>
         <div class="term-card-actions">
-          <button type="button" class="secondary" style="padding:5px 10px;font-size:12px;" onclick="editExtraAgreementTerm(${idx})">সম্পাদনা</button>
-          <button type="button" class="secondary" style="padding:5px 10px;font-size:12px;" onclick="editExtraAgreementTerm(${idx})">এডিট</button>
-          <button type="button" class="danger" style="padding:5px 10px;font-size:12px;" onclick="deleteExtraAgreementTerm(${idx})">মুছুন</button>
+          ${extraBtns}
         </div>
       </div>
     `;
@@ -1542,6 +1641,7 @@ function renderTermsList(){
 }
 
 function editFirstEditableTerm(){
+  if(!hasAdminPermission()) return;
   if(!extraAgreementTerms.length){
     alert('০১ থেকে ০৭ নম্বর শর্তসমূহ স্থায়ীভাবে ফিক্সড করা আছে। নতুন অতিরিক্ত শর্ত যুক্ত করলে সেটি এখান থেকে সম্পাদনা/এডিট ও মুছতে পারবেন।');
     document.getElementById('termInput').focus();
@@ -1551,6 +1651,7 @@ function editFirstEditableTerm(){
 }
 
 function clearExtraAgreementTerms(){
+  if(!hasAdminPermission()) return;
   if(!extraAgreementTerms.length){
     alert('০১ থেকে ০৭ নম্বর শর্তসমূহ ফিক্সড রয়েছে; কোনো অতিরিক্ত শর্ত সংরক্ষিত নেই।');
     return;
@@ -1563,6 +1664,7 @@ function clearExtraAgreementTerms(){
 }
 
 function saveAgreementTerm(){
+  if(!hasAdminPermission()) return;
   const input = document.getElementById('termInput');
   const text = input.value.trim();
   if(!text){
@@ -1584,6 +1686,7 @@ function saveAgreementTerm(){
 }
 
 function editExtraAgreementTerm(idx){
+  if(!hasAdminPermission()) return;
   editingExtraTermIndex = idx;
   const serial = fixedAgreementTerms.length + idx + 1;
   const input = document.getElementById('termInput');
@@ -1603,6 +1706,7 @@ function cancelEditTerm(){
 }
 
 function deleteExtraAgreementTerm(idx){
+  if(!hasAdminPermission()) return;
   if(!confirm('এই অতিরিক্ত শর্তটি মুছে ফেলতে চান?')) return;
   extraAgreementTerms.splice(idx, 1);
   localStorage.setItem('mirMarketExtraTerms', JSON.stringify(extraAgreementTerms));
@@ -1665,7 +1769,10 @@ function printReport(areaId, title){
   const originalContent = document.getElementById(areaId).innerHTML;
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = originalContent;
-  tempDiv.querySelectorAll('th:last-child, td:last-child').forEach(el=>el.remove());
+  tempDiv.querySelectorAll('th.admin-only, td.admin-only').forEach(el=>el.remove());
+  if(areaId === 'allLandPrintArea'){
+    tempDiv.querySelectorAll('th:last-child, td:last-child').forEach(el=>el.remove());
+  }
 
   const today = new Date();
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -1746,6 +1853,7 @@ function calc(){
 }
 
 function commitMonthlyAdjustment(){
+  if(!hasAdminPermission()) return false;
   const key=monthLedgerKey();
   if(!key){alert('আগে ভাড়াটিয়া নির্বাচন করুন।');return false;}
   if(!monthlyLedger[key]){
@@ -1852,6 +1960,7 @@ function buildReceipts(){
 }
 
 function autoSaveLocal(){
+ if(!isAdminFahim) return;
  try{
   const d={};ids.forEach(id=>{if(el(id))d[id]=el(id).value;});
   localStorage.setItem('mirMarketRentData',JSON.stringify(d));
@@ -1859,7 +1968,10 @@ function autoSaveLocal(){
   persistFixedAllLands();
  }catch(e){}
 }
-function updateAll(){buildReceipts();autoSaveLocal();}
+function updateAll(){
+  buildReceipts();
+  if(isAdminFahim) autoSaveLocal();
+}
 
 function autoSaveToMobileStorage(filename, dataObj) {
   try {
@@ -1876,44 +1988,50 @@ function autoSaveToMobileStorage(filename, dataObj) {
 }
 
 function printCopy(type){
-  if(!commitMonthlyAdjustment())return;
   buildReceipts();
   const map={owner:'ownerReceipt',tenant:'tenantReceipt',bank:'bankReceipt'};
   const tenantName = val('tenant') || 'General';
   const rentMonth = val('rentmonth') || 'Current';
-  const backupPayload = {
-    receiptType: type,
-    tenant: tenantName,
-    month: rentMonth,
-    receiptNo: val('receiptno'),
-    timestamp: new Date().toISOString(),
-    htmlContent: document.getElementById(map[type]).innerHTML
-  };
-  autoSaveToMobileStorage(`MirMarket_${type}_${tenantName}_${rentMonth}.json`, backupPayload);
+
+  if(isAdminFahim && commitMonthlyAdjustment()){
+    buildReceipts();
+    const backupPayload = {
+      receiptType: type,
+      tenant: tenantName,
+      month: rentMonth,
+      receiptNo: val('receiptno'),
+      timestamp: new Date().toISOString(),
+      htmlContent: document.getElementById(map[type]).innerHTML
+    };
+    autoSaveToMobileStorage(`MirMarket_${type}_${tenantName}_${rentMonth}.json`, backupPayload);
+  }
 
   const printDiv = document.getElementById('printArea');
   printDiv.style.display = 'block';
   printDiv.innerHTML = `<div class="print-page-wrap">${document.getElementById(map[type]).innerHTML}</div>`;
   window.print();
   printDiv.style.display = 'none';
-  incrementReceiptNumber();
+  if(isAdminFahim) incrementReceiptNumber();
 }
 
 function printAllReceipts(){
-  if(!commitMonthlyAdjustment())return;
   buildReceipts();
   const tenantName = val('tenant') || 'General';
   const rentMonth = val('rentmonth') || 'Current';
-  const allPayload = {
-    tenant: tenantName,
-    month: rentMonth,
-    receiptNo: val('receiptno'),
-    timestamp: new Date().toISOString(),
-    ownerHtml: document.getElementById('ownerReceipt').innerHTML,
-    tenantHtml: document.getElementById('tenantReceipt').innerHTML,
-    bankHtml: document.getElementById('bankReceipt').innerHTML
-  };
-  autoSaveToMobileStorage(`MirMarket_All_Receipts_${tenantName}_${rentMonth}.json`, allPayload);
+
+  if(isAdminFahim && commitMonthlyAdjustment()){
+    buildReceipts();
+    const allPayload = {
+      tenant: tenantName,
+      month: rentMonth,
+      receiptNo: val('receiptno'),
+      timestamp: new Date().toISOString(),
+      ownerHtml: document.getElementById('ownerReceipt').innerHTML,
+      tenantHtml: document.getElementById('tenantReceipt').innerHTML,
+      bankHtml: document.getElementById('bankReceipt').innerHTML
+    };
+    autoSaveToMobileStorage(`MirMarket_All_Receipts_${tenantName}_${rentMonth}.json`, allPayload);
+  }
 
   const printDiv = document.getElementById('printArea');
   printDiv.style.display = 'block';
@@ -1924,10 +2042,11 @@ function printAllReceipts(){
   `;
   window.print();
   printDiv.style.display = 'none';
-  incrementReceiptNumber();
+  if(isAdminFahim) incrementReceiptNumber();
 }
 
 function incrementReceiptNumber(){
+  if(!isAdminFahim) return;
   let currentRec = el('receiptno').value;
   if(currentRec.startsWith('MIR-')){
     let numPart = parseInt(currentRec.replace('MIR-', ''), 10);
@@ -1940,9 +2059,10 @@ function incrementReceiptNumber(){
 }
 
 function saveData(){
+  if(!hasAdminPermission()) return;
   autoSaveLocal();
   downloadBackup();
-  alert('ডেটা সফলভাবে সংরক্ষিত হয়েছে এবং মোবাইল স্টোরেজে ব্যাকআপ ফাইল ডাউনলোড হয়েছে।');
+  alert('ডেটা সফলভাবে সংরক্ষিত হয়েছে এবং ব্যাকআপ ফাইল ডাউনলোড হয়েছে।');
 }
 
 function downloadBackup(){
@@ -1952,6 +2072,7 @@ function downloadBackup(){
 }
 
 function uploadToGoogleDrive(){
+  if(!hasAdminPermission()) return;
   const d={};ids.forEach(id=>{if(el(id))d[id]=el(id).value;});
   const fullBackupData = {
     rentData: d, 
@@ -1986,6 +2107,7 @@ function uploadToGoogleDrive(){
 }
 
 function restoreBackup(event){
+  if(!hasAdminPermission()) return;
   const file=event.target.files&&event.target.files[0];if(!file)return;
   const reader=new FileReader();reader.onload=()=>{try{
     const b=JSON.parse(reader.result);
@@ -2029,6 +2151,7 @@ function selectTenant(index){
 }
 
 function addTenant(){
+  if(!hasAdminPermission()) return;
   const name=el('newTenantName').value.trim();
   const mobile=el('newTenantMobile').value.trim();
   const address=el('newTenantAddress').value.trim();
@@ -2045,7 +2168,16 @@ function addTenant(){
   alert('সংরক্ষিত হয়েছে।');
 }
 
-function deleteTenant(){const index=el('tenantSelect').value;if(index===''){alert('ভাড়াটিয়া নির্বাচন করুন।');return;}if(!confirm('বাতিল করতে চান?'))return;tenants.splice(Number(index),1);localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));refreshTenantList();updateAll();}
+function deleteTenant(){
+  if(!hasAdminPermission()) return;
+  const index=el('tenantSelect').value;
+  if(index===''){alert('ভাড়াটিয়া নির্বাচন করুন।');return;}
+  if(!confirm('বাতিল করতে চান?'))return;
+  tenants.splice(Number(index),1);
+  localStorage.setItem('mirMarketTenants',JSON.stringify(tenants));
+  refreshTenantList();
+  updateAll();
+}
 
 function initDefaults(){
   const now = new Date();
@@ -2079,30 +2211,46 @@ function getLocalUsers(){
   try{
     u=JSON.parse(localStorage.getItem('mirMarketUsers')||'[]');
     if(!u.length){
-      u=[{username:'admin', passwordHash:'fallback-123456'}];
+      u=[{username:'Fahim', passwordHash:'fallback-123456'}];
       localStorage.setItem('mirMarketUsers', JSON.stringify(u));
     }
   }catch(e){} 
   return u; 
 }
-async function passwordDigest(password){
- return 'fallback-'+password;
-}
 async function createOfflineAccount(){
  const u=val('authUser'),p=el('authPass').value,p2=el('authPass2').value;
  if(!u || p.length<6 || p!==p2){ alert('সঠিক ইউজারনেম এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।'); return; }
- const users=[{username:u, passwordHash:'fallback-'+p}];
+ const users=getLocalUsers();
+ const existingIdx=users.findIndex(x=>x.username.toLowerCase()===u.toLowerCase());
+ const newUserObj={username:u, passwordHash:'fallback-'+p};
+ if(existingIdx>=0) users[existingIdx]=newUserObj;
+ else users.push(newUserObj);
  localStorage.setItem('mirMarketUsers', JSON.stringify(users));
- unlockOffline();
+ unlockOffline(u);
 }
 async function loginOffline(){
  const users=getLocalUsers(),u=val('loginUser'),p=el('loginPass').value;
+ if(!u){ el('authError').textContent='দয়া করে ইউজারনেম লিখুন।'; return; }
  const saved=users.find(x=>x.username.toLowerCase()===u.toLowerCase());
- if(!saved || ('fallback-'+p)!==saved.passwordHash){ el('authError').textContent='ইউজারনেম অথবা পাসওয়ার্ড ভুল।'; return; }
- unlockOffline();
+
+ if(saved){
+   if(('fallback-'+p)!==saved.passwordHash){
+     el('authError').textContent='পাসওয়ার্ড ভুল।';
+     return;
+   }
+   unlockOffline(saved.username);
+   return;
+ }
+
+ // রেজিস্টার্ড না থাকা যেকোনো ইউজারনেম দিয়ে View-Only মোডে লগইন করতে পারবে
+ if(!p || p.length<1){
+   el('authError').textContent='লগইন করতে পাসওয়ার্ড দিন।';
+   return;
+ }
+ unlockOffline(u);
 }
 function showSignup(){ el('loginFields').style.display='none'; el('setupFields').style.display='block'; el('authIntro').textContent='নতুন ব্যবহারকারীর জন্য ইউজারনেম ও পাসওয়ার্ড তৈরি করুন।'; el('authError').textContent=''; }
-function cancelSignup(){ el('setupFields').style.display='none'; el('loginFields').style.display='block'; el('authIntro').textContent='মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ তৈরি সিস্টেম।'; }
+function cancelSignup(){ el('setupFields').style.display='none'; el('loginFields').style.display='block'; el('authIntro').textContent='মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র Fahim এডিট ও বাতিল করতে পারবেন।'; }
 async function forgotOfflinePassword(){
  const users=getLocalUsers();
  const u=prompt('আপনার ইউজারনেম লিখুন:');
@@ -2126,7 +2274,7 @@ function showContactModal(){
 function cancelContact(){
   el('contactFields').style.display = 'none';
   el('loginFields').style.display = 'block';
-  el('authIntro').textContent = 'মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। সম্পূর্ণ ডিজিটাল হিসাব ব্যবস্থাপনা ও রসিদ তৈরি সিস্টেম।';
+  el('authIntro').textContent = 'মীর মার্কেট এবং ল্যান্ড, পাসপোর্ট অফিস সংলগ্ন, ঢাকা-রায়পুর রোড। যেকোনো ইউজারনেম দিয়ে লগইন করে দেখতে পারবেন; শুধুমাত্র Fahim এডিট ও বাতিল করতে পারবেন।';
 }
 
 function sendApiEmail(){
@@ -2167,13 +2315,24 @@ function sendApiEmail(){
   });
 }
 
-function unlockOffline(){ el('authGate').style.display='none'; document.querySelector('.wrap').style.visibility='visible'; }
-function logoutOffline(){ location.reload(); }
+function unlockOffline(username){
+  currentLoggedInUser = String(username || '').trim();
+  isAdminFahim = currentLoggedInUser.toLowerCase() === ADMIN_USERNAME;
+  el('authGate').style.display='none';
+  document.querySelector('.wrap').style.visibility='visible';
+  applyRolePermissions();
+}
+function logoutOffline(){
+  currentLoggedInUser = '';
+  isAdminFahim = false;
+  document.body.classList.remove('viewer-mode');
+  location.reload();
+}
 
 function initOfflineAuth(){
- const users=getLocalUsers();
- if(users.length){ el('setupFields').style.display='none'; el('loginFields').style.display='block'; }
- else{ el('setupFields').style.display='block'; el('loginFields').style.display='none'; el('authIntro').textContent='প্রথমবার ব্যবহারের জন্য একটি ইউজারনেম ও পাসওয়ার্ড সেট করুন।'; }
+ getLocalUsers();
+ el('setupFields').style.display='none';
+ el('loginFields').style.display='block';
 }
 initOfflineAuth();
 </script>
