@@ -48,6 +48,7 @@ button.secondary{background:#475569}button.green{background:#18734b}button.dange
 table.data-table{width:100%;border-collapse:collapse;margin-top:10px}
 table.data-table th,table.data-table td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14px}
 table.data-table th{background:#eef5fb;color:var(--blue)}
+.table-scroll{width:100%;overflow-x:auto;}
 
 @media(max-width:700px){.grid,.summary{grid-template-columns:1fr}.wrap{padding:10px}.receipt{padding:14px}}
 
@@ -362,6 +363,7 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 
 <div class="app-menu">
   <button type="button" class="active" onclick="switchTab('rentTab', this)">🏠 মাসিক ভাড়া ও রসিদ</button>
+  <button type="button" onclick="switchTab('allLandTab', this)">🗺️ মীর সকল ল্যান্ড</button>
   <button type="button" onclick="switchTab('incomeTab', this)">📈 ১. আয় হিসাব (Income)</button>
   <button type="button" onclick="switchTab('expenseTab', this)">📉 ২. কোন খাতে খরচ (Expense)</button>
   <button type="button" onclick="switchTab('monthlySummaryTab', this)">📊 ৩. মাসিক আয়-ব্যয় সংরক্ষণ</button>
@@ -424,6 +426,123 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
     <button class="green" onclick="printCopy('bank')">ব্যাংক জমার রসিদ PDF</button>
     <button class="green" onclick="printAllReceipts()" style="background:#0284c7">📄 মালিক, ভাড়াটিয়া ও ব্যাংক কপি একত্রে প্রিন্ট (Print All)</button>
     <button class="green" onclick="archiveCurrentMonth()" style="background:#047857">📁 বর্তমান মাসের রসিদ আর্কাইভ ও সংরক্ষণ করুন</button>
+  </div>
+</div>
+
+<!--- TAB: মীর সকল ল্যান্ড --->
+<div id="allLandTab" class="tab-content">
+  <div class="panel">
+    <h2 class="section-title">🗺️ মীর সকল ল্যান্ড — দলিল ও খতিয়ান/দাগ রেজিস্টার</h2>
+    <p class="note">এখানে দলিল নং, দলিল দাতা ও গ্রহীতার নাম, কোন জায়গার জমি, অত্র দলিলের অংশ কতটুকু, রেজিস্ট্রি সাল এবং সি এস, পি এস, এস এ, আর এস ও ওল্ড পি এস খতিয়ান ও দাগ নং সংরক্ষণ, এডিট ও মুছতে পারবেন।</p>
+
+    <div class="grid" style="margin-top:15px; background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
+      <div>
+        <label>দলিল নং *</label>
+        <input type="text" id="landDeedNo" placeholder="যেমন: ৪৫১২/২০২৪">
+      </div>
+      <div>
+        <label>কোন জায়গার জমি *</label>
+        <input type="text" id="landLocation" placeholder="যেমন: বাঞ্ছানগর, লক্ষ্মীপুর সদর">
+      </div>
+      <div>
+        <label>দলিল দাতার নাম *</label>
+        <input type="text" id="landDonorName" placeholder="দলিল দাতার পূর্ণ নাম">
+      </div>
+      <div>
+        <label>দলিল গ্রহীতার নাম *</label>
+        <input type="text" id="landRecipientName" placeholder="দলিল গ্রহীতার পূর্ণ নাম">
+      </div>
+      <div>
+        <label>অত্র দলিলের অংশ কতটুকু *</label>
+        <input type="text" id="landDeedShare" placeholder="যেমন: ২৫ শতাংশ বা ০.২৫ একর">
+      </div>
+      <div>
+        <label>রেজিস্ট্রি সাল</label>
+        <input type="text" id="landRegYear" placeholder="যেমন: ২০২৪">
+      </div>
+
+      <div>
+        <label>সি এস খতিয়ান নং</label>
+        <input type="text" id="landCsKhatian" placeholder="সি এস খতিয়ান নং">
+      </div>
+      <div>
+        <label>সি এস দাগ নং</label>
+        <input type="text" id="landCsDag" placeholder="সি এস দাগ নং">
+      </div>
+
+      <div>
+        <label>পি এস খতিয়ান নং</label>
+        <input type="text" id="landPsKhatian" placeholder="পি এস খতিয়ান নং">
+      </div>
+      <div>
+        <label>পি এস দাগ নং</label>
+        <input type="text" id="landPsDag" placeholder="পি এস দাগ নং">
+      </div>
+
+      <div>
+        <label>এস এ খতিয়ান নং</label>
+        <input type="text" id="landSaKhatian" placeholder="এস এ খতিয়ান নং">
+      </div>
+      <div>
+        <label>এস এ দাগ নং</label>
+        <input type="text" id="landSaDag" placeholder="এস এ দাগ নং">
+      </div>
+
+      <div>
+        <label>আর এস খতিয়ান নং</label>
+        <input type="text" id="landRsKhatian" placeholder="আর এস খতিয়ান নং">
+      </div>
+      <div>
+        <label>আর এস দাগ নং</label>
+        <input type="text" id="landRsDag" placeholder="আর এস দাগ নং">
+      </div>
+
+      <div>
+        <label>ওল্ড পি এস খতিয়ান নং</label>
+        <input type="text" id="landOldPsKhatian" placeholder="ওল্ড পি এস খতিয়ান নং">
+      </div>
+      <div>
+        <label>ওল্ড পি এস দাগ নং</label>
+        <input type="text" id="landOldPsDag" placeholder="ওল্ড পি এস দাগ নং">
+      </div>
+
+      <div class="full" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+        <button type="button" class="green" id="saveLandBtn" onclick="saveLandRecord()">+ দলিল ও জমির তথ্য সংরক্ষণ করুন</button>
+        <button type="button" class="secondary" id="cancelLandEditBtn" style="display:none;" onclick="cancelEditLand()">সম্পাদনা বাতিল</button>
+      </div>
+    </div>
+
+    <div style="margin-top:25px;" id="allLandPrintArea">
+      <h3 style="color:#174a78;margin-bottom:10px;">মীর সকল ল্যান্ড — সংরক্ষিত দলিল ও খতিয়ান তালিকা</h3>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ক্রমিক</th>
+              <th>দলিল নং</th>
+              <th>দলিল দাতার নাম</th>
+              <th>দলিল গ্রহীতার নাম</th>
+              <th>কোন জায়গার জমি</th>
+              <th>অত্র দলিলের অংশ কতটুকু</th>
+              <th>রেজিস্ট্রি সাল</th>
+              <th>সি এস খতিয়ান / দাগ</th>
+              <th>পি এস খতিয়ান / দাগ</th>
+              <th>এস এ খতিয়ান / দাগ</th>
+              <th>আর এস খতিয়ান / দাগ</th>
+              <th>ওল্ড পি এস খতিয়ান / দাগ</th>
+              <th>সম্পাদনা / মুছুন</th>
+            </tr>
+          </thead>
+          <tbody id="allLandTableBody">
+            <tr><td colspan="13" style="text-align:center;color:#64748b">কোনো দলিল বা জমির তথ্য সংরক্ষিত নেই</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:15px;">
+      <button type="button" class="green" onclick="printReport('allLandPrintArea', 'মীর সকল ল্যান্ড — দলিল ও খতিয়ান/দাগ রিপোর্ট')">🖨️ মীর সকল ল্যান্ড রিপোর্ট প্রিন্ট / PDF (Auto Date)</button>
+    </div>
   </div>
 </div>
 
@@ -684,18 +803,21 @@ function switchTab(tabId, btn){
   document.querySelectorAll('.app-menu button').forEach(el=>el.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
   btn.classList.add('active');
+  if(tabId === 'allLandTab') renderAllLandTable();
   if(tabId === 'archiveTab') renderArchiveTable();
   if(tabId === 'monthlySummaryTab') renderMonthlySummaryTable();
   if(tabId === 'agreementTab'){ refreshAgreementTenantDropdown(); renderAgreementTable(); }
   if(tabId === 'termsTab'){ renderTermsList(); }
 }
 
+let allLands = JSON.parse(localStorage.getItem('mirMarketAllLands')||'[]');
 let incomes = JSON.parse(localStorage.getItem('mirMarketIncomes')||'[]');
 let expenses = JSON.parse(localStorage.getItem('mirMarketExpenses')||'[]');
 let archives = JSON.parse(localStorage.getItem('mirMarketArchives')||'[]');
 let monthlySummaries = JSON.parse(localStorage.getItem('mirMarketMonthlySummaries')||'[]');
 let agreements = JSON.parse(localStorage.getItem('mirMarketAgreements')||'[]');
 
+let editingLandIndex = -1;
 let editingIncomeIndex = -1;
 let editingExpenseIndex = -1;
 let editingSummaryIndex = -1;
@@ -730,6 +852,134 @@ let editingExtraTermIndex = -1;
 
 function getAllAgreementTerms(){
   return [...fixedAgreementTerms, ...extraAgreementTerms];
+}
+
+function clearLandForm(){
+  ['landDeedNo','landLocation','landDeedShare','landRegYear','landDonorName','landRecipientName','landCsKhatian','landCsDag','landPsKhatian','landPsDag','landSaKhatian','landSaDag','landRsKhatian','landRsDag','landOldPsKhatian','landOldPsDag'].forEach(id=>{
+    if(document.getElementById(id)) document.getElementById(id).value = '';
+  });
+}
+
+function saveLandRecord(){
+  const deedNo = document.getElementById('landDeedNo').value.trim();
+  const landLocation = document.getElementById('landLocation').value.trim();
+  const landDeedShare = document.getElementById('landDeedShare').value.trim();
+  const regYear = document.getElementById('landRegYear').value.trim();
+  const donorName = document.getElementById('landDonorName').value.trim();
+  const recipientName = document.getElementById('landRecipientName').value.trim();
+
+  const csKhatian = document.getElementById('landCsKhatian').value.trim();
+  const csDag = document.getElementById('landCsDag').value.trim();
+  const psKhatian = document.getElementById('landPsKhatian').value.trim();
+  const psDag = document.getElementById('landPsDag').value.trim();
+  const saKhatian = document.getElementById('landSaKhatian').value.trim();
+  const saDag = document.getElementById('landSaDag').value.trim();
+  const rsKhatian = document.getElementById('landRsKhatian').value.trim();
+  const rsDag = document.getElementById('landRsDag').value.trim();
+  const oldPsKhatian = document.getElementById('landOldPsKhatian').value.trim();
+  const oldPsDag = document.getElementById('landOldPsDag').value.trim();
+
+  if(!deedNo || !donorName || !recipientName || !landLocation || !landDeedShare){
+    alert('দয়া করে দলিল নং, দলিল দাতার নাম, দলিল গ্রহীতার নাম, কোন জায়গার জমি এবং অত্র দলিলের অংশ কতটুকু তা লিখুন।');
+    return;
+  }
+
+  const record = {
+    deedNo, landLocation, landDeedShare, regYear, donorName, recipientName,
+    csKhatian, csDag,
+    psKhatian, psDag,
+    saKhatian, saDag,
+    rsKhatian, rsDag,
+    oldPsKhatian, oldPsDag
+  };
+
+  if(editingLandIndex >= 0){
+    allLands[editingLandIndex] = record;
+    editingLandIndex = -1;
+    document.getElementById('saveLandBtn').textContent = '+ দলিল ও জমির তথ্য সংরক্ষণ করুন';
+    document.getElementById('cancelLandEditBtn').style.display = 'none';
+    alert('দলিল ও জমির তথ্য সফলভাবে সম্পাদনা করা হয়েছে!');
+  } else {
+    allLands.unshift(record);
+    alert('দলিল ও জমির তথ্য সফলভাবে সংরক্ষণ করা হয়েছে!');
+  }
+
+  localStorage.setItem('mirMarketAllLands', JSON.stringify(allLands));
+  clearLandForm();
+  renderAllLandTable();
+}
+
+function editLandRecord(idx){
+  const item = allLands[idx];
+  if(!item) return;
+  editingLandIndex = idx;
+  document.getElementById('landDeedNo').value = item.deedNo || '';
+  document.getElementById('landLocation').value = item.landLocation || '';
+  document.getElementById('landDeedShare').value = item.landDeedShare || '';
+  document.getElementById('landRegYear').value = item.regYear || '';
+  document.getElementById('landDonorName').value = item.donorName || '';
+  document.getElementById('landRecipientName').value = item.recipientName || '';
+  document.getElementById('landCsKhatian').value = item.csKhatian || '';
+  document.getElementById('landCsDag').value = item.csDag || '';
+  document.getElementById('landPsKhatian').value = item.psKhatian || '';
+  document.getElementById('landPsDag').value = item.psDag || '';
+  document.getElementById('landSaKhatian').value = item.saKhatian || '';
+  document.getElementById('landSaDag').value = item.saDag || '';
+  document.getElementById('landRsKhatian').value = item.rsKhatian || '';
+  document.getElementById('landRsDag').value = item.rsDag || '';
+  document.getElementById('landOldPsKhatian').value = item.oldPsKhatian || '';
+  document.getElementById('landOldPsDag').value = item.oldPsDag || '';
+
+  document.getElementById('saveLandBtn').textContent = '✓ পরিবর্তন সংরক্ষণ করুন';
+  document.getElementById('cancelLandEditBtn').style.display = 'inline-block';
+  document.getElementById('landDeedNo').focus();
+}
+
+function cancelEditLand(){
+  editingLandIndex = -1;
+  clearLandForm();
+  document.getElementById('saveLandBtn').textContent = '+ দলিল ও জমির তথ্য সংরক্ষণ করুন';
+  document.getElementById('cancelLandEditBtn').style.display = 'none';
+}
+
+function deleteLandRecord(idx){
+  if(!confirm('এই দলিল ও জমির তথ্যটি মুছে ফেলতে চান?')) return;
+  allLands.splice(idx, 1);
+  localStorage.setItem('mirMarketAllLands', JSON.stringify(allLands));
+  if(editingLandIndex === idx) cancelEditLand();
+  renderAllLandTable();
+}
+
+function renderAllLandTable(){
+  const tbody = document.getElementById('allLandTableBody');
+  if(!tbody) return;
+  if(!allLands.length){
+    tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;color:#64748b">কোনো দলিল বা জমির তথ্য সংরক্ষিত নেই</td></tr>';
+    return;
+  }
+  tbody.innerHTML = '';
+  allLands.forEach((item, idx) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${idx + 1}</td>
+        <td><b>${esc(item.deedNo)}</b></td>
+        <td>${esc(item.donorName)}</td>
+        <td>${esc(item.recipientName)}</td>
+        <td><b>${esc(item.landLocation || '-')}</b></td>
+        <td><b>${esc(item.landDeedShare || '-')}</b></td>
+        <td>${esc(item.regYear || '-')}</td>
+        <td>খতিয়ান: ${esc(item.csKhatian || '-')}<br>দাগ: ${esc(item.csDag || '-')}</td>
+        <td>খতিয়ান: ${esc(item.psKhatian || '-')}<br>দাগ: ${esc(item.psDag || '-')}</td>
+        <td>খতিয়ান: ${esc(item.saKhatian || '-')}<br>দাগ: ${esc(item.saDag || '-')}</td>
+        <td>খতিয়ান: ${esc(item.rsKhatian || '-')}<br>দাগ: ${esc(item.rsDag || '-')}</td>
+        <td>খতিয়ান: ${esc(item.oldPsKhatian || '-')}<br>দাগ: ${esc(item.oldPsDag || '-')}</td>
+        <td style="white-space:nowrap;">
+          <button type="button" class="secondary" style="padding:4px 8px;font-size:12px;margin-right:4px;" onclick="editLandRecord(${idx})">সম্পাদনা / এডিট</button>
+          <button type="button" class="danger" style="padding:4px 8px;font-size:12px;" onclick="deleteLandRecord(${idx})">মুছুন</button>
+        </td>
+      </tr>
+    `;
+  });
 }
 
 function renderIncomeExpense(){
@@ -1674,7 +1924,7 @@ function saveData(){
 
 function downloadBackup(){
   const d={};ids.forEach(id=>{if(el(id))d[id]=el(id).value;});
-  const backup={rentData:d, tenants, monthlyLedger, incomes, expenses, archives, monthlySummaries, agreements, fixedAgreementTerms, extraAgreementTerms, auth:localStorage.getItem('mirMarketUsers')};
+  const backup={rentData:d, tenants, monthlyLedger, allLands, incomes, expenses, archives, monthlySummaries, agreements, fixedAgreementTerms, extraAgreementTerms, auth:localStorage.getItem('mirMarketUsers')};
   autoSaveToMobileStorage('Mir_Market_Full_Backup.json', backup);
 }
 
@@ -1683,7 +1933,8 @@ function uploadToGoogleDrive(){
   const fullBackupData = {
     rentData: d, 
     tenants, 
-    monthlyLedger, 
+    monthlyLedger,
+    allLands,
     incomes, 
     expenses, 
     archives, 
@@ -1718,6 +1969,7 @@ function restoreBackup(event){
     localStorage.setItem('mirMarketRentData',JSON.stringify(b.rentData));
     localStorage.setItem('mirMarketTenants',JSON.stringify(b.tenants||[]));
     localStorage.setItem('mirMarketMonthlyLedger',JSON.stringify(b.monthlyLedger||{}));
+    localStorage.setItem('mirMarketAllLands',JSON.stringify(b.allLands||[]));
     localStorage.setItem('mirMarketIncomes',JSON.stringify(b.incomes||[]));
     localStorage.setItem('mirMarketExpenses',JSON.stringify(b.expenses||[]));
     localStorage.setItem('mirMarketArchives',JSON.stringify(b.archives||[]));
@@ -1794,7 +2046,7 @@ function initDefaults(){
     liveDateEl.textContent = `হালনাগাদ তারিখ: ${formattedLiveDate}`;
   }
 }
-refreshTenantList();initDefaults();renderIncomeExpense();renderAgreementTable();renderTermsList();ids.forEach(id=>el(id).addEventListener('input',updateAll));updateAll();
+refreshTenantList();initDefaults();renderAllLandTable();renderIncomeExpense();renderAgreementTable();renderTermsList();ids.forEach(id=>el(id).addEventListener('input',updateAll));updateAll();
 
 function getLocalUsers(){ 
   let u=[]; 
