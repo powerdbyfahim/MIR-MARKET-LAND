@@ -103,31 +103,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
 #authCard button.secondary{ background: #ffffff; color: #334155; border: 1px solid #cbd5e1; margin-top: 8px; box-shadow: none; }
 #authError{ margin: 10px 0 0; text-align: left; font-size: 13px; }
 
-.hidden-admin-trigger{
-  margin-top: 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #0f766e;
-  background: transparent;
-  border: 1px dashed #0f766e;
-  border-radius: 6px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-.hidden-admin-box{
-  display: none;
-  margin-top: 8px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: #ffffff;
-  border: 1px solid #99f6e4;
-  font-size: 12.5px;
-  color: #0f172a;
-}
-
 @media(max-width: 850px){
   #authGate{ flex-direction: column; }
   .auth-left-banner{ display: none; }
@@ -263,15 +238,6 @@ table.data-table th{background:#eef5fb;color:var(--blue)}
        <button type="button" class="secondary" onclick="showSignup()">নতুন সাইন আপ (Register)</button>
        <button type="button" class="secondary" onclick="forgotOfflinePassword()">পাসওয়ার্ড ভুলে গেছেন? (Forgot password?)</button>
        <button type="button" class="secondary" style="background:#0f766e; color:#fff; margin-top:8px;" onclick="showContactModal()">যোগাযোগ</button>
-
-       <div style="margin-top:8px;">
-         <span class="hidden-admin-trigger" onclick="toggleHiddenAdminBox()">🔐 অ্যাডমিন ক্রেডেনশিয়াল (ট্যাপ করুন)</span>
-         <div id="hiddenAdminBox" class="hidden-admin-box">
-           <div><b>অ্যাডমিন নাম:</b> <span id="revealAdminName"></span></div>
-           <div><b>পাসওয়ার্ড:</b> <span id="revealAdminPass"></span></div>
-           <button type="button" class="secondary" style="margin-top:8px;padding:6px 10px;font-size:12px;" onclick="fillHiddenAdminLogin()">ইনপুট ঘরে বসান</button>
-         </div>
-       </div>
       </div>
 
       <div id="contactFields" style="display:none;">
@@ -764,27 +730,6 @@ const FIXED_ADMIN_PASS = '242526';
 const ADMIN_USERNAME = FIXED_ADMIN_USER.toLowerCase();
 let currentLoggedInUser = '';
 let isAdminFahim = false;
-
-function toggleHiddenAdminBox(){
-  const box = document.getElementById('hiddenAdminBox');
-  if(!box) return;
-  const isShown = box.style.display === 'block';
-  if(!isShown){
-    document.getElementById('revealAdminName').textContent = FIXED_ADMIN_USER;
-    document.getElementById('revealAdminPass').textContent = FIXED_ADMIN_PASS;
-    box.style.display = 'block';
-  } else {
-    box.style.display = 'none';
-  }
-}
-
-function fillHiddenAdminLogin(){
-  const uEl = document.getElementById('loginUser');
-  const pEl = document.getElementById('loginPass');
-  if(uEl) uEl.value = FIXED_ADMIN_USER;
-  if(pEl) pEl.value = FIXED_ADMIN_PASS;
-  document.getElementById('authError').textContent = '';
-}
 
 function hasAdminPermission(showAlertIfDenied = true){
   if(isAdminFahim) return true;
